@@ -9,3 +9,5 @@ Khai getIt.registerSingleton với cái class store
 Để dùng store trong screen thì tạo cái biến class đó gọi getIt<Class đó>();
 
 Khai route trong utils -> routes
+
+Nhớ thay packages mới
