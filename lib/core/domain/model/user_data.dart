@@ -11,10 +11,10 @@ abstract class UserData {
   UserData({required this.userName, required this.accountType});
 }
 
-enum EmployeeSize { only1, less9, less99, less1000, more1000 }
+enum CompanySize { only1, less9, less99, less1000, more1000 }
 
 class CompanyProfile extends ProfileData {
-  EmployeeSize employeeSize = EmployeeSize.only1;
+  CompanySize companySize = CompanySize.only1;
   String companyName;
   String website;
   String desc;
@@ -22,7 +22,7 @@ class CompanyProfile extends ProfileData {
       {required this.companyName,
       required this.website,
       required this.desc,
-      this.employeeSize = EmployeeSize.only1});
+      this.companySize = CompanySize.only1});
 }
 
 class CompanyData extends UserData {
