@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:boilerplate/presentation/signup/signupType.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,8 +14,19 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        //brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        title: Text('StudentHub', style: TextStyle(fontSize: 20)),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.person,
+              size: 30,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Handle the person icon tap
+            },
+          ),
+        ],
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -92,13 +109,22 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Don't have an account?"),
-                    Text(
-                      " Sign up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupTypePage()),
+                        );
+                      },
+                      child: Text(
+                        " Sign up",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Container(

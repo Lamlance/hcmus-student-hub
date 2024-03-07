@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:boilerplate/presentation/login/login.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
+  @override
+  _SignupPageState createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  bool _isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,8 +16,19 @@ class SignupPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        //brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        title: Text('StudentHub', style: TextStyle(fontSize: 20)),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.person,
+              size: 30,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Handle the person icon tap
+            },
+          ),
+        ],
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -53,6 +72,17 @@ class SignupPage extends StatelessWidget {
                   inputFile(label: "Email"),
                   inputFile(label: "Password", obscureText: true),
                   inputFile(label: "Confirm Password ", obscureText: true),
+                  checkboxInput(
+                    title: "Yes, I understand and agree to StudentHub",
+                    isChecked: _isChecked,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          _isChecked = value;
+                        });
+                      }
+                    },
+                  ),
                 ],
               ),
               Container(
@@ -88,12 +118,23 @@ class SignupPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Already have an account?"),
-                  Text(
-                    " Login",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                  )
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    child: Text(
+                      " Login",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -129,5 +170,21 @@ Widget inputFile({label, obscureText = false}) {
         height: 10,
       )
     ],
+  );
+}
+
+Widget checkboxInput(
+    {required String title,
+    required bool isChecked,
+    required Function(bool?) onChanged}) {
+  return CheckboxListTile(
+    title: Text(title),
+    value: isChecked,
+    onChanged: onChanged,
+    activeColor: Colors.blue, // Change this to your desired color
+    checkColor: Colors.white,
+    // Change this to your desired color
+    controlAffinity: ListTileControlAffinity.leading,
+    // This places the checkbox at the start (leading) of the tile
   );
 }
