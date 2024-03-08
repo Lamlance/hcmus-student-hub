@@ -7,7 +7,7 @@ class Routes {
   Routes._();
 
   //static variables
-  static const String home = '/home';
+  static const String home = '/logout';
   static const String profile = "/profile";
 
   static final routes = <String, WidgetBuilder>{

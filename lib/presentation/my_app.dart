@@ -27,12 +27,13 @@ class MyApp extends StatelessWidget {
           //     ? AppThemeData.darkThemeData
           //     : AppThemeData.lightThemeData,
           theme: AppThemeData.lightThemeData,
+          initialRoute: Routes.profile,
           routes: Routes.routes,
           // locale: Locale(_languageStore.locale),
           // supportedLocales: _languageStore.supportedLanguages
           //     .map((language) => Locale(language.locale, language.code))
           //     .toList(),
-          home: SafeArea(child: ProfileScreen()),
+          // home: SafeArea(child: ProfileScreen()),
         );
       },
     );

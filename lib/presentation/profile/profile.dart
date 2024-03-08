@@ -4,6 +4,7 @@ import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
 import 'package:boilerplate/presentation/profile/student/student_profile_input.dart';
+import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -115,6 +116,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Text("Profile")
+              ],
+            )),
+        InkWell(
+            onTap: () => Navigator.pushNamed(context, Routes.home),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Icon(
+                    Icons.person,
+                  ),
+                ),
+                Text("Logout")
               ],
             ))
       ]),
