@@ -1,7 +1,9 @@
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/profile/profile_input.dart';
+import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
+import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
+import 'package:boilerplate/presentation/profile/student/student_profile_input.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -47,6 +49,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Widget _profileScreen(UserData userData) {
+    switch (userData.accountType) {
+      case AccountType.business:
+        return userData.profileData != null
+            ? SafeArea(child: CompanyEditProfile())
+            : SafeArea(child: CompanyProfileInputScreen());
+      case AccountType.student:
+        return SafeArea(child: StudentProfileInputScreen());
+      default:
+        break;
+    }
+    return SafeArea(child: CompanyEditProfile());
+  }
+
+  void _onProfileClick(BuildContext buildContext) {
+    Navigator.push(buildContext,
+        MaterialPageRoute(builder: (ctx) => _profileScreen(_savedUser[0])));
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget profiles = _savedUser.isEmpty
@@ -84,10 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(color: Colors.amber)),
         ),
         InkWell(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (ctx) => SafeArea(child: ProfileInputScreen()))),
+            onTap: () => _onProfileClick(context),
             child: Row(
               children: [
                 Padding(
