@@ -1,0 +1,13 @@
+Ngoài cái state thông thường thì mình còn có stores: Trong thư mục Core->Stores
+
+Tạo file store xanh <tên>_store.dart
+Gọi terminal "dart run build_runner build"
+
+Vào store module Presentation -> cli -> module -> store_module.dart 
+Khai getIt.registerSingleton với cái class store
+
+Để dùng store trong screen thì tạo cái biến class đó gọi getIt<Class đó>();
+
+Khai route trong utils -> routes
+
+Nhớ thay packages mới
