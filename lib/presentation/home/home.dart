@@ -45,17 +45,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Column(
                 children: <Widget>[
                   Text(
-                    "Welcome",
+                    "Build your product with high-skilled student",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 30,
+                      fontSize: 25,
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    "BackSlash Flutter provides extraordinary flutter tutorials. Do Subscribe! ",
+                    "StudentHub is university market place to connect high-skilled student and company on a real world project",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey[700],
