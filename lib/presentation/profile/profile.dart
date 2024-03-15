@@ -1,5 +1,6 @@
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
@@ -70,6 +71,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (_userStore.selectedUser == null) {
+      _userStore.setSelectedUser(_savedUser[0]);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget profiles = _savedUser.isEmpty
         ? Text("No saved user available")
@@ -98,6 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Student Hub"),
       ),
+      bottomNavigationBar: MainBottomNavBar(),
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         profiles,
         SizedBox(
@@ -119,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             )),
         InkWell(
-            onTap: () => Navigator.pushNamed(context, Routes.home),
+            onTap: () => Navigator.pushNamed(context, Routes.login),
             child: Row(
               children: [
                 Padding(

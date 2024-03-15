@@ -1,3 +1,4 @@
+import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/home/home.dart';
 import 'package:boilerplate/presentation/profile/profile.dart';
 
@@ -7,11 +8,13 @@ class Routes {
   Routes._();
 
   //static variables
-  static const String home = '/logout';
+  static const String login = '/login';
   static const String profile = "/profile";
+  static const String dashboard = "/dashboard";
 
   static final routes = <String, WidgetBuilder>{
-    home: (BuildContext context) => HomeScreen(),
+    login: (BuildContext context) => DashBoardScreen(),
     profile: (BuildContext ctx) => ProfileScreen(),
+    dashboard: (context) => DashBoardScreen(),
   };
 }
