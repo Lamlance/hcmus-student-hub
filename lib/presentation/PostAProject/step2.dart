@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
-import 'step2.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'styles.dart';
 
-class S1PostAProjectPage extends StatefulWidget {
-  @override
-  _S1PostAProjectState createState() => _S1PostAProjectState();
+enum ProjectDuration { shortTerm, longTerm }
+
+ProjectDuration _projectDuration = ProjectDuration.shortTerm;
+
+String projectDurationToString(ProjectDuration duration) {
+  switch (duration) {
+    case ProjectDuration.shortTerm:
+      return '1 to 3 months';
+    case ProjectDuration.longTerm:
+      return '3 to 6 months';
+    default:
+      return '';
+  }
 }
 
-class _S1PostAProjectState extends State<S1PostAProjectPage> {
+class S2PostAProjectPage extends StatefulWidget {
+  @override
+  _S2PostAProjectState createState() => _S2PostAProjectState();
+}
+
+class _S2PostAProjectState extends State<S2PostAProjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,52 +60,46 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "1/4    Let's start with a strong title",
+              "2/4    Next, estimate the scope of your job",
               style: AppStyles.titleStyle,
             ),
             SizedBox(height: 30),
-            Text(
-                "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!",
+            Text("Consider the size of your project and the timeline",
                 style: AppStyles.normalTextStyle),
             SizedBox(height: 30),
-            TextField(
-              decoration: AppStyles.inputDecoration, // Use the input decoration
-            ),
-            SizedBox(height: 30),
             Text(
-              'Example titles',
+              'How long will your project take?',
+              style: AppStyles.titleStyle, // Use the title style
+            ),
+            Column(
+              children: ProjectDuration.values.map((ProjectDuration value) {
+                return AppStyles.customRadioTile<ProjectDuration>(
+                  value,
+                  _projectDuration,
+                  (ProjectDuration? value) {
+                    setState(() {
+                      _projectDuration = value!;
+                    });
+                  },
+                  projectDurationToString(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'How many students do you want for this project?',
               style: AppStyles.titleStyle, // Use the title style
             ),
             SizedBox(height: 20),
-            Wrap(
-              children: [
-                RichText(
-                  text: AppStyles.bulletListStyle(
-                      'Build responsive WordPress site with booking/payment functionality',
-                      AppStyles.normalTextStyle),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Wrap(
-              children: [
-                RichText(
-                  text: AppStyles.bulletListStyle(
-                      'Facebook ad specialist need for product launch',
-                      AppStyles.normalTextStyle),
-                ),
-              ],
+            TextField(
+              decoration: AppStyles.inputDecoration, // Use the input decoration
             ),
             SizedBox(height: 30),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => S2PostAProjectPage()),
-                  );
+                  // Handle button press
                 },
                 child: Text('Next'),
                 style: AppStyles.elevatedButtonStyle,

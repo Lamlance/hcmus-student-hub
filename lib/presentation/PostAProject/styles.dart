@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class AppStyles {
+  static Color activeRadioColor =
+      Colors.blue; // Define the active color for the radio button
+
+  static RadioListTile<T> customRadioTile<T>(
+      T value, T groupValue, ValueChanged<T?> onChanged, String title) {
+    return RadioListTile<T>(
+      title: Text(title),
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+      activeColor: activeRadioColor, // Use the active color
+    );
+  }
+
   static const TextStyle titleStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,
     color: Colors.black,
   );
   static const TextStyle normalTextStyle = TextStyle(
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.black,
   );
 
   static const InputDecoration inputDecoration = InputDecoration(
     border: OutlineInputBorder(),
     labelText: 'Write a title for your post',
-    labelStyle: TextStyle(color: Colors.blue), // Change the color of the label
-    hintText: 'Enter your title here', // Add a hint text
+    labelStyle: TextStyle(
+        color: Colors.blue), // Change the color of the label // Add a hint text
     hintStyle:
         TextStyle(color: Colors.grey), // Change the color of the hint text
     filled: true, // Fill the text field with the fill color
@@ -43,6 +58,25 @@ class AppStyles {
             text: '\u2022 ', style: TextStyle(fontWeight: FontWeight.bold)),
         TextSpan(text: text, style: textStyle),
       ],
+    );
+  }
+
+  static NumberPicker customNumberPicker(
+      int currentValue, void Function(int) onChanged) {
+    return NumberPicker(
+      value: currentValue,
+      minValue: 1,
+      maxValue: 100,
+      onChanged: onChanged,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16), // Set the border radius
+        border: Border.all(
+            color: Colors.blue, width: 2), // Set the border color and width
+      ),
+      textStyle:
+          TextStyle(fontSize: 20, color: Colors.black), // Set the text style
+      selectedTextStyle: TextStyle(
+          fontSize: 22, color: Colors.blue), // Set the selected text style
     );
   }
 }
