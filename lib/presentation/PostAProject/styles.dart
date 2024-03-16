@@ -61,22 +61,24 @@ class AppStyles {
     );
   }
 
-  static NumberPicker customNumberPicker(
-      int currentValue, void Function(int) onChanged) {
-    return NumberPicker(
-      value: currentValue,
-      minValue: 1,
-      maxValue: 100,
-      onChanged: onChanged,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16), // Set the border radius
-        border: Border.all(
-            color: Colors.blue, width: 2), // Set the border color and width
-      ),
-      textStyle:
-          TextStyle(fontSize: 20, color: Colors.black), // Set the text style
-      selectedTextStyle: TextStyle(
-          fontSize: 22, color: Colors.blue), // Set the selected text style
-    );
-  }
+  static const InputDecoration inputDecorationHeight = InputDecoration(
+    border: OutlineInputBorder(),
+    labelText: 'Write something for your post',
+    labelStyle: TextStyle(
+        color: Colors.blue), // Change the color of the label // Add a hint text
+    hintStyle:
+        TextStyle(color: Colors.grey), // Change the color of the hint text
+    filled: true, // Fill the text field with the fill color
+    fillColor: Colors.white, // Change the fill color
+    focusColor: Colors.blue, // Change the color when the text field is focused
+    enabledBorder: OutlineInputBorder(
+      // Change the border when the text field is enabled
+      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      // Change the border when the text field is focused
+      borderSide: BorderSide(color: Colors.green, width: 2.0),
+    ),
+    isDense: true,
+  );
 }

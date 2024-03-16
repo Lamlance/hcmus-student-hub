@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'step3.dart';
 import 'styles.dart';
 
 enum ProjectDuration { shortTerm, longTerm }
@@ -99,7 +100,11 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle button press
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => S3PostAProjectPage()),
+                  );
                 },
                 child: Text('Next'),
                 style: AppStyles.elevatedButtonStyle,

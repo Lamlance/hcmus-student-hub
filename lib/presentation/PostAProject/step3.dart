@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
+import 'bullet_widget.dart';
 import 'styles.dart';
 
-class S1PostAProjectPage extends StatefulWidget {
+class S3PostAProjectPage extends StatefulWidget {
   @override
-  _S1PostAProjectState createState() => _S1PostAProjectState();
+  _S3PostAProjectState createState() => _S3PostAProjectState();
 }
 
-class _S1PostAProjectState extends State<S1PostAProjectPage> {
+class _S3PostAProjectState extends State<S3PostAProjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,40 +45,35 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              "1/4    Let's start with a strong title",
-              style: AppStyles.titleStyle,
+            Flexible(
+              child: Text(
+                "3/4    Next, provide project description",
+                style: AppStyles.titleStyle,
+              ),
             ),
-            SizedBox(height: 30),
-            Text(
-                "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!",
-                style: AppStyles.normalTextStyle),
-            SizedBox(height: 30),
-            TextField(
-              decoration: AppStyles.inputDecoration, // Use the input decoration
+            SizedBox(height: 20),
+            Text("Students are looking for:", style: AppStyles.normalTextStyle),
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                  //color: Constants.agreementBG,
+                  borderRadius: BorderRadius.circular(14)),
+              child: SingleChildScrollView(
+                child: BulletList([
+                  'Clear expectation about your project or deliverables',
+                  'The skills required for your project',
+                  'Detail about your project',
+                ]),
+              ),
             ),
-            SizedBox(height: 30),
             Text(
-              'Example titles',
+              'Describe your project',
               style: AppStyles.titleStyle, // Use the title style
             ),
             SizedBox(height: 20),
-            Container(
-              width: double.infinity, // Take up all available horizontal space
-              child: RichText(
-                text: AppStyles.bulletListStyle(
-                    '• Build responsive WordPress site with booking/payment functionality',
-                    AppStyles.normalTextStyle),
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              width: double.infinity, // Take up all available horizontal space
-              child: RichText(
-                text: AppStyles.bulletListStyle(
-                    'Facebook ad specialist need for product launch',
-                    AppStyles.normalTextStyle),
-              ),
+            TextField(
+              decoration:
+                  AppStyles.inputDecorationHeight, // Use the input decoration
             ),
             SizedBox(height: 30),
             Align(
