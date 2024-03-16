@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'step3.dart';
 import 'styles.dart';
 

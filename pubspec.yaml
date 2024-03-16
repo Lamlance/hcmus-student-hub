@@ -42,7 +42,6 @@ dependencies:
   material_dialog: ^1.0.0-nullsafety.1
   mobx: ^2.1.4
   # N
-  numberpicker: ^2.1.1
   # O
   # P
   path_provider: ^2.0.14

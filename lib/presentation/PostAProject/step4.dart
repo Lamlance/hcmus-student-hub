@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
-import 'step4.dart';
+import 'step2.dart';
 import 'bullet_widget.dart';
 import 'styles.dart';
 
-class S3PostAProjectPage extends StatefulWidget {
+class S4PostAProjectPage extends StatefulWidget {
   @override
-  _S3PostAProjectState createState() => _S3PostAProjectState();
+  _S4PostAProjectState createState() => _S4PostAProjectState();
 }
 
-class _S3PostAProjectState extends State<S3PostAProjectPage> {
+class _S4PostAProjectState extends State<S4PostAProjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,11 +47,16 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
           children: <Widget>[
             Flexible(
               child: Text(
-                "3/4    Next, provide project description",
+                "4/4    Project details",
                 style: AppStyles.titleStyle,
               ),
             ),
             SizedBox(height: 20),
+            Text("Title of the job", style: AppStyles.titleStyle),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Container(height: 2, color: Colors.grey),
+            ),
             Text("Students are looking for:", style: AppStyles.normalTextStyle),
             Container(
               height: 150,
@@ -66,16 +71,28 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
                 ]),
               ),
             ),
-            Text(
-              'Describe your project',
-              style: AppStyles.titleStyle, // Use the title style
+            //Text(projectData.description, maxLines: 5),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Container(height: 2, color: Colors.grey),
             ),
-            SizedBox(height: 20),
-            TextField(
-              decoration:
-                  AppStyles.inputDecorationHeight, // Use the input decoration
-            ),
-            SizedBox(height: 30),
+            Row(children: [
+              Icon(Icons.alarm, size: 38),
+              SizedBox(width: 16),
+              Text(
+                'Project scope:\n3 to 6 month',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              )
+            ]),
+            SizedBox(height: 8),
+            Row(children: [
+              Icon(Icons.people_alt_outlined, size: 38),
+              SizedBox(width: 16),
+              Text(
+                'Students required:\n6 student',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              )
+            ]),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -83,7 +100,7 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => S4PostAProjectPage()),
+                        builder: (context) => S2PostAProjectPage()),
                   );
                 },
                 child: Text('Next'),
