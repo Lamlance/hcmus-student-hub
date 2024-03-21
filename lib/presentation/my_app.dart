@@ -1,7 +1,9 @@
 import 'package:boilerplate/constants/app_theme.dart';
 import 'package:boilerplate/constants/strings.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/home/home.dart';
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
   // with Hot Reload than creating it directly in the `build` function.
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final UserStore _userStore = getIt<UserStore>();
+  final RoutesStore _routesStore = getIt<RoutesStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
           //     ? AppThemeData.darkThemeData
           //     : AppThemeData.lightThemeData,
           theme: AppThemeData.lightThemeData,
-          initialRoute: Routes.dashboard,
+          initialRoute: Routes.initialRoute,
           routes: Routes.routes,
           // locale: Locale(_languageStore.locale),
           // supportedLocales: _languageStore.supportedLanguages

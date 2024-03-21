@@ -1,7 +1,10 @@
+import 'package:boilerplate/core/stores/routes/routes_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class MainBottomNavBar extends StatefulWidget {
+  const MainBottomNavBar({super.key});
   @override
   State<StatefulWidget> createState() {
     return _MainBottomNavBarState();
@@ -9,21 +12,28 @@ class MainBottomNavBar extends StatefulWidget {
 }
 
 class _MainBottomNavBarState extends State<MainBottomNavBar> {
-  int _selectedIndex = 0;
+  final RoutesStore _routesStore = getIt<RoutesStore>();
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (value) {
         setState(() {
-          _selectedIndex = value;
+          _routesStore.changeRouteIndex(value);
         });
         var _ = switch (value) {
-          1 => Navigator.pushNamed(context, Routes.dashboard),
+          1 => {
+              if (ModalRoute.of(context)?.settings.name != Routes.dashboard)
+                {Navigator.pushReplacementNamed(context, Routes.dashboard)}
+            },
+          2 => {
+              if (ModalRoute.of(context)?.settings.name != Routes.message)
+                {Navigator.pushReplacementNamed(context, Routes.message)}
+            },
           _ => null
         };
       },
-      currentIndex: _selectedIndex,
+      currentIndex: _routesStore.currentIdx,
       backgroundColor: Colors.white,
       unselectedItemColor: Colors.black,
       unselectedLabelStyle: const TextStyle(color: Colors.black),
