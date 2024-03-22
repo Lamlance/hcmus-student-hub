@@ -107,7 +107,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Student Hub"),
       ),
-      bottomNavigationBar: MainBottomNavBar(),
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         profiles,
         SizedBox(
