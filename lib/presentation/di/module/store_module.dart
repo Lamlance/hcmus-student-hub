@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
+import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import '../../../di/service_locator.dart';
 
@@ -16,5 +18,7 @@ mixin StoreModule {
 
     // stores:------------------------------------------------------------------
     getIt.registerSingleton<UserStore>(UserStore());
+    getIt.registerSingleton<DashBoardStore>(DashBoardStore());
+    getIt.registerSingleton<RoutesStore>(RoutesStore());
   }
 }
