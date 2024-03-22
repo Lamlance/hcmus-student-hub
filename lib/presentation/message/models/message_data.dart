@@ -1,6 +1,6 @@
 class MessageData {
   final String content =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis lacinia dui non pretium. Cras cursus ultricies risus non finibus. Nulla quam lectus, accumsan at augue a, mollis varius orci. Maecenas semper auctor ex, eget vehicula sem volutpat ut. Suspendisse potenti. Etiam felis mi, ullamcorper vel leo at, bibendum posuere sapien. Pellentesque convallis, risus a feugiat cursus, ligula erat auctor lorem, euismod vehicula ipsum tortor quis sapien. Pellentesque ac dui sed metus pellentesque facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas ac ullamcorper elit, porttitor rutrum metus.";
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu.";
   final String sender;
   MessageData({required this.sender});
   DateTime timeStamp = DateTime.now();

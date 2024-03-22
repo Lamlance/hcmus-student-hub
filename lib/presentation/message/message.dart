@@ -11,9 +11,12 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
+  final List<MessageHistory> messageHistories = MessageHistory.mockData;
+
   @override
   Widget build(BuildContext context) {
     var searchBox = TextFormField(
+      style: TextStyle(),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
         icon: Icon(Icons.search),
@@ -43,8 +46,8 @@ class _MessageScreenState extends State<MessageScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: searchBox,
               ),
-              SizedBox(height: 8),
-              ...MessageHistory.mockData.map((e) => HistoryItem(history: e))
+              SizedBox(height: 16),
+              ...messageHistories.map((e) => HistoryItem(history: e))
             ],
           ),
         ),

@@ -1,6 +1,6 @@
+import 'package:boilerplate/presentation/message/message_detail.dart';
 import 'package:boilerplate/presentation/message/models/message_data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class HistoryItem extends StatelessWidget {
@@ -13,7 +13,12 @@ class HistoryItem extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => MessageDetailScreen(history: history),
+            ),
+          ),
           child: Row(children: [
             Icon(Icons.person_pin, size: 64),
             Expanded(
