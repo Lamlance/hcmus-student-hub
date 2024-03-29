@@ -103,7 +103,7 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
                         builder: (context) => S2PostAProjectPage()),
                   );
                 },
-                child: Text('Next'),
+                child: Text('Post job'),
                 style: AppStyles.elevatedButtonStyle,
               ),
             )

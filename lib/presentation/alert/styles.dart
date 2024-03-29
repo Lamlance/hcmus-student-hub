@@ -5,7 +5,7 @@ class AppStyles {
     fontSize: 32,
     fontWeight: FontWeight.bold,
     color: Colors.black,
-    marginBottom: 12,
+    //marginBottom: 12,
   );
 
   static final TextStyle cardTitleStyle = TextStyle(
@@ -26,5 +26,5 @@ class AppStyles {
     color: Colors.grey[500],
   );
 
-  static final Color cardDelimiterColor = Colors.grey[300];
+  //static final Color cardDelimiterColor = Colors.grey[300];
 }
