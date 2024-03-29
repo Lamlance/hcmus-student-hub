@@ -45,11 +45,34 @@ class _ProjectListState extends State<ProjectList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Flexible(
-              child: Text(
-                "4/4    Project details",
-                //style: AppStyles.titleStyle,
-              ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: "Search",
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(30), // rounded corners
+                      ),
+                      prefixIcon:
+                          Icon(Icons.search), // search icon at the start
+                      fillColor: Colors.grey[200], // fill color
+                      filled: true, // enable fill color
+                    ),
+                  ),
+                ),
+                SizedBox(
+                    width:
+                        20), // add some space between the search bar and the button
+                IconButton(
+                  icon:
+                      Icon(Icons.favorite, color: Colors.purple), // heart icon
+                  onPressed: () {
+                    // handle button press
+                  },
+                ),
+              ],
             ),
             SizedBox(height: 20),
             //Text("Title of the job", style: AppStyles.titleStyle),
@@ -61,6 +84,7 @@ class _ProjectListState extends State<ProjectList> {
           ],
         ),
       ),
+      bottomNavigationBar: MainBottomNavBar(),
     );
   }
 }
