@@ -64,7 +64,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: const Text('I am a company, find engineer for project'),
-                value: 1,
+                value: 0,
                 groupValue: groupValue,
                 onChanged: (int? value) {
                   setState(() {
@@ -75,7 +75,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: const Text('I am a student, find project to work on'),
-                value: 2,
+                value: 1,
                 groupValue: groupValue,
                 onChanged: (int? value) {
                   setState(() {
@@ -92,9 +92,13 @@ class _SignupTypeState extends State<SignupTypePage> {
                     height: 60,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupPage(
+                            accountType: groupValue ?? 0,
+                          ),
+                        ),
+                      );
                     },
                     // defining the shape
                     color: Color(0xff0095FF),

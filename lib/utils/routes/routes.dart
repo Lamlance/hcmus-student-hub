@@ -1,5 +1,6 @@
 import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/home/home.dart';
+import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/message/message.dart';
 import 'package:boilerplate/presentation/profile/profile.dart';
 
@@ -17,7 +18,7 @@ class Routes {
   static const String initialRoute = Routes.dashboard;
 
   static final routes = <String, WidgetBuilder>{
-    login: (BuildContext context) => DashBoardScreen(),
+    login: (BuildContext context) => LoginPage(),
     profile: (BuildContext ctx) => ProfileScreen(),
     dashboard: (context) => DashBoardScreen(),
     message: (context) => MessageScreen()

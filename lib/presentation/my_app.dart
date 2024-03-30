@@ -4,6 +4,8 @@ import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/data/network/apis/auth_api.dart';
+import 'package:boilerplate/data/repository/auth_repo.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/home/home.dart';
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final UserStore _userStore = getIt<UserStore>();
   final RoutesStore _routesStore = getIt<RoutesStore>();
+  final AuthApi _authApi = getIt<AuthApi>();
 
   @override
   Widget build(BuildContext context) {
