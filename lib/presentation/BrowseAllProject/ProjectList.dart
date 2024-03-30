@@ -25,7 +25,7 @@ class _ProjectListState extends State<ProjectList> {
               color: Colors.black,
             ),
             onPressed: () {
-              //Navigator.pushNamed(context, Routes.profile);
+              Navigator.pushNamed(context, Routes.profile);
             },
           ),
         ],
@@ -48,17 +48,20 @@ class _ProjectListState extends State<ProjectList> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: "Search",
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(30), // rounded corners
+                  child: Container(
+                    height: 43.0,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: "Search",
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(30), // rounded corners
+                        ),
+                        prefixIcon:
+                            Icon(Icons.search), // search icon at the start
+                        fillColor: Colors.grey[200], // fill color
+                        filled: true, // enable fill color
                       ),
-                      prefixIcon:
-                          Icon(Icons.search), // search icon at the start
-                      fillColor: Colors.grey[200], // fill color
-                      filled: true, // enable fill color
                     ),
                   ),
                 ),
@@ -66,15 +69,19 @@ class _ProjectListState extends State<ProjectList> {
                     width:
                         20), // add some space between the search bar and the button
                 IconButton(
-                  icon:
-                      Icon(Icons.favorite, color: Colors.purple), // heart icon
+                  icon: CircleAvatar(
+                    backgroundColor:
+                        Colors.red, // background color of the circle
+                    child:
+                        Icon(Icons.favorite, color: Colors.white), // heart icon
+                  ),
                   onPressed: () {
                     // handle button press
                   },
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             //Text("Title of the job", style: AppStyles.titleStyle),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
