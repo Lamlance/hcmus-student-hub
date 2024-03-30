@@ -1,6 +1,8 @@
+import 'package:boilerplate/core/stores/project/project_store.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/presentation/BrowseAllProject/widgets/project_item_student.dart';
 
 class ProjectList extends StatefulWidget {
   @override
@@ -31,7 +33,7 @@ class _ProjectListState extends State<ProjectList> {
         ],
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, Routes.profile);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -87,7 +89,7 @@ class _ProjectListState extends State<ProjectList> {
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Container(height: 2, color: Colors.grey),
             ),
-            //Text("Students are looking for:", style: AppStyles.normalTextStyle),
+            SizedBox(height: 15),
           ],
         ),
       ),

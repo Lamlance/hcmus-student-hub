@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-part 'project_store.g.dart';
+//part 'project_store.g.dart';
 
 class BrowseProjectData {
   final int id;
