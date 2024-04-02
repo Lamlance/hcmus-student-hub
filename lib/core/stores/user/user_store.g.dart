@@ -25,11 +25,27 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  late final _$selectedTypeAtom =
+      Atom(name: '_UserStore.selectedType', context: context);
+
+  @override
+  AccountType? get selectedType {
+    _$selectedTypeAtom.reportRead();
+    return super.selectedType;
+  }
+
+  @override
+  set selectedType(AccountType? value) {
+    _$selectedTypeAtom.reportWrite(value, super.selectedType, () {
+      super.selectedType = value;
+    });
+  }
+
   late final _$_UserStoreActionController =
       ActionController(name: '_UserStore', context: context);
 
   @override
-  void setSelectedUser(UserData user) {
+  void setSelectedUser(UserData? user) {
     final _$actionInfo = _$_UserStoreActionController.startAction(
         name: '_UserStore.setSelectedUser');
     try {
@@ -40,9 +56,21 @@ mixin _$UserStore on _UserStore, Store {
   }
 
   @override
+  void setSelectedType(AccountType type) {
+    final _$actionInfo = _$_UserStoreActionController.startAction(
+        name: '_UserStore.setSelectedType');
+    try {
+      return super.setSelectedType(type);
+    } finally {
+      _$_UserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-selectedUser: ${selectedUser}
+selectedUser: ${selectedUser},
+selectedType: ${selectedType}
     ''';
   }
 }

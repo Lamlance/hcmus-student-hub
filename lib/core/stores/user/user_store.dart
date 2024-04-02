@@ -8,8 +8,19 @@ abstract class _UserStore with Store {
   @observable
   UserData? selectedUser;
 
+  @observable
+  AccountType? selectedType;
+
   @action
-  void setSelectedUser(UserData user) {
+  void setSelectedUser(UserData? user) {
     selectedUser = user;
+  }
+
+  @action
+  void setSelectedType(AccountType type) {
+    if (type == AccountType.none) {
+      return;
+    }
+    selectedType = type;
   }
 }

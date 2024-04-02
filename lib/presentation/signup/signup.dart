@@ -1,6 +1,7 @@
-import 'package:boilerplate/data/network/apis/auth_api.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
+import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/login/login.dart';
 
@@ -13,22 +14,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  static String? txtNotEmptyValidator(String? value) {
-    return (value == null || value.isEmpty) ? "Field must not be empty" : null;
-  }
-
-  final AuthApi _authApi = getIt<AuthApi>();
-
-  static String? strongPasswordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Field must not be empty";
-    }
-    return value.contains(RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{9,}$'))
-        ? null
-        : "At least 9 charater with number, upper and lower case, special character";
-  }
-
+  final AuthService _authApi = getIt<AuthService>();
   bool _isChecked = false;
   final _formKey = GlobalKey<FormState>();
   final _fullNameTxt = TextEditingController();
@@ -37,11 +23,11 @@ class _SignupPageState extends State<SignupPage> {
   final _rePassTxt = TextEditingController();
 
   void _handleFromSubmit() {
-    Navigator.of(context).pushReplacementNamed(Routes.profile);
+    Navigator.of(context).pushReplacementNamed(Routes.login);
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    var process_snack = ScaffoldMessenger.of(context).showSnackBar(
+    var processSnack = ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Processing Data')),
     );
     _authApi.signUp(
@@ -51,7 +37,7 @@ class _SignupPageState extends State<SignupPage> {
         fullName: _fullNameTxt.text,
       ),
       listener: (v) {
-        process_snack.close();
+        processSnack.close();
         if ((v.statusCode ?? 500) >= 300) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -140,13 +126,13 @@ class _SignupPageState extends State<SignupPage> {
                         //Name input
                         _createInputField(
                             label: "Full name",
-                            validator: txtNotEmptyValidator,
+                            validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _fullNameTxt),
                         SizedBox(height: 16),
                         //Email input
                         _createInputField(
                             label: "Email",
-                            validator: txtNotEmptyValidator,
+                            validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _emailTxt),
                         SizedBox(height: 16),
                         //Password input
@@ -154,7 +140,7 @@ class _SignupPageState extends State<SignupPage> {
                           label: "Password",
                           obscureText: true,
                           controller: _passTxt,
-                          validator: strongPasswordValidator,
+                          validator: TextValidator.strongPasswordValidator,
                         ),
                         SizedBox(height: 16),
                         //Password re-input

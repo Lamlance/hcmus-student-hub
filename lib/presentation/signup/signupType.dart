@@ -1,3 +1,4 @@
+import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signup.dart';
 import 'package:boilerplate/presentation/login/login.dart';
@@ -91,13 +92,10 @@ class _SignupTypeState extends State<SignupTypePage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignupPage(
-                            accountType: groupValue ?? 0,
-                          ),
-                        ),
+                        Routes.signUp,
+                        arguments: {"accountType": groupValue ?? 0},
                       );
                     },
                     // defining the shape
@@ -120,9 +118,9 @@ class _SignupTypeState extends State<SignupTypePage> {
                   Text("Already have an account?"),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        Routes.login,
                       );
                     },
                     child: Text(

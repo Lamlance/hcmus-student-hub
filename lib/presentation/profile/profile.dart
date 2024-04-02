@@ -16,19 +16,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  static final List<UserData> _savedUser = [
-    StudentData(userName: "Lam Student"),
-    CompanyData(userName: "Lam Business w/o profile"),
-    CompanyData(
-        userName: "Lam Business w profile",
-        profileData: CompanyProfile(
-          companyName: "lam corps",
-          website: 'www.lamsite.com',
-          desc: 'A large scale db service company',
-        ))
-  ];
-
   final UserStore _userStore = getIt<UserStore>();
+  AccountType _selectType = AccountType.none;
 
   String _getAccountSubtitle(AccountType type) {
     switch (type) {
@@ -41,22 +30,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void onProfileClick(int idx) {
-    if (idx >= _savedUser.length) return;
+  void onProfileClick(AccountType type) {
     setState(() {
-      _userStore.setSelectedUser(_savedUser[idx]);
-      var tmp = _savedUser[0];
-      _savedUser[0] = _savedUser[idx];
-      _savedUser[idx] = tmp;
+      _selectType = type;
     });
   }
 
   Widget _profileScreen(UserData userData) {
-    switch (userData.accountType) {
+    switch (_selectType) {
       case AccountType.business:
-        return userData.profileData != null
-            ? SafeArea(child: CompanyEditProfile())
-            : SafeArea(child: CompanyProfileInputScreen());
+        return _userStore.selectedUser?.company == null
+            ? SafeArea(child: CompanyProfileInputScreen())
+            : SafeArea(child: CompanyEditProfile());
       case AccountType.student:
         return SafeArea(child: StudentProfileInputScreen());
       default:
@@ -66,38 +51,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _onProfileClick(BuildContext buildContext) {
-    Navigator.push(buildContext,
-        MaterialPageRoute(builder: (ctx) => _profileScreen(_savedUser[0])));
+    Navigator.push(
+        buildContext,
+        MaterialPageRoute(
+            builder: (ctx) => _profileScreen(_userStore.selectedUser!)));
   }
 
   @override
   void initState() {
     super.initState();
-    if (_userStore.selectedUser == null) {
-      _userStore.setSelectedUser(_savedUser[0]);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget profiles = _savedUser.isEmpty
+    final user = _userStore.selectedUser;
+    if (user == null) {
+      return Text("No user found");
+    }
+    final profilesData = user.getProfiles();
+    profilesData.sort((a, b) {
+      if (_selectType == AccountType.none) {
+        return 0;
+      }
+      return _selectType == a.type ? -1 : 1;
+    });
+
+    Widget profiles = profilesData.isEmpty
         ? Text("No saved user available")
         : ExpansionTile(
-            title: Text(_savedUser[0].userName),
-            subtitle: Text(_getAccountSubtitle(_savedUser[0].accountType)),
-            leading: _savedUser[0].accountType == AccountType.business
+            title: Text(user.fullName),
+            subtitle: Text(_getAccountSubtitle(profilesData.first.type)),
+            leading: profilesData.first.type == AccountType.business
                 ? Icon(Icons.corporate_fare_outlined)
                 : Icon(Icons.school_outlined),
             children: [
-              ..._savedUser.skip(1).indexed.map((e) => ColoredBox(
+              ...profilesData.skip(1).map((e) => ColoredBox(
                     color: Colors.transparent,
                     child: ListTile(
-                      title: Text(e.$2.userName),
-                      subtitle: Text(_getAccountSubtitle(e.$2.accountType)),
-                      leading: e.$2.accountType == AccountType.business
+                      title: Text(user.fullName),
+                      subtitle: Text(_getAccountSubtitle(e.type)),
+                      leading: e.type == AccountType.business
                           ? Icon(Icons.corporate_fare_outlined)
                           : Icon(Icons.school_outlined),
-                      onTap: () => onProfileClick(e.$1 + 1),
+                      onTap: () => onProfileClick(e.type),
                     ),
                   ))
             ],

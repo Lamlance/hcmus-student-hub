@@ -2,7 +2,6 @@ import 'package:boilerplate/core/data/network/dio/configs/dio_configs.dart';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/data/network/dio/interceptors/auth_interceptor.dart';
 import 'package:boilerplate/core/data/network/dio/interceptors/logging_interceptor.dart';
-import 'package:boilerplate/data/network/apis/auth_api.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/interceptors/error_interceptor.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
@@ -49,6 +48,6 @@ mixin NetworkModule {
 
     // api's:-------------------------------------------------------------------
     // getIt.registerSingleton(PostApi(getIt<DioClient>(), getIt<RestClient>()));
-    getIt.registerSingleton(AuthApi(dioClient: getIt<DioClient>()));
+    // getIt.registerSingleton(AuthApi(dioClient: getIt<DioClient>()));
   }
 }
