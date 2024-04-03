@@ -54,7 +54,11 @@ Trong Presentation > cli > services > Tạo class sẽ thực hiện các Api ca
   f. Khi có dữ liệu rồi thì có thể dùng store để lưu cái dữ liệu trả về và làm UI thay đổi
   g. Đối với store nào mà dùng để chứa dữ liệu json api trả về nên có hàm
 
-
+3. Khai service singleton
+Khai service Presentation > cli > module > store_module.dart
+getIt.registerSingleton<class service>(class service(
+        dioClient: getIt<DioClient>(), các store khác));
+Để lấy service dùng   final <class service> _service_gì_dó = getIt<class service>();
 ------------------Huong dan workspace-------------------------
 Trong vscode chọn File > Add Foler To Workspace > Chọn folder mong muốn
 Lưu lại bằng File > Save Workspace As > lưu file workspace đâu đó
