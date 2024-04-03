@@ -22,6 +22,10 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
           _routesStore.changeRouteIndex(value);
         });
         var _ = switch (value) {
+          0 => {
+              if (ModalRoute.of(context)?.settings.name != Routes.BrowseAllProject)
+                {Navigator.pushReplacementNamed(context, Routes.BrowseAllProject)}
+            },
           1 => {
               if (ModalRoute.of(context)?.settings.name != Routes.dashboard)
                 {Navigator.pushReplacementNamed(context, Routes.dashboard)}
@@ -29,6 +33,10 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
           2 => {
               if (ModalRoute.of(context)?.settings.name != Routes.message)
                 {Navigator.pushReplacementNamed(context, Routes.message)}
+            },
+          3 => {
+              if (ModalRoute.of(context)?.settings.name != Routes.alert)
+                {Navigator.pushReplacementNamed(context, Routes.alert)}
             },
           _ => null
         };
@@ -45,7 +53,8 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
             icon: Icon(Icons.list_alt_outlined), label: 'Projects'),
         BottomNavigationBarItem(
             icon: Icon(Icons.dashboard), label: 'Dashboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.message), label: 'Message'),
         BottomNavigationBarItem(
             icon: Icon(Icons.notifications), label: 'Alert'),
       ],

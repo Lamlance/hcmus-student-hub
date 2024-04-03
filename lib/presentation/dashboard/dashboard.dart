@@ -37,22 +37,46 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Student hub"),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.profile);
-                  },
-                  icon: Icon(Icons.person))
-            ],
+          flexibleSpace: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Student hub"),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.profile);
+                        },
+                        icon: Icon(Icons.person))
+                  ],
+                ),
+                //SizedBox(height: 10), // Add some spacing
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Your Project"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.PostAProject);
+                      },
+                      child: Text("Post a Project"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          bottom: TabBar(onTap: (i) => handleTabTap(i), tabs: [
-            Tab(text: "All projects"),
-            Tab(text: "Working"),
-            Tab(text: "Archived")
-          ]),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(
+                80.0), // Adjust this value as per your requirement
+            child: TabBar(onTap: (i) => handleTabTap(i), tabs: [
+              Tab(text: "All projects"),
+              Tab(text: "Working"),
+              Tab(text: "Archived")
+            ]),
+          ),
         ),
         bottomNavigationBar: MainBottomNavBar(),
         body: SingleChildScrollView(
