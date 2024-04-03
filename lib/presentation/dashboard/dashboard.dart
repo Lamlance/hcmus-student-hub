@@ -82,10 +82,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Observer(
-              builder: (ctx) =>
-                  _userStore.selectedUser?.accountType == AccountType.business
-                      ? DashBoardCompanyScreen(seletedStatus: seletedStatus)
-                      : DashBoardStudentScreen(seletedStatus: seletedStatus)),
+              builder: (ctx) => _userStore.selectedType == AccountType.business
+                  ? DashBoardCompanyScreen(seletedStatus: seletedStatus)
+                  : DashBoardStudentScreen(seletedStatus: seletedStatus)),
         ),
       ),
     );

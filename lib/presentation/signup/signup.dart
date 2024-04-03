@@ -1,14 +1,64 @@
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
+import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/login/login.dart';
 
 class SignupPage extends StatefulWidget {
+  final int accountType;
+
+  const SignupPage({super.key, required this.accountType});
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final AuthService _authApi = getIt<AuthService>();
   bool _isChecked = false;
+  final _formKey = GlobalKey<FormState>();
+  final _fullNameTxt = TextEditingController();
+  final _emailTxt = TextEditingController();
+  final _passTxt = TextEditingController();
+  final _rePassTxt = TextEditingController();
+
+  void _handleFromSubmit() {
+    Navigator.of(context).pushReplacementNamed(Routes.login);
+    if (_formKey.currentState!.validate() == false) {
+      return;
+    }
+    var processSnack = ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Processing Data')),
+    );
+    _authApi.signUp(
+      data: AuthApiSignUpRequest(
+        email: _emailTxt.text,
+        password: _passTxt.text,
+        fullName: _fullNameTxt.text,
+      ),
+      listener: (v) {
+        processSnack.close();
+        if ((v.statusCode ?? 500) >= 300) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Sign up error code ${v.statusCode ?? "unkown"}'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login success'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        Future.delayed(const Duration(seconds: 1)).then(
+          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,54 +117,89 @@ class _SignupPageState extends State<SignupPage> {
                   )
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  inputFile(label: "Full Name"),
-                  inputFile(label: "Email"),
-                  inputFile(label: "Password", obscureText: true),
-                  inputFile(label: "Confirm Password ", obscureText: true),
-                  checkboxInput(
-                    title: "Yes, I understand and agree to StudentHub",
-                    isChecked: _isChecked,
-                    onChanged: (bool? value) {
-                      if (value != null) {
-                        setState(() {
-                          _isChecked = value;
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 3, left: 3),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black),
-                      top: BorderSide(color: Colors.black),
-                      left: BorderSide(color: Colors.black),
-                      right: BorderSide(color: Colors.black),
-                    )),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 60,
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.profile);
-                  },
-                  color: Color(0xff0095FF),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Text(
-                    "Sign up",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        //Name input
+                        _createInputField(
+                            label: "Full name",
+                            validator: TextValidator.txtIsNotEmptyValidator,
+                            controller: _fullNameTxt),
+                        SizedBox(height: 16),
+                        //Email input
+                        _createInputField(
+                            label: "Email",
+                            validator: TextValidator.txtIsNotEmptyValidator,
+                            controller: _emailTxt),
+                        SizedBox(height: 16),
+                        //Password input
+                        _createInputField(
+                          label: "Password",
+                          obscureText: true,
+                          controller: _passTxt,
+                          validator: TextValidator.strongPasswordValidator,
+                        ),
+                        SizedBox(height: 16),
+                        //Password re-input
+                        _createInputField(
+                          label: "Re-enter password ",
+                          obscureText: true,
+                          controller: _rePassTxt,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Field must not be empty";
+                            }
+                            return _passTxt.text == _rePassTxt.text
+                                ? null
+                                : "Password not match";
+                          },
+                        ),
+                        checkboxInput(
+                          title: "Yes, I understand and agree to StudentHub",
+                          isChecked: _isChecked,
+                          onChanged: (bool? value) {
+                            if (value != null) {
+                              setState(() {
+                                _isChecked = value;
+                              });
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ),
+                    Container(
+                      padding: EdgeInsets.only(top: 3, left: 3),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black),
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                          )),
+                      child: MaterialButton(
+                        minWidth: double.infinity,
+                        height: 60,
+                        onPressed: _handleFromSubmit,
+                        color: Color(0xff0095FF),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Text(
+                          "Sign up",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Row(
@@ -147,32 +232,45 @@ class _SignupPageState extends State<SignupPage> {
 }
 
 // we will be creating a widget for text field
-Widget inputFile({label, obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+Widget _createInputField(
+    {required String label,
+    bool obscureText = false,
+    String? Function(String? value)? validator,
+    TextEditingController? controller}) {
+  return TextFormField(
+    controller: controller,
+    obscureText: obscureText,
+    validator: validator,
+    decoration: InputDecoration(
+      labelText: label,
+      errorMaxLines: 2,
+      errorStyle: TextStyle(
+        fontSize: 12,
+        fontFamily: "arial",
+        color: Colors.red,
       ),
-      SizedBox(
-        height: 5,
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
       ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.blue,
+        ),
       ),
-      SizedBox(
-        height: 10,
-      )
-    ],
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 1.0,
+        ),
+      ),
+    ),
   );
 }
 

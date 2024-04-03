@@ -1,3 +1,4 @@
+import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signup.dart';
 import 'package:boilerplate/presentation/login/login.dart';
@@ -64,7 +65,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: const Text('I am a company, find engineer for project'),
-                value: 1,
+                value: 0,
                 groupValue: groupValue,
                 onChanged: (int? value) {
                   setState(() {
@@ -75,7 +76,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: const Text('I am a student, find project to work on'),
-                value: 2,
+                value: 1,
                 groupValue: groupValue,
                 onChanged: (int? value) {
                   setState(() {
@@ -91,10 +92,11 @@ class _SignupTypeState extends State<SignupTypePage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
+                      Navigator.pushNamed(
+                        context,
+                        Routes.signUp,
+                        arguments: {"accountType": groupValue ?? 0},
+                      );
                     },
                     // defining the shape
                     color: Color(0xff0095FF),
@@ -116,9 +118,9 @@ class _SignupTypeState extends State<SignupTypePage> {
                   Text("Already have an account?"),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        Routes.login,
                       );
                     },
                     child: Text(

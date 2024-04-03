@@ -1,19 +1,13 @@
 enum AccountType { none, student, business }
 
-abstract class ProfileData {
-  ProfileData();
+abstract class BaseProfile {
+  abstract AccountType type;
 }
 
-abstract class UserData {
-  final String userName;
-  final AccountType accountType;
-  abstract ProfileData? profileData;
-  UserData({required this.userName, required this.accountType});
-}
+class CompanyProfile extends BaseProfile {
+  @override
+  AccountType type = AccountType.business;
 
-enum CompanySize { only1, less9, less99, less1000, more1000 }
-
-class CompanyProfile extends ProfileData {
   CompanySize companySize = CompanySize.only1;
   String companyName;
   String website;
@@ -25,22 +19,56 @@ class CompanyProfile extends ProfileData {
       this.companySize = CompanySize.only1});
 }
 
-class CompanyData extends UserData {
+class StudentProfile extends BaseProfile {
   @override
-  covariant CompanyProfile? profileData;
+  AccountType type = AccountType.student;
 
-  CompanyData({required super.userName, this.profileData})
-      : super(accountType: AccountType.business);
+  String fullName;
+  StudentProfile({required this.fullName});
 }
 
-class StudentProfile extends ProfileData {
-  String studentName;
-  StudentProfile({required this.studentName});
+class UserData {
+  static const Map<String, AccountType> roleStrToAcc = {
+    "0": AccountType.none,
+    "1": AccountType.business,
+    "2": AccountType.student,
+  };
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+        userId: json["id"] ?? -1,
+        fullName: json["fullname"] ?? "",
+        role: ((json["roles"] ?? []) as List<dynamic>)
+            .map((e) => e.toString())
+            .toList());
+  }
+
+  final int userId;
+  final String fullName;
+  final List<String> role;
+  CompanyProfile? company;
+  StudentProfile? student;
+  UserData(
+      {required this.userId,
+      required this.fullName,
+      required this.role,
+      this.company,
+      this.student});
+
+  List<BaseProfile> getProfiles() {
+    List<BaseProfile> profiles = [];
+    if (company != null) {
+      profiles.add(company!);
+    } else {
+      profiles.add(CompanyProfile(companyName: "", website: "", desc: ""));
+    }
+    if (student != null) {
+      profiles.add(student!);
+    } else {
+      profiles.add(StudentProfile(fullName: ""));
+    }
+    return profiles;
+  }
 }
 
-class StudentData extends UserData {
-  @override
-  covariant StudentProfile? profileData;
-  StudentData({required super.userName, this.profileData})
-      : super(accountType: AccountType.student);
-}
+enum CompanySize { only1, less9, less99, less1000, more1000 }

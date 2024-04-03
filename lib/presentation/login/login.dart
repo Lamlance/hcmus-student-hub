@@ -1,3 +1,7 @@
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/auth_service.dart';
+import 'package:boilerplate/utils/routes/routes.dart';
+import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signupType.dart';
 
@@ -7,6 +11,46 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final AuthService _authApi = getIt<AuthService>();
+  final _formKey = GlobalKey<FormState>();
+  final _emailTxt = TextEditingController();
+  final _passTxt = TextEditingController();
+
+  void _handleLogin() {
+    if (_formKey.currentState!.validate() == false) {
+      return;
+    }
+    var processSnack = ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Processing Data')),
+    );
+    _authApi.signIn(
+      data: AuthApiSignInRequest(
+        email: _emailTxt.text,
+        password: _passTxt.text,
+      ),
+      listener: (v) {
+        if ((v.statusCode ?? 500) >= 300) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Sign up error code ${v.statusCode ?? "unkown"}'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login success'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        Future.delayed(const Duration(seconds: 1)).then(
+          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,11 +110,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    children: <Widget>[
-                      inputFile(label: "Email"),
-                      inputFile(label: "Password", obscureText: true)
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        inputFile(label: "Email", controller: _emailTxt),
+                        SizedBox(height: 16),
+                        inputFile(
+                          label: "Password",
+                          obscureText: true,
+                          controller: _passTxt,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -88,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () {},
+                      onPressed: _handleLogin,
                       color: Color(0xff0095FF),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -111,10 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                     Text("Don't have an account?"),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupTypePage()),
+                          Routes.signUpType,
                         );
                       },
                       child: Text(
@@ -146,31 +197,43 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 // we will be creating a widget for text field
-Widget inputFile({label, obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+Widget inputFile(
+    {required String label,
+    bool obscureText = false,
+    TextEditingController? controller}) {
+  return TextFormField(
+    controller: controller,
+    obscureText: obscureText,
+    validator: TextValidator.txtIsNotEmptyValidator,
+    decoration: InputDecoration(
+      labelText: label,
+      errorMaxLines: 2,
+      errorStyle: TextStyle(
+        fontSize: 12,
+        fontFamily: "arial",
+        color: Colors.red,
       ),
-      SizedBox(
-        height: 5,
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
       ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.blue,
+        ),
       ),
-      SizedBox(
-        height: 10,
-      )
-    ],
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 1.0,
+        ),
+      ),
+    ),
   );
 }
