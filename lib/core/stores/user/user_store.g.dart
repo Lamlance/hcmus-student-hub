@@ -25,6 +25,21 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  late final _$tokenAtom = Atom(name: '_UserStore.token', context: context);
+
+  @override
+  String? get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(String? value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
   late final _$selectedTypeAtom =
       Atom(name: '_UserStore.selectedType', context: context);
 
@@ -45,11 +60,11 @@ mixin _$UserStore on _UserStore, Store {
       ActionController(name: '_UserStore', context: context);
 
   @override
-  void setSelectedUser(UserData? user) {
+  void setSelectedUser(UserData? user, {String? accessToken}) {
     final _$actionInfo = _$_UserStoreActionController.startAction(
         name: '_UserStore.setSelectedUser');
     try {
-      return super.setSelectedUser(user);
+      return super.setSelectedUser(user, accessToken: accessToken);
     } finally {
       _$_UserStoreActionController.endAction(_$actionInfo);
     }
@@ -70,6 +85,7 @@ mixin _$UserStore on _UserStore, Store {
   String toString() {
     return '''
 selectedUser: ${selectedUser},
+token: ${token},
 selectedType: ${selectedType}
     ''';
   }

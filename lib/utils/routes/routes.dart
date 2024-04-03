@@ -34,7 +34,7 @@ class Routes {
     dashboard: (context) => DashBoardScreen(),
     message: (context) => MessageScreen(),
     signUpType: (ctx) => SignupTypePage(),
-    signUp: (ctx) => SignupPage(accountType: 0)
+    signUp: (ctx) => SignupPage(accountType: 0),
     PostAProject: (context) => S1PostAProjectPage(),
     BrowseAllProject: (context) => ProjectList(),
     alert: (context) => AlertScreen(),

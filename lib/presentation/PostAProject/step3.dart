@@ -40,16 +40,14 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
           ),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Flexible(
-              child: Text(
-                "3/4    Next, provide project description",
-                style: AppStyles.titleStyle,
-              ),
+            Text(
+              "3/4    Next, provide project description",
+              style: AppStyles.titleStyle,
             ),
             SizedBox(height: 20),
             Text("Students are looking for:", style: AppStyles.normalTextStyle),
@@ -89,6 +87,10 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
                 child: Text('Next'),
                 style: AppStyles.elevatedButtonStyle,
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
             )
           ],
         ),

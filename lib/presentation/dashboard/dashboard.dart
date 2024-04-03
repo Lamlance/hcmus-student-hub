@@ -37,35 +37,28 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          flexibleSpace: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Student hub"),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.profile);
-                        },
-                        icon: Icon(Icons.person))
-                  ],
-                ),
-                //SizedBox(height: 10), // Add some spacing
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Your Project"),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.PostAProject);
-                      },
-                      child: Text("Post a Project"),
-                    ),
-                  ],
-                ),
-              ],
+          title: Text("Student hub"),
+          flexibleSpace: FlexibleSpaceBar(
+            stretchModes: const <StretchMode>[
+              StretchMode.zoomBackground,
+              StretchMode.blurBackground,
+              StretchMode.fadeTitle,
+            ],
+            background: Padding(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Your Project"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.PostAProject);
+                    },
+                    child: Text("Post a Project"),
+                  ),
+                ],
+              ),
             ),
           ),
           bottom: PreferredSize(

@@ -1,3 +1,5 @@
+------------------ Tạo store ---------------------------
+
 Ngoài cái state thông thường thì mình còn có stores: Trong thư mục Core->Stores
 
 Tạo file store xanh <tên>_store.dart
@@ -7,7 +9,90 @@ Vào store module Presentation -> cli -> module -> store_module.dart
 Khai getIt.registerSingleton với cái class store
 
 Để dùng store trong screen thì tạo cái biến class đó gọi getIt<Class đó>();
+-----------------------------------------------------------------------
 
 Khai route trong utils -> routes
 
 Nhớ thay packages mới
+
+------------------Huong dan tao store cho API-------------------------
+Store sẽ chứa property kiểu dữ trả (model) về hoặc là null (<Tên class>? tên biến)
+Cái model ở mục trên tạo trong core > domain > model
+Các model nên có factory để tạo model từ json
+
+------------------Huong dan tao API-------------------------
+Tất cả từ lib
+
+
+1. Tạo models
+Trong folder data > models > Tạo các class chứa body/query của API mỗi class này phải có hàm Map<String, dynamic> toJson() {} trả về kiểu dữ liệu như json {"abc": 123} (xem vd auth_api_models.dart)
+
+1.1 Khai endpoints là url của cái link thôi
+Trong folder data > network > constant > endpoints.dart là khai các url
+
+2. Tạo class service
+Trong Presentation > cli > services > Tạo class sẽ thực hiện các Api call
+  a. Khai báo constructor chứa 1 cái DioClient (cái client này dùng để gọi http)
+  b. Khai báo constructor cùng với các store nếu cần (cách tạo store coi trên)
+  c. Tạo các hàm để gọi cái api
+    - Các hàm đó nên nhận đầu vào là body là các class model tạo ở phần 1 nếu API cần
+    - Các hàm đó nên nhận listener (void Function(Response<dynamic>)? listener)
+  d. Để gọi api dùng _dioClient.dio.<Http method post/get/...>(Endpoint,data: là cái body, 
+    - Options là để  options: Options(
+      contentType: Headers.jsonContentType,
+      responseType: ResponseType.json,
+      validateStatus: (status) => true,)
+    )
+    - Đối với các api có bảo mật thì Options(
+        headers: {"authorization": 'Bearer $token'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (status) => true,
+      ), Token có thể lấy từ user store
+
+  e. Sau khi gọi api thì nối nó với .then để biết được khi http nó xong, dữ liệu trả về statusCode, data là cái json trả về, nếu có listener từ phần "c" thì gọi nó
+  f. Khi có dữ liệu rồi thì có thể dùng store để lưu cái dữ liệu trả về và làm UI thay đổi
+  g. Đối với store nào mà dùng để chứa dữ liệu json api trả về nên có hàm
+
+
+------------------Huong dan workspace-------------------------
+Trong vscode chọn File > Add Foler To Workspace > Chọn folder mong muốn
+Lưu lại bằng File > Save Workspace As > lưu file workspace đâu đó
+Mở lại File > Open workspace from file > chọn file workspace 
+
+------------------Huong dan chạy server backend-------------------------
+Nhớ cài docker desktop
+
+Clone https://github.com/hcmus-advanced-mobile-programing/studenthub-api 
+Bỏ nào workspace student hub
+1. Copy file .env.exampple và đổi tên thành .env
+2. Cài database (postgre)
+3. Tạo 1 file "docker-compose.db.yml" với nội dung
+  
+  version: '3.8'
+  services:
+  postgresql:
+    image: postgres:16.2-alpine3.18
+    env_file:
+      - ./.env
+    ports:
+      - "7654:5432" 
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_DB=${DATABASE_NAME}
+
+4. Sử file .env lại, sửa DATABASE_PORT thành giá trị 7654
+5. Tạo database dùng lệnh terminal  "docker compose -f docker-compose.db.yml up"
+6. Trong docker desktop sẽ có cái database student-api>postgresql-1
+7. Bật server (nhớ ktra database nó bật chưa), 
+  - Bật terminal trong folder backend
+  - Install thư viện "npx yarn install" nếu install lỗi thì thử xóa package-lock.json
+  - Chạy server "npx yarn start:dev"
+  - Swagger: "http://localhost:4400/api-docs"
+8. Dk tài khoảng (sign up)
+  - Dùng email thiệt, <tên email thiệt>+<số>@gmail.com
+  - Password phải từ 9 chữ trở lên có in hoa, có số, có kí tự đặc biệt
+  - Sau đó nó gửi email xác thực, mở email click vào link
+9. Đăng nhập (sign in)
+  - Dùng api đăng nhập > cpy cái token bỏ vào cái mục Authorization của swagger (góc phải trên)

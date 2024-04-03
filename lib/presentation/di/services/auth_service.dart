@@ -67,7 +67,7 @@ class AuthService {
                   listener(p0);
                 }
                 log(userData?.role.toString() ?? "No id");
-                _userStore.setSelectedUser(userData);
+                _userStore.setSelectedUser(userData, accessToken: token);
               });
         }
       }

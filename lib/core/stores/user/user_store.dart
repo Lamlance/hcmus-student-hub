@@ -9,11 +9,15 @@ abstract class _UserStore with Store {
   UserData? selectedUser;
 
   @observable
+  String? token;
+
+  @observable
   AccountType? selectedType;
 
   @action
-  void setSelectedUser(UserData? user) {
+  void setSelectedUser(UserData? user, {String? accessToken}) {
     selectedUser = user;
+    token = accessToken;
   }
 
   @action

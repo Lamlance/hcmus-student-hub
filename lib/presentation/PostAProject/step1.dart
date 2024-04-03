@@ -39,7 +39,7 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
           ),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,6 +93,10 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
                 child: Text('Next'),
                 style: AppStyles.elevatedButtonStyle,
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
             )
           ],
         ),
