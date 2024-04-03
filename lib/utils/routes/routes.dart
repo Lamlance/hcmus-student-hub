@@ -18,7 +18,7 @@ class Routes {
   static const String dashboard = "/dashboard";
   static const String PostAProject = "/PostAProject";
   static const String message = "/message";
-  static const String BrowseAllProject= "/BrowseAllProject";
+  static const String BrowseAllProject = "/BrowseAllProject";
   static const String alert = "/alert";
   static const String initialRoute = Routes.dashboard;
 
@@ -29,6 +29,6 @@ class Routes {
     PostAProject: (context) => S1PostAProjectPage(),
     message: (context) => MessageScreen(),
     BrowseAllProject: (context) => ProjectList(),
-    //alert: (context) => AlertScreen(),
+    alert: (context) => AlertScreen(),
   };
 }
