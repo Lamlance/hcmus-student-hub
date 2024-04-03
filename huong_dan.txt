@@ -96,3 +96,6 @@ Bỏ nào workspace student hub
   - Sau đó nó gửi email xác thực, mở email click vào link
 9. Đăng nhập (sign in)
   - Dùng api đăng nhập > cpy cái token bỏ vào cái mục Authorization của swagger (góc phải trên)
+
+
+  Link db schema https://drive.google.com/file/d/1dGO9rH8GKC5CF3ESF1C7x3UwX7D2Lrc9/view 
