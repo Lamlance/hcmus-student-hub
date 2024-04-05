@@ -3,17 +3,35 @@ part 'dashboard_store.g.dart';
 
 enum ProjectStatus { none, working, archive }
 
-enum HireStatus { propose, activePropose, sentHire, hired }
+enum ProposalStatus { none, hired, hiredOfferSent, notHired }
+
+class ProposalData {
+  final int id;
+  final int projectId;
+  final int studentId;
+  final String coverLetter;
+  final ProposalStatus statusFlag;
+  final bool isDisable;
+
+  ProposalData(
+      {required this.id,
+      required this.projectId,
+      required this.studentId,
+      this.coverLetter = "",
+      this.statusFlag = ProposalStatus.notHired,
+      this.isDisable = false});
+}
 
 class ProjectData {
   final int id;
+  final int companyId;
   final String title;
-  final int monthTime;
   final int numberOfStudent;
   final String description;
-  late DateTime createdDate;
+  final DateTime createdDate;
+  final List<ProposalData> proposals;
+  final int monthTime;
   ProjectStatus status = ProjectStatus.none;
-  HireStatus? hireStatus;
 
   int proposalCount = 3;
   int messageCount = 2;
@@ -21,17 +39,31 @@ class ProjectData {
 
   ProjectData(
       {required this.id,
-      this.title = "title",
-      this.monthTime = 3,
+      required this.companyId,
+      required this.title,
       this.numberOfStudent = 5,
       this.description = "description",
       this.status = ProjectStatus.none,
-      this.proposalCount = 3,
       this.messageCount = 2,
-      this.hiredCount = 1,
-      this.hireStatus,
-      DateTime? createdDate}) {
-    this.createdDate = createdDate ?? DateTime.now();
+      List<ProposalData>? proposals,
+      DateTime? createdDate})
+      : createdDate = createdDate ?? DateTime.now(),
+        proposals = proposals ?? List.empty(growable: true),
+        hiredCount = (proposals ?? [])
+            .where((e) => e.statusFlag == ProposalStatus.hired)
+            .length,
+        proposalCount = (proposals ?? [])
+            .where((e) => e.statusFlag == ProposalStatus.none)
+            .length,
+        monthTime = (createdDate?.difference(DateTime.now()).inDays ?? 0) ~/ 30;
+
+  factory ProjectData.fromJson(Map<String, dynamic> json) {
+    return ProjectData(
+        id: json["id"],
+        companyId: int.parse(json["companyId"].toString()),
+        createdDate: DateTime.tryParse(json["createAt"] ?? ""),
+        title: json["title"],
+        description: json["description"]);
   }
 }
 
@@ -45,37 +77,7 @@ abstract class _DashBoardStore with Store {
   // List<ProjectData> projects = List.empty(growable: true);
 
   @observable
-  List<ProjectData> projects = [
-    ProjectData(
-        id: 1,
-        status: ProjectStatus.none,
-        hireStatus: HireStatus.activePropose,
-        title: "Junior level frontend",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper est ligula, a hendrerit odio ullamcorper vel. Etiam tristique ligula ut imperdiet fringilla. Suspendisse potenti. Donec maximus eros sit amet lacinia mollis. Maecenas non tincidunt nisi. Nunc molestie velit sed tempus mattis. Duis vehicula, sem quis tincidunt maximus, leo lorem accumsan risus, sed volutpat orci purus vel mi. Nulla quis aliquet nisi. "),
-    ProjectData(
-        id: 2,
-        status: ProjectStatus.none,
-        title: "Senior backend",
-        hireStatus: HireStatus.propose,
-        numberOfStudent: 4,
-        hiredCount: 4,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper est ligula, a hendrerit odio ullamcorper vel. Etiam tristique ligula ut imperdiet fringilla. Suspendisse potenti. Donec maximus eros sit amet lacinia mollis. Maecenas non tincidunt nisi. Nunc molestie velit sed tempus mattis. Duis vehicula, sem quis tincidunt maximus, leo lorem accumsan risus, sed volutpat orci purus vel mi. Nulla quis aliquet nisi. "),
-    ProjectData(
-        id: 3,
-        status: ProjectStatus.working,
-        hireStatus: HireStatus.propose,
-        title: "Fresher data science",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper est ligula, a hendrerit odio ullamcorper vel. Etiam tristique ligula ut imperdiet fringilla. Suspendisse potenti. Donec maximus eros sit amet lacinia mollis. Maecenas non tincidunt nisi. Nunc molestie velit sed tempus mattis. Duis vehicula, sem quis tincidunt maximus, leo lorem accumsan risus, sed volutpat orci purus vel mi. Nulla quis aliquet nisi. "),
-    ProjectData(
-        id: 4,
-        status: ProjectStatus.archive,
-        title: "Fresher Go dev",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper est ligula, a hendrerit odio ullamcorper vel. Etiam tristique ligula ut imperdiet fringilla. Suspendisse potenti. Donec maximus eros sit amet lacinia mollis. Maecenas non tincidunt nisi. Nunc molestie velit sed tempus mattis. Duis vehicula, sem quis tincidunt maximus, leo lorem accumsan risus, sed volutpat orci purus vel mi. Nulla quis aliquet nisi. ")
-  ];
+  List<ProjectData> projects = [];
 
   @action
   addProjects(Iterable<ProjectData> datas) {
@@ -85,6 +87,13 @@ abstract class _DashBoardStore with Store {
   @action
   setSelectProject(ProjectData? data) {
     selectedProject = data;
+  }
+
+  @action
+  replaceAllProject(Iterable<ProjectData> datas) {
+    projects.removeWhere((e) => true);
+    projects.addAll(datas);
+    selectedProject = null;
   }
 
   @action

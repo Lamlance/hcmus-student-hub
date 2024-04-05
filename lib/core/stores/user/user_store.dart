@@ -27,4 +27,18 @@ abstract class _UserStore with Store {
     }
     selectedType = type;
   }
+
+  @action
+  void updateCompany(CompanyProfile profile) {
+    if (selectedUser != null) {
+      selectedUser!.company = profile;
+    }
+  }
+
+  @action
+  void updateStudent(StudentProfile profile) {
+    if (selectedUser != null) {
+      selectedUser!.student = profile;
+    }
+  }
 }
