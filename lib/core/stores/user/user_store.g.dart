@@ -82,6 +82,28 @@ mixin _$UserStore on _UserStore, Store {
   }
 
   @override
+  void updateCompany(CompanyProfile profile) {
+    final _$actionInfo = _$_UserStoreActionController.startAction(
+        name: '_UserStore.updateCompany');
+    try {
+      return super.updateCompany(profile);
+    } finally {
+      _$_UserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateStudent(StudentProfile profile) {
+    final _$actionInfo = _$_UserStoreActionController.startAction(
+        name: '_UserStore.updateStudent');
+    try {
+      return super.updateStudent(profile);
+    } finally {
+      _$_UserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedUser: ${selectedUser},

@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
         Future.delayed(const Duration(seconds: 1)).then(
-          (value) => Navigator.of(context).pushReplacementNamed(Routes.message),
+          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
         );
       },
     );

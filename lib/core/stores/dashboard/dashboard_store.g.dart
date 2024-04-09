@@ -67,6 +67,17 @@ mixin _$DashBoardStore on _DashBoardStore, Store {
   }
 
   @override
+  dynamic replaceAllProject(Iterable<ProjectData> datas) {
+    final _$actionInfo = _$_DashBoardStoreActionController.startAction(
+        name: '_DashBoardStore.replaceAllProject');
+    try {
+      return super.replaceAllProject(datas);
+    } finally {
+      _$_DashBoardStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   bool updateProject(ProjectData data) {
     final _$actionInfo = _$_DashBoardStoreActionController.startAction(
         name: '_DashBoardStore.updateProject');

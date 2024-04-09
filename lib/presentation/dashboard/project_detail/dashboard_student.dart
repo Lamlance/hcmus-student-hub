@@ -24,10 +24,8 @@ class DashBoardStudentScreen extends StatelessWidget {
               children: [
                 Text("Active proposal"),
                 SizedBox(height: 16),
-                ..._dashBoardStore.projects
-                    .where((e) => e.hireStatus == HireStatus.activePropose)
-                    .map((e) =>
-                        ProjectItem(projectData: e, displayNumber: false))
+                ..._dashBoardStore.projects.map(
+                    (e) => ProjectItem(projectData: e, displayNumber: false))
               ],
             ),
           ),
@@ -40,10 +38,8 @@ class DashBoardStudentScreen extends StatelessWidget {
               children: [
                 Text("Proposal"),
                 SizedBox(height: 16),
-                ..._dashBoardStore.projects
-                    .where((e) => e.hireStatus == HireStatus.propose)
-                    .map((e) =>
-                        ProjectItem(projectData: e, displayNumber: false))
+                ..._dashBoardStore.projects.map(
+                    (e) => ProjectItem(projectData: e, displayNumber: false))
               ],
             ),
           )

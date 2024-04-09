@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
@@ -5,6 +7,7 @@ import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_student.dart';
+import 'package:boilerplate/presentation/di/services/get_project_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -18,7 +21,8 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   final UserStore _userStore = getIt<UserStore>();
-
+  final GetProjectService _projectService = getIt<GetProjectService>();
+  final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   ProjectStatus seletedStatus = ProjectStatus.none;
 
   void handleTabTap(int index) {
@@ -31,6 +35,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   @override
+  void initState() {
+    if (_dashBoardStore.projects.isEmpty) {
+      _projectService.getProjectsByCompanyId(listener: ({response}) {
+        log(response?.statusCode?.toString() ?? "No respond");
+      });
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
@@ -38,29 +52,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Student hub"),
-          flexibleSpace: FlexibleSpaceBar(
-            stretchModes: const <StretchMode>[
-              StretchMode.zoomBackground,
-              StretchMode.blurBackground,
-              StretchMode.fadeTitle,
-            ],
-            background: Padding(
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Your Project"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.PostAProject);
-                    },
-                    child: Text("Post a Project"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.profile);
+                },
+                icon: Icon(Icons.person))
+          ],
+          flexibleSpace: _userStore.selectedType != AccountType.business
+              ? null
+              : FlexibleSpaceBar(
+                  stretchModes: const <StretchMode>[
+                    StretchMode.zoomBackground,
+                    StretchMode.blurBackground,
+                    StretchMode.fadeTitle,
+                  ],
+                  background: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Your Project"),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.PostAProject);
+                          },
+                          child: Text("Post a Project"),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(
                 80.0), // Adjust this value as per your requirement

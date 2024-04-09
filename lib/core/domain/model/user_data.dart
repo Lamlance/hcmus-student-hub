@@ -2,29 +2,49 @@ enum AccountType { none, student, business }
 
 abstract class BaseProfile {
   abstract AccountType type;
+  final int id;
+
+  BaseProfile({required this.id});
 }
 
 class CompanyProfile extends BaseProfile {
   @override
   AccountType type = AccountType.business;
-
   CompanySize companySize = CompanySize.only1;
   String companyName;
   String website;
   String desc;
   CompanyProfile(
-      {required this.companyName,
+      {required super.id,
+      required this.companyName,
       required this.website,
       required this.desc,
       this.companySize = CompanySize.only1});
+
+  factory CompanyProfile.fromJson(Map<String, dynamic> json) {
+    return CompanyProfile(
+        id: json["id"],
+        companyName: json["companyName"],
+        website: json["website"],
+        desc: json["description"]);
+  }
 }
 
 class StudentProfile extends BaseProfile {
   @override
   AccountType type = AccountType.student;
+  final int techStackId;
+  final List<int> skillSets;
+  StudentProfile(
+      {required super.id, required this.techStackId, required this.skillSets});
 
-  String fullName;
-  StudentProfile({required this.fullName});
+  factory StudentProfile.fromJson(Map<String, dynamic> json) {
+    return StudentProfile(
+      id: json["id"],
+      techStackId: json["techStackId"],
+      skillSets: (json["skillSets"] as List<int>),
+    );
+  }
 }
 
 class UserData {
@@ -35,9 +55,13 @@ class UserData {
   };
 
   factory UserData.fromJson(Map<String, dynamic> json) {
+    final company = json["company"] == null
+        ? null
+        : CompanyProfile.fromJson(json["company"]);
     return UserData(
         userId: json["id"] ?? -1,
         fullName: json["fullname"] ?? "",
+        company: company,
         role: ((json["roles"] ?? []) as List<dynamic>)
             .map((e) => e.toString())
             .toList());
@@ -60,12 +84,13 @@ class UserData {
     if (company != null) {
       profiles.add(company!);
     } else {
-      profiles.add(CompanyProfile(companyName: "", website: "", desc: ""));
+      profiles
+          .add(CompanyProfile(id: -1, companyName: "", website: "", desc: ""));
     }
     if (student != null) {
       profiles.add(student!);
     } else {
-      profiles.add(StudentProfile(fullName: ""));
+      profiles.add(StudentProfile(id: -1, techStackId: -1, skillSets: []));
     }
     return profiles;
   }

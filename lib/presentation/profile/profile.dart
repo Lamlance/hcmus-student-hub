@@ -34,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _selectType = type;
     });
+    _userStore.setSelectedType(type);
   }
 
   Widget _profileScreen(UserData userData) {
@@ -60,6 +61,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    final firstProfile = _userStore.selectedUser
+        ?.getProfiles()
+        .where((e) => e.id != -1)
+        .firstOrNull;
+    _userStore.setSelectedType(firstProfile?.type ?? AccountType.student);
   }
 
   @override
@@ -103,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Student Hub"),
       ),
+      bottomNavigationBar: MainBottomNavBar(),
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         profiles,
         SizedBox(

@@ -1,9 +1,9 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/presentation/dashboard/models/hire_model.dart';
 import 'package:flutter/material.dart';
 
+// TODO: Get student data in proposal
 class HireItem extends StatelessWidget {
-  final HireModel hireData;
+  final ProposalData hireData;
 
   const HireItem({super.key, required this.hireData});
 
@@ -13,11 +13,11 @@ class HireItem extends StatelessWidget {
       flex: 1,
       child: TextButton(
         onPressed: () {},
-        child: switch (hireData.hireStatus) {
-          HireStatus.propose => Text("Sent hire offer"),
-          HireStatus.sentHire => Text("Hire"),
-          HireStatus.activePropose => Text("Hire"),
-          HireStatus.hired => Text("Already hired")
+        child: switch (hireData.statusFlag) {
+          ProposalStatus.none => Text("Sent hire offer"),
+          ProposalStatus.notHired => Text("Hire"),
+          ProposalStatus.hiredOfferSent => Text("Hire"),
+          ProposalStatus.hired => Text("Already hired")
         },
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -34,17 +34,17 @@ class HireItem extends StatelessWidget {
           children: [
             Icon(Icons.person, size: 64),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(hireData.name),
-              Text('${hireData.nthYear}(th) year student')
+              Text('Student id - ${hireData.id}'),
+              Text('? (th) year student')
             ])
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(hireData.skill), Text(hireData.quality)],
+          children: [Text("SKill"), Text("good")],
         ),
         SizedBox(height: 16),
-        Text(hireData.desc, maxLines: 3),
+        Text("Desc desc", maxLines: 3),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

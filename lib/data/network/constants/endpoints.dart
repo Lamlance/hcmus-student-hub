@@ -12,4 +12,14 @@ class Endpoints {
   static const String signUp = '$baseUrl/auth/sign-up';
   static const String signIn = '$baseUrl/auth/sign-in';
   static const String authMe = '$baseUrl/auth/me';
+
+  //Projects
+  static String getProjectsByCompanyId(int companyId) =>
+      "$baseUrl/project/company/$companyId";
+
+  //Profiles
+  static String createCompany = '$baseUrl/profile/company';
+  static String updateCompanyById(int id) => '$baseUrl/profile/company/$id';
+  static String createStudent = '$baseUrl/profile/student';
+  static String updateStudentById(int id) => '$baseUrl/profile/student/$id';
 }

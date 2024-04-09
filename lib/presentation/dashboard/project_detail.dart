@@ -1,8 +1,6 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/presentation/dashboard/models/hire_model.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/proposals.dart';
-import 'package:boilerplate/presentation/dashboard/widgets/hire_item.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailScreen extends StatefulWidget {
@@ -16,11 +14,6 @@ class ProjectDetailScreen extends StatefulWidget {
 }
 
 class ProjectDetailScreenState extends State<ProjectDetailScreen> {
-  static final List<HireModel> _saveData = [
-    HireModel(name: "Do Van C", skill: "Junior Front-end"),
-    HireModel(name: "Tran Thi A", skill: "Senior Backend-end")
-  ];
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
