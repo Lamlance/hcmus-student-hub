@@ -32,7 +32,7 @@ class PostProjectService {
         return;
       }
       final project = ProjectData.fromJson(v.data["result"]);
-      _dashBoardStore.addProject(project);
+      _dashBoardStore.addProjects([project]);
     });
   }
 }
