@@ -1,9 +1,12 @@
-import 'package:boilerplate/presentation/profile/student/student_cv_input.dart';
 import 'package:boilerplate/presentation/profile/widgets/skills_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StudentExperienceInputScreen extends StatefulWidget {
+  final Function() onFinishInput;
+
+  const StudentExperienceInputScreen({super.key, required this.onFinishInput});
+
   @override
   State<StatefulWidget> createState() {
     return _StudentExperienceInputScreenState();
@@ -50,34 +53,26 @@ class _StudentExperienceInputScreenState
       ),
     );
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Student hub"),
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("Experience"),
-              experienceList,
-              Align(
-                alignment: Alignment.bottomRight,
-                child: TextButton(
-                  child: Text("Next"),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) =>
-                                SafeArea(child: StudentCVInputScreen())));
-                  },
-                ),
-              )
-            ],
-          ),
-        ));
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text("Experience"),
+          experienceList,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: TextButton(
+              child: Text("Next"),
+              onPressed: () {
+                widget.onFinishInput();
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

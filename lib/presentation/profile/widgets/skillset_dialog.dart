@@ -1,45 +1,39 @@
+import 'package:boilerplate/data/models/misc_api_models.dart';
 import 'package:flutter/material.dart';
 
 class SkillSetDialog extends StatefulWidget {
-  final List<String>? selectedSkillSet;
-  final ValueSetter<List<String>>? onSkillSetSelect;
+  final List<SkillSetData> selectedSkillSet;
+  final ValueSetter<List<SkillSetData>>? onSkillSetSelect;
+  final List<SkillSetData> skillSets;
 
-  SkillSetDialog({super.key, this.selectedSkillSet, this.onSkillSetSelect});
+  SkillSetDialog(
+      {super.key,
+      List<SkillSetData>? selectedSkillSet,
+      this.onSkillSetSelect,
+      required this.skillSets})
+      : selectedSkillSet = selectedSkillSet ?? [];
   @override
   State<StatefulWidget> createState() {
-    return _SkillSetDialogState(
-        selectedSkillSet: selectedSkillSet ?? List.empty(growable: true));
+    return _SkillSetDialogState();
   }
 }
 
 class _SkillSetDialogState extends State<SkillSetDialog> {
-  static const List<String> jobTitles = [
-    "React",
-    "Nodejs",
-    "Angular",
-    "Vue",
-    "Go",
-    "C#"
-  ];
-
-  List<String> selectedSkillSet;
-  _SkillSetDialogState({required this.selectedSkillSet});
-
-  CheckboxListTile _makeTitleCheckBox(String value) {
+  CheckboxListTile _makeTitleCheckBox(SkillSetData value) {
     return CheckboxListTile(
         title: Text(
-          value,
+          value.name,
           style: TextStyle(fontSize: 16),
         ),
-        value: selectedSkillSet.any((e) => e == value),
+        value: widget.selectedSkillSet.any((e) => e.id == value.id),
         onChanged: (isCheck) {
           setState(() {
             if (isCheck != null && isCheck) {
-              selectedSkillSet.add(value);
+              widget.selectedSkillSet.add(value);
             } else {
-              selectedSkillSet.removeWhere((e) => e == value);
+              widget.selectedSkillSet.removeWhere((e) => e == value);
             }
-            widget.onSkillSetSelect!(selectedSkillSet);
+            widget.onSkillSetSelect!(widget.selectedSkillSet);
           });
         });
   }
@@ -52,7 +46,7 @@ class _SkillSetDialogState extends State<SkillSetDialog> {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [...jobTitles.map((e) => _makeTitleCheckBox(e))],
+          children: [...widget.skillSets.map((e) => _makeTitleCheckBox(e))],
         ),
       )),
     );

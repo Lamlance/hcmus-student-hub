@@ -4,6 +4,8 @@ import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:dio/dio.dart';
 
+export 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+
 class GetProjectService {
   final DioClient _dioClient;
   final UserStore _userStore;
@@ -38,6 +40,22 @@ class GetProjectService {
           .map((e) => ProjectData.fromJson(e))
           .toList();
       _dashBoardStore.replaceAllProject(projects);
+    });
+  }
+
+  getAllProjects(
+      {void Function(Response<dynamic>? response, List<ProjectData>? data)?
+          listener}) {
+    _dioClient.dio.get(Endpoints.getAllProjects).then((value) {
+      if (listener == null) return;
+      listener(
+        value,
+        value.statusCode != 200
+            ? null
+            : (value.data["result"] as List<dynamic>)
+                .map((e) => ProjectData.fromJson(e))
+                .toList(),
+      );
     });
   }
 }
