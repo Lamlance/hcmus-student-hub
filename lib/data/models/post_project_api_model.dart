@@ -1,11 +1,11 @@
 class PostProjectApiModel {
-  final int companyId;
-  final int projectScopeFlag;
-  final String title;
-  final int numberOfStudents;
-  final String description;
-  final int typeFlag;
-  final List<String> tags;
+  int companyId;
+  int projectScopeFlag;
+  String title;
+  int numberOfStudents;
+  String description;
+  int typeFlag;
+  List<String> tags;
 
   PostProjectApiModel({
     required this.companyId,
