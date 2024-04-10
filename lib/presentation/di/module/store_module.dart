@@ -9,6 +9,7 @@ import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/di/services/get_project_service.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
+import 'package:boilerplate/presentation/di/services/post_project_service.dart';
 import '../../../di/service_locator.dart';
 
 mixin StoreModule {
@@ -33,5 +34,9 @@ mixin StoreModule {
         dashBoardStore: getIt<DashBoardStore>()));
     getIt.registerSingleton<ProfileService>(ProfileService(
         dioClient: getIt<DioClient>(), userStore: getIt<UserStore>()));
+    getIt.registerSingleton<PostProjectService>(PostProjectService(
+        dioClient: getIt<DioClient>(),
+        userStore: getIt<UserStore>(),
+        dashBoardStore: getIt<DashBoardStore>()));
   }
 }
