@@ -15,6 +15,7 @@ class _StudentCVInputScreenState extends State<StudentCVInputScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Text("CV & Transcript"),
@@ -48,6 +49,14 @@ class _StudentCVInputScreenState extends State<StudentCVInputScreen> {
                   minHeight: MediaQuery.of(context).size.height * 0.35,
                   maxWidth: MediaQuery.of(context).size.width - (16 * 2)),
             ),
+          ),
+          SizedBox(height: 24),
+          Align(
+            child: TextButton(
+              onPressed: () => widget.onFinishInput(),
+              child: const Text("Finish"),
+            ),
+            alignment: Alignment.centerRight,
           )
         ],
       ),

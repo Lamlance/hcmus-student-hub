@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StudentProfileInputScreen extends StatefulWidget {
-  final Function() onFinishInput;
+  final Function(TechStackData tech, List<SkillSetData> skillSets)
+      onFinishInput;
 
   const StudentProfileInputScreen({super.key, required this.onFinishInput});
 
@@ -21,12 +22,13 @@ class StudentProfileInputScreen extends StatefulWidget {
 class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
   static final DateFormat _dateFormat = DateFormat("yyyy-MM-dd");
   final MiscService _miscService = getIt<MiscService>();
+  final _formKey = GlobalKey<FormState>();
 
   final List<TechStackData> _techList = List.empty(growable: true);
   TechStackData? _selectedTech;
-
-  List<SkillListDataModel> _languageSkills = [];
-  List<SkillListDataModel> _academicSkills = [];
+  final List<SkillSetData> _skillSetList = [];
+  final List<SkillListDataModel> _languageSkills = [];
+  final List<SkillListDataModel> _academicSkills = [];
 
   @override
   void initState() {
@@ -40,6 +42,14 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
         }
       });
     }
+  }
+
+  _onNextBtnPress() {
+    if (_selectedTech == null ||
+        (_formKey.currentState?.validate() ?? false) == false) {
+      return;
+    }
+    widget.onFinishInput(_selectedTech!, _skillSetList);
   }
 
   @override
@@ -87,53 +97,60 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          Text("Welcome to student hub"),
-          const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                  "Tell us about yourself and you will be on your way to connect with real-world projects")),
-          SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text("Techstack"),
-          ),
-          DropdownButton<TechStackData>(
-              isExpanded: true,
-              onChanged: (v) {
-                if (v == null) return;
-                setState(() {
-                  _selectedTech = v;
-                });
-              },
-              value: _selectedTech,
-              items: _techList
-                  .map((e) => DropdownMenuItem<TechStackData>(
-                        child: Text(e.name),
-                        value: e,
-                      ))
-                  .toList()),
-          SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text("Skill sets"),
-          ),
-          SkillSet(),
-          SizedBox(height: 16),
-          languageSkillList,
-          SizedBox(height: 16),
-          academicSkillList,
-          SizedBox(height: 24),
-          Align(
-            child: TextButton(
-                onPressed: () {
-                  widget.onFinishInput();
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Text("Welcome to student hub"),
+            const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                    "Tell us about yourself and you will be on your way to connect with real-world projects")),
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Techstack"),
+            ),
+            DropdownButtonFormField<TechStackData>(
+                validator: (v) =>
+                    v == null ? "Need to select a tech stack" : null,
+                isExpanded: true,
+                onChanged: (v) {
+                  if (v == null) return;
+                  setState(() {
+                    _selectedTech = v;
+                  });
                 },
-                child: const Text("Next")),
-            alignment: Alignment.centerRight,
-          )
-        ],
+                value: _selectedTech,
+                items: _techList
+                    .map((e) => DropdownMenuItem<TechStackData>(
+                          child: Text(e.name),
+                          value: e,
+                        ))
+                    .toList()),
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Skill sets"),
+            ),
+            SkillSet(
+              onSkillSetsSelect: (skills) {
+                _skillSetList.removeWhere((e) => true);
+                _skillSetList.addAll(skills);
+              },
+            ),
+            SizedBox(height: 16),
+            languageSkillList,
+            SizedBox(height: 16),
+            academicSkillList,
+            SizedBox(height: 24),
+            Align(
+              child: TextButton(
+                  onPressed: _onNextBtnPress, child: const Text("Next")),
+              alignment: Alignment.centerRight,
+            )
+          ],
+        ),
       ),
     );
   }

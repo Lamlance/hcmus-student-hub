@@ -27,4 +27,7 @@ class Endpoints {
   //Misc
   static String getAllTechStack = '$baseUrl/techstack/getAllTechStack';
   static String getAllSkillSet = '$baseUrl/skillset/getAllSkillSet';
+
+  //Proposal
+  static String createProposal = '$baseUrl/proposal';
 }

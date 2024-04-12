@@ -195,7 +195,11 @@ class _SkillListState extends State<SkillList> {
                     )
                   ],
                 ),
-                titleOfSkill.isNotEmpty ? SkillSet() : SizedBox(),
+                titleOfSkill.isNotEmpty
+                    ? SkillSet(
+                        onSkillSetsSelect: (skills) {},
+                      )
+                    : SizedBox(),
                 SizedBox(height: 16)
               ],
             )))

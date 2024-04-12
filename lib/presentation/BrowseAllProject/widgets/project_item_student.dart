@@ -1,5 +1,6 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/BrowseAllProject/apply_project.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +23,7 @@ class ProjectItemTab extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (ctx) => SafeArea(
-          child: ProjectDetailScreen(projectData: projectData),
+          child: ApplyProjectScreen(data: projectData),
         ),
       ),
     );

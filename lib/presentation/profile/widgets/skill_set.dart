@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class SkillSet extends StatefulWidget {
+  final void Function(List<SkillSetData> skills) onSkillSetsSelect;
+  const SkillSet({super.key, required this.onSkillSetsSelect});
+
   @override
   State<StatefulWidget> createState() {
     return _SkillSetState();
@@ -22,11 +25,13 @@ class _SkillSetState extends State<SkillSet> {
       builder: (context) => SkillSetDialog(
         skillSets: _skillSetResponse?.skillSets ?? [],
         selectedSkillSet: _selectedSkillSet,
-        onSkillSetSelect: (v) => setState(() {
-          _selectedSkillSet.replaceRange(0, _selectedSkillSet.length, v);
-        }),
+        onSkillSetSelect: (v) {
+          setState(() {
+            _selectedSkillSet.replaceRange(0, _selectedSkillSet.length, v);
+          });
+        },
       ),
-    );
+    ).then((value) => widget.onSkillSetsSelect(_selectedSkillSet));
   }
 
   @override
