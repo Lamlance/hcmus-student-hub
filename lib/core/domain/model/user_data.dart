@@ -41,7 +41,7 @@ class StudentProfile extends BaseProfile {
   factory StudentProfile.fromJson(Map<String, dynamic> json) {
     return StudentProfile(
       id: json["id"],
-      techStackId: json["techStackId"],
+      techStackId: json["techStackId"] ?? json["techStack"]["id"],
       skillSets: ((json["skillSets"] ?? []) as List<dynamic>)
           .map((e) => int.parse('$e'))
           .toList(),

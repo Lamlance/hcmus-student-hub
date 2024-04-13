@@ -31,4 +31,26 @@ class ProposalService {
       }
     });
   }
+
+  void getProposalByProjectId(
+      {required GetProposalByProjectIdRequest request,
+      void Function(Response<dynamic> res, GetProposalByProjectIdRespond? data)?
+          listener}) {
+    _dioClient.dio
+        .get(Endpoints.getPropsalByProjectId(request.projectId),
+            options: Options(
+              headers: {"authorization": 'Bearer ${_userStore.token}'},
+              contentType: Headers.jsonContentType,
+              responseType: ResponseType.json,
+            ))
+        .then((value) {
+      if (value.statusCode != 200) {
+        if (listener != null) listener(value, null);
+        return;
+      }
+      final proposalData =
+          GetProposalByProjectIdRespond.fromJson(value.data["result"]);
+      if (listener != null) listener(value, proposalData);
+    });
+  }
 }

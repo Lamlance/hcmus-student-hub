@@ -1,11 +1,20 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/hire_item.dart';
 import 'package:flutter/material.dart';
 
 class ProjectProposalScreen extends StatefulWidget {
+  final ProjectData projectData;
   final List<ProposalStatus>? filterHired;
+  final List<ProposalData> proposals = [];
+  ProjectProposalScreen(
+      {super.key,
+      this.filterHired,
+      required this.projectData,
+      List<ProposalData>? data}) {
+    if (data != null) proposals.addAll(data);
+  }
 
-  const ProjectProposalScreen({super.key, this.filterHired});
   @override
   State<StatefulWidget> createState() {
     return _ProjectProposalScreenState();
@@ -13,13 +22,11 @@ class ProjectProposalScreen extends StatefulWidget {
 }
 
 class _ProjectProposalScreenState extends State<ProjectProposalScreen> {
-  static final List<ProposalData> _saveData = [
-    ProposalData(id: 1, projectId: 1, studentId: 1),
-  ];
   @override
   Widget build(BuildContext context) {
-    var filtedData = _saveData.where((e) => (widget.filterHired == null ||
-        widget.filterHired!.contains(e.statusFlag)));
+    var filtedData = widget.proposals.where((e) =>
+        (widget.filterHired == null ||
+            widget.filterHired!.contains(e.statusFlag)));
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16),

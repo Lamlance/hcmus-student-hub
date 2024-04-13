@@ -30,4 +30,6 @@ class Endpoints {
 
   //Proposal
   static String createProposal = '$baseUrl/proposal';
+  static String getPropsalByProjectId(int projectId) =>
+      '$baseUrl/proposal/getByProjectId/$projectId';
 }

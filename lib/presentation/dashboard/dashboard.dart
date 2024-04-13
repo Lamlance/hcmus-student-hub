@@ -4,6 +4,7 @@ import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_student.dart';

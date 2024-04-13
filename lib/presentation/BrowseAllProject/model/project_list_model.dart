@@ -1,4 +1,4 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 
 class ProjectListModel {
   final String title;

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:boilerplate/core/stores/project/project_store.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/get_project_service.dart';
 import 'package:flutter/material.dart';

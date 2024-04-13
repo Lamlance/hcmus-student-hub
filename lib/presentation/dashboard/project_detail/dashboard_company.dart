@@ -1,4 +1,5 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:flutter/material.dart';
