@@ -16,6 +16,7 @@ class Endpoints {
   //Projects
   static String getProjectsByCompanyId(int companyId) =>
       "$baseUrl/project/company/$companyId";
+  static String postProject = '$baseUrl/project';
 
   //Profiles
   static String createCompany = '$baseUrl/profile/company';
