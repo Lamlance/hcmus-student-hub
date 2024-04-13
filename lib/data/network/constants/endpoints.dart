@@ -16,6 +16,7 @@ class Endpoints {
   //Projects
   static String getProjectsByCompanyId(int companyId) =>
       "$baseUrl/project/company/$companyId";
+  static String getAllProjects = "$baseUrl/project/";
   static String postProject = '$baseUrl/project';
 
   //Profiles
@@ -23,4 +24,13 @@ class Endpoints {
   static String updateCompanyById(int id) => '$baseUrl/profile/company/$id';
   static String createStudent = '$baseUrl/profile/student';
   static String updateStudentById(int id) => '$baseUrl/profile/student/$id';
+
+  //Misc
+  static String getAllTechStack = '$baseUrl/techstack/getAllTechStack';
+  static String getAllSkillSet = '$baseUrl/skillset/getAllSkillSet';
+
+  //Proposal
+  static String createProposal = '$baseUrl/proposal';
+  static String getPropsalByProjectId(int projectId) =>
+      '$baseUrl/proposal/getByProjectId/$projectId';
 }

@@ -4,6 +4,7 @@ import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
+import 'package:boilerplate/presentation/profile/student/student_input.dart';
 import 'package:boilerplate/presentation/profile/student/student_profile_input.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? SafeArea(child: CompanyProfileInputScreen())
             : SafeArea(child: CompanyEditProfile());
       case AccountType.student:
-        return SafeArea(child: StudentProfileInputScreen());
+        return SafeArea(child: StudentInputScreen());
       default:
         break;
     }

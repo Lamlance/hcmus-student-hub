@@ -41,8 +41,10 @@ class StudentProfile extends BaseProfile {
   factory StudentProfile.fromJson(Map<String, dynamic> json) {
     return StudentProfile(
       id: json["id"],
-      techStackId: json["techStackId"],
-      skillSets: (json["skillSets"] as List<int>),
+      techStackId: json["techStackId"] ?? json["techStack"]["id"],
+      skillSets: ((json["skillSets"] ?? []) as List<dynamic>)
+          .map((e) => int.parse('$e'))
+          .toList(),
     );
   }
 }
@@ -58,10 +60,14 @@ class UserData {
     final company = json["company"] == null
         ? null
         : CompanyProfile.fromJson(json["company"]);
+    final student = json["student"] == null
+        ? null
+        : StudentProfile.fromJson(json["student"]);
     return UserData(
         userId: json["id"] ?? -1,
         fullName: json["fullname"] ?? "",
         company: company,
+        student: student,
         role: ((json["roles"] ?? []) as List<dynamic>)
             .map((e) => e.toString())
             .toList());

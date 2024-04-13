@@ -29,7 +29,7 @@ class AuthApiSignUpRequest {
     return {
       'email': email,
       'password': password,
-      'fullName': fullName,
+      'fullname': fullName,
       'role': role
     };
   }

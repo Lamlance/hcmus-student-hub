@@ -1,13 +1,18 @@
-import 'dart:developer';
-
+import 'package:boilerplate/data/models/misc_api_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/misc_service.dart';
 import 'package:boilerplate/presentation/profile/student/student_experience_input.dart';
 import 'package:boilerplate/presentation/profile/widgets/skill_set.dart';
 import 'package:boilerplate/presentation/profile/widgets/skills_list.dart';
-import 'package:boilerplate/presentation/profile/widgets/skillset_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StudentProfileInputScreen extends StatefulWidget {
+  final Function(TechStackData tech, List<SkillSetData> skillSets)
+      onFinishInput;
+
+  const StudentProfileInputScreen({super.key, required this.onFinishInput});
+
   @override
   State<StatefulWidget> createState() {
     return _StudentProfileInputScreenState();
@@ -15,17 +20,37 @@ class StudentProfileInputScreen extends StatefulWidget {
 }
 
 class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
-  static const List<String> _techPositions = [
-    "Fullstack engineer",
-    "Front-end engineer",
-    "Back-end engineer",
-    "Data engineer",
-  ];
   static final DateFormat _dateFormat = DateFormat("yyyy-MM-dd");
-  String _selectTechPosition = _techPositions.first;
+  final MiscService _miscService = getIt<MiscService>();
+  final _formKey = GlobalKey<FormState>();
 
-  List<SkillListDataModel> _languageSkills = [];
-  List<SkillListDataModel> _academicSkills = [];
+  final List<TechStackData> _techList = List.empty(growable: true);
+  TechStackData? _selectedTech;
+  final List<SkillSetData> _skillSetList = [];
+  final List<SkillListDataModel> _languageSkills = [];
+  final List<SkillListDataModel> _academicSkills = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (_techList.isEmpty) {
+      _miscService.getAllTechStack(listener: (res, data) {
+        if (data != null) {
+          setState(() {
+            _techList.addAll(data.response);
+          });
+        }
+      });
+    }
+  }
+
+  _onNextBtnPress() {
+    if (_selectedTech == null ||
+        (_formKey.currentState?.validate() ?? false) == false) {
+      return;
+    }
+    widget.onFinishInput(_selectedTech!, _skillSetList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +95,10 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
             titleOfDate1: "Start date",
             titleOfDate2: "End date"));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Student hub"),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Form(
+        key: _formKey,
         child: Column(
           children: [
             Text("Welcome to student hub"),
@@ -88,18 +111,20 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
               alignment: Alignment.centerLeft,
               child: Text("Techstack"),
             ),
-            DropdownButton<String>(
+            DropdownButtonFormField<TechStackData>(
+                validator: (v) =>
+                    v == null ? "Need to select a tech stack" : null,
                 isExpanded: true,
                 onChanged: (v) {
                   if (v == null) return;
                   setState(() {
-                    _selectTechPosition = v;
+                    _selectedTech = v;
                   });
                 },
-                value: _selectTechPosition,
-                items: _techPositions
-                    .map((e) => DropdownMenuItem<String>(
-                          child: Text(e),
+                value: _selectedTech,
+                items: _techList
+                    .map((e) => DropdownMenuItem<TechStackData>(
+                          child: Text(e.name),
                           value: e,
                         ))
                     .toList()),
@@ -108,7 +133,12 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
               alignment: Alignment.centerLeft,
               child: Text("Skill sets"),
             ),
-            SkillSet(),
+            SkillSet(
+              onSkillSetsSelect: (skills) {
+                _skillSetList.removeWhere((e) => true);
+                _skillSetList.addAll(skills);
+              },
+            ),
             SizedBox(height: 16),
             languageSkillList,
             SizedBox(height: 16),
@@ -116,14 +146,7 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
             SizedBox(height: 24),
             Align(
               child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => SafeArea(
-                                child: StudentExperienceInputScreen())));
-                  },
-                  child: const Text("Next")),
+                  onPressed: _onNextBtnPress, child: const Text("Next")),
               alignment: Alignment.centerRight,
             )
           ],

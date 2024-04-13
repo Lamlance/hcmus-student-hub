@@ -4,6 +4,7 @@ import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_student.dart';
@@ -95,12 +96,19 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           ),
         ),
         bottomNavigationBar: MainBottomNavBar(),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Observer(
+        body: RefreshIndicator(
+          onRefresh: () async {
+            log("REFRESH");
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Observer(
               builder: (ctx) => _userStore.selectedType == AccountType.business
                   ? DashBoardCompanyScreen(seletedStatus: seletedStatus)
-                  : DashBoardStudentScreen(seletedStatus: seletedStatus)),
+                  : DashBoardStudentScreen(seletedStatus: seletedStatus),
+            ),
+          ),
         ),
       ),
     );

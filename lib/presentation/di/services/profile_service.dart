@@ -4,6 +4,7 @@ import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/profile_api_models.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:dio/dio.dart';
+export "package:boilerplate/data/models/profile_api_models.dart";
 
 class ProfileService {
   final DioClient _dioClient;
@@ -59,7 +60,7 @@ class ProfileService {
 
   createStudentProfile(
       {required CreateStudentProfile profile,
-      Function({Response<dynamic> response})? listener}) {
+      Function(Response<dynamic> response)? listener}) {
     _dioClient.dio
         .post(
       Endpoints.createStudent,
@@ -75,7 +76,7 @@ class ProfileService {
         final studentProfile = StudentProfile.fromJson(value.data["result"]);
         _userStore.updateStudent(studentProfile);
       }
-      if (listener != null) listener(response: value);
+      if (listener != null) listener(value);
     });
   }
 }
