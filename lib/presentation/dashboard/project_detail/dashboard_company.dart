@@ -7,8 +7,14 @@ import 'package:flutter/material.dart';
 class DashBoardCompanyScreen extends StatelessWidget {
   final ProjectStatus seletedStatus;
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
+  final List<ProjectData> _projects = [];
 
-  DashBoardCompanyScreen({super.key, this.seletedStatus = ProjectStatus.none});
+  DashBoardCompanyScreen(
+      {super.key,
+      this.seletedStatus = ProjectStatus.none,
+      List<ProjectData>? projects}) {
+    if (projects != null) _projects.addAll(projects);
+  }
 
   Widget _buildBottomSheet(BuildContext buildContext, ProjectData data) {
     return Wrap(
@@ -56,7 +62,7 @@ class DashBoardCompanyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tabProjects = _dashBoardStore.projects
+    var tabProjects = _projects
         .where((p) =>
             seletedStatus == ProjectStatus.none || seletedStatus == p.status)
         .map((e) {

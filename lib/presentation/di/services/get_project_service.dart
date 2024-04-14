@@ -20,10 +20,11 @@ class GetProjectService {
         _userStore = userStore,
         _dashBoardStore = dashBoardStore;
   getProjectsByCompanyId(
-      {void Function({Response<dynamic>? response})? listener}) {
+      {void Function(Response<dynamic>? response, List<ProjectData>? data)?
+          listener}) {
     final companyId = _userStore.selectedUser?.company?.id;
     if (companyId == null) {
-      if (listener != null) listener();
+      if (listener != null) listener(null, null);
       return;
     }
 
@@ -34,13 +35,14 @@ class GetProjectService {
             ))
         .then((v) {
       if (v.statusCode != 200) {
-        if (listener != null) listener(response: v);
+        if (listener != null) listener(v, null);
         return;
       }
       final projects = (v.data["result"] as List<dynamic>)
           .map((e) => ProjectData.fromJson(e))
           .toList();
       _dashBoardStore.replaceAllProject(projects);
+      if (listener != null) listener(v, projects);
     });
   }
 

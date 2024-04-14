@@ -25,6 +25,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   final GetProjectService _projectService = getIt<GetProjectService>();
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   ProjectStatus seletedStatus = ProjectStatus.none;
+  final List<ProjectData> projects = [];
 
   void handleTabTap(int index) {
     ProjectStatus? newStatus = ProjectStatus.values.asMap()[index];
@@ -35,14 +36,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     }
   }
 
+  _getAllProjects() {
+    _projectService.getProjectsByCompanyId(listener: (response, data) {
+      if (data != null) {
+        setState(() {
+          projects.removeWhere((e) => true);
+          projects.addAll(data);
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
-    if (_dashBoardStore.projects.isEmpty) {
-      _projectService.getProjectsByCompanyId(listener: ({response}) {
-        log(response?.statusCode?.toString() ?? "No respond");
-      });
-    }
     super.initState();
+    _getAllProjects();
   }
 
   @override
@@ -99,13 +107,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         body: RefreshIndicator(
           onRefresh: () async {
             log("REFRESH");
+            _getAllProjects();
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Observer(
               builder: (ctx) => _userStore.selectedType == AccountType.business
-                  ? DashBoardCompanyScreen(seletedStatus: seletedStatus)
+                  ? DashBoardCompanyScreen(
+                      seletedStatus: seletedStatus,
+                      projects: projects,
+                    )
                   : DashBoardStudentScreen(seletedStatus: seletedStatus),
             ),
           ),
