@@ -53,4 +53,23 @@ class ProposalService {
       if (listener != null) listener(value, proposalData);
     });
   }
+
+  updateProposal({
+    required UpdateProposalByProposalId updateData,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .patch(
+      Endpoints.updateProposalByProposalId(updateData.proposalId),
+      data: updateData,
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    )
+        .then((value) {
+      if (listener != null) return listener(value);
+    });
+  }
 }
