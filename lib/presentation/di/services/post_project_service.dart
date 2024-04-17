@@ -24,6 +24,7 @@ class PostProjectService {
         _userStore = userStore,
         _dashBoardStore = dashBoardStore;
 
+
   void postProject(
       {required PostProjectApiModel data, ListenerCallback? listener}) {
     _dioClient.dio
@@ -33,8 +34,7 @@ class PostProjectService {
       options: Options(
         headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
       ),
-    )
-        .catchError((res) {
+    ).catchError((res) {
       log("Post project error");
     }).then((value) {
       if (value.statusCode != 200) {
@@ -43,6 +43,7 @@ class PostProjectService {
       }
       final project = ProjectData.fromJson(value.data["result"]);
       _dashBoardStore.addProjects([project]);
+      listener(value);
     });
   }
 }
