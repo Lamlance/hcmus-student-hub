@@ -21,17 +21,16 @@ class PostProjectService {
         _dashBoardStore = dashBoardStore;
 
   Future<void> postProject(
-      {required Map<String, dynamic> projectData,
-      ListenerCallback? listener}) async {
-    try {
-      var response = await _dioClient.dio.post(
-        Endpoints.postProject,
-        data: projectData,
-        options: Options(
-          headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
-        ),
-      );
-
+      {required Map<String, dynamic> projectData, ListenerCallback? listener}) {
+    return _dioClient.dio
+        .post(
+      Endpoints.postProject,
+      data: projectData,
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+      ),
+    )
+        .then((response) async {
       if (response.statusCode != 200) {
         if (listener != null) listener(response: response);
         return;
@@ -39,8 +38,8 @@ class PostProjectService {
 
       final project = ProjectData.fromJson(response.data["result"]);
       _dashBoardStore.addProjects([project]);
-    } catch (e) {
-      // Handle any errors here
-    }
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
