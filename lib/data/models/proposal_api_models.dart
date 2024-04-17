@@ -5,6 +5,24 @@ enum ProjectStatus { none, working, archive }
 enum ProposalStatus { none, hired, hiredOfferSent, notHired }
 
 class ProposalData {
+  static ProposalStatus intToStatus(int status) {
+    return switch (status) {
+      1 => ProposalStatus.notHired,
+      2 => ProposalStatus.hiredOfferSent,
+      3 => ProposalStatus.hired,
+      _ => ProposalStatus.notHired
+    };
+  }
+
+  static int statusToInt(ProposalStatus status) {
+    return switch (status) {
+      ProposalStatus.notHired => 1,
+      ProposalStatus.hiredOfferSent => 2,
+      ProposalStatus.hired => 3,
+      _ => 1
+    };
+  }
+
   final int id;
   final int projectId;
   final int studentId;
@@ -29,6 +47,7 @@ class ProposalData {
       projectId: json["projectId"],
       studentId: json["studentId"],
       studentProfile: StudentProfile.fromJson(json["student"]),
+      statusFlag: ProposalData.intToStatus(json["statusFlag"]),
     );
   }
 }
@@ -137,5 +156,17 @@ class GetProposalByProjectIdRespond {
           .map((e) => ProposalData.fromJson(e))
           .toList(),
     );
+  }
+}
+
+class UpdateProposalByProposalId {
+  final int proposalId;
+  final ProposalStatus statusFlag;
+  UpdateProposalByProposalId({
+    required this.proposalId,
+    required this.statusFlag,
+  });
+  Map<String, dynamic> toJson() {
+    return {"statusFlag": ProposalData.statusToInt(statusFlag)};
   }
 }
