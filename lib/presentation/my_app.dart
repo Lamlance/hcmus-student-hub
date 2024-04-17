@@ -17,34 +17,34 @@ import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  // Create your store as a final variable in a base Widget. This works better
-  // with Hot Reload than creating it directly in the `build` function.
-  final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
-  final UserStore _userStore = getIt<UserStore>();
-  final RoutesStore _routesStore = getIt<RoutesStore>();
-  final AuthService _authApi = getIt<AuthService>();
+import 'package:provider/provider.dart';
+import 'package:boilerplate/utils/routes/routes.dart';
+import 'package:boilerplate/core/stores/project/change_notifier.dart';
+import 'package:boilerplate/presentation/di/services/post_project_service.dart';
 
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (context) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: Strings.appName,
-          // theme: _themeStore.darkMode
-          //     ? AppThemeData.darkThemeData
-          //     : AppThemeData.lightThemeData,
-          initialRoute: Routes.login,
-          theme: AppThemeData.lightThemeData,
-          routes: Routes.routes,
-          // locale: Locale(_languageStore.locale),
-          // supportedLocales: _languageStore.supportedLanguages
-          //     .map((language) => Locale(language.locale, language.code))
-          //     .toList(),
-        );
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProjectDataNotifier()),
+        Provider(
+            create: (_) => PostProjectService(
+                dioClient: null,
+                userStore: null,
+                dashBoardStore: null /* dependencies here */)),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: Strings.appName,
+        theme: AppThemeData.lightThemeData,
+        initialRoute: Routes.login,
+        routes: Routes.routes,
+        // locale: Locale(_languageStore.locale),
+        // supportedLocales: _languageStore.supportedLanguages
+        //     .map((language) => Locale(language.locale, language.code))
+        //     .toList(),
+      ),
     );
   }
 }
