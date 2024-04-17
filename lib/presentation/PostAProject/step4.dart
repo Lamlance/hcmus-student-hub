@@ -1,3 +1,5 @@
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/post_project_service.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
@@ -10,6 +12,7 @@ class S4PostAProjectPage extends StatefulWidget {
 }
 
 class _S4PostAProjectState extends State<S4PostAProjectPage> {
+  final PostProjectService _projectService = getIt<PostProjectService>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,11 +100,16 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => S2PostAProjectPage()),
-                  );
+                  // _projectService.postProject(
+                  //     data: data,
+                  //     listener: (res) {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => S2PostAProjectPage()),
+                  //       );
+                  //     });
+                  Navigator.pushReplacementNamed(context, Routes.dashboard);
                 },
                 child: Text('Post job'),
                 style: AppStyles.elevatedButtonStyle,
