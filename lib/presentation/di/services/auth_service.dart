@@ -68,6 +68,9 @@ class AuthService {
                 }
                 log(userData?.role.toString() ?? "No id");
                 _userStore.setSelectedUser(userData, accessToken: token);
+                final profile =
+                    userData?.getProfiles().firstWhere((e) => e.id >= 0);
+                _userStore.setSelectedType(profile?.type ?? AccountType.none);
               });
         }
       }

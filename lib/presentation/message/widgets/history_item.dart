@@ -1,5 +1,5 @@
 import 'package:boilerplate/presentation/message/message_detail.dart';
-import 'package:boilerplate/presentation/message/models/message_data.dart';
+import 'package:boilerplate/data/models/message_models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -24,6 +24,7 @@ class HistoryItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,11 +1,8 @@
-import 'package:boilerplate/presentation/message/models/message_data.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
 import 'package:boilerplate/presentation/message/widgets/message_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "dart:math" as math;
-
-import 'package:flutter/widgets.dart';
+import 'package:boilerplate/data/models/message_models.dart';
 import 'package:intl/intl.dart';
 
 class MessageDetailScreen extends StatefulWidget {
