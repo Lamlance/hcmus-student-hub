@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step3.dart';
 import 'styles.dart';
+import 'package:boilerplate/core/stores/project/post_project.dart';
 
 enum ProjectDuration { shortTerm, longTerm }
 

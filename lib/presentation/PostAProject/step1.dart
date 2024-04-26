@@ -58,7 +58,12 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
                 style: AppStyles.normalTextStyle),
             SizedBox(height: 30),
             TextField(
-              decoration: AppStyles.inputDecoration, // Use the input decoration
+              decoration: AppStyles.inputDecoration,
+              onChanged: (value) {
+                setState(() {
+                  project.title = value;
+                });
+              },
             ),
             SizedBox(height: 30),
             Text(
