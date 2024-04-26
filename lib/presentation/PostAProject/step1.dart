@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
 import 'styles.dart';
+import 'package:boilerplate/core/stores/project/post_project.dart';
 
 class S1PostAProjectPage extends StatefulWidget {
   @override
@@ -9,6 +10,9 @@ class S1PostAProjectPage extends StatefulWidget {
 }
 
 class _S1PostAProjectState extends State<S1PostAProjectPage> {
+  Project project =
+      Project(title: "", timeOption: "", studentCount: 0, description: "");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
