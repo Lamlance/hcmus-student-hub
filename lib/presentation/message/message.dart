@@ -1,4 +1,5 @@
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/data/models/message_api_model.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/message/widgets/history_item.dart';
@@ -13,7 +14,7 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  final List<MessageHistory> messageHistories = [];
+  final List<GetMyMessageItem> messageHistories = [];
   final MessageService _messageService = getIt<MessageService>();
 
   void _getMyMessage() {
@@ -23,7 +24,7 @@ class _MessageScreenState extends State<MessageScreen> {
         if (messageHistories.isNotEmpty) {
           messageHistories.removeRange(0, messageHistories.length);
         }
-        messageHistories.addAll(msgs.messages.map((e) => e.messageHistory));
+        messageHistories.addAll(msgs.messages);
       });
     });
   }
@@ -73,7 +74,12 @@ class _MessageScreenState extends State<MessageScreen> {
                   child: searchBox,
                 ),
                 SizedBox(height: 16),
-                ...messageHistories.map((e) => HistoryItem(history: e))
+                ...messageHistories.map(
+                  (e) => HistoryItem(
+                    history: e.messageHistory,
+                    projectId: e.projectData.id,
+                  ),
+                )
               ],
             ),
           ),

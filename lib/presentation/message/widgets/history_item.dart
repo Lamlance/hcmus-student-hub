@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 class HistoryItem extends StatelessWidget {
   static final DateFormat _dateFormat = DateFormat("dd/MM/yyyy");
   final MessageHistory history;
-
-  const HistoryItem({super.key, required this.history});
+  final int projectId;
+  const HistoryItem(
+      {super.key, required this.history, required this.projectId});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,7 +17,10 @@ class HistoryItem extends StatelessWidget {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => MessageDetailScreen(history: history),
+              builder: (ctx) => MessageDetailScreen(
+                history: history,
+                projectId: projectId,
+              ),
             ),
           ),
           child: Row(children: [

@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
 import 'package:boilerplate/presentation/message/widgets/message_item.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +11,9 @@ import 'package:intl/intl.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final MessageHistory history;
-  const MessageDetailScreen({super.key, required this.history});
+  final int projectId;
+  const MessageDetailScreen(
+      {super.key, required this.history, required this.projectId});
 
   @override
   State<StatefulWidget> createState() {
@@ -17,9 +23,18 @@ class MessageDetailScreen extends StatefulWidget {
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   static final _dateFormatOnlyDate = DateFormat("dd/MM/yyyy");
-
+  final SocketChatService _socketChatService = getIt<SocketChatService>();
+  final TextEditingController _msgController = TextEditingController();
   Widget _buildMakeMeetingModal(BuildContext ctx) {
     return CreateMeetingModal();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _socketChatService.connectToProject(widget.projectId, () {
+      log("Get msg");
+    });
   }
 
   Widget _buildBottomMenu(BuildContext ctx) {
@@ -107,8 +122,17 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    Expanded(child: TextFormField()),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.send))
+                    Expanded(child: TextFormField(controller: _msgController)),
+                    IconButton(
+                      onPressed: () {
+                        _socketChatService.sendMsg(
+                          content: _msgController.text,
+                          receiveId: widget.history.histories.first.senderId,
+                          projectId: widget.projectId,
+                        );
+                      },
+                      icon: Icon(Icons.send),
+                    )
                   ],
                 ),
               ),
