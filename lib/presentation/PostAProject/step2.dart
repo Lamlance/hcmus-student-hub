@@ -20,11 +20,16 @@ String projectDurationToString(ProjectDuration duration) {
 }
 
 class S2PostAProjectPage extends StatefulWidget {
+  final Project project;
+
+  S2PostAProjectPage({required this.project});
+
   @override
   _S2PostAProjectState createState() => _S2PostAProjectState();
 }
 
 class _S2PostAProjectState extends State<S2PostAProjectPage> {
+  ProjectDuration _projectDuration = ProjectDuration.shortTerm;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,16 +78,18 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
               style: AppStyles.titleStyle, // Use the title style
             ),
             Column(
-              children: ProjectDuration.values.map((ProjectDuration value) {
-                return AppStyles.customRadioTile<ProjectDuration>(
-                  value,
-                  _projectDuration,
-                  (ProjectDuration? value) {
+              children: ProjectDuration.values.map((ProjectDuration duration) {
+                return RadioListTile<ProjectDuration>(
+                  title: Text(projectDurationToString(duration)),
+                  value: duration,
+                  groupValue: _projectDuration,
+                  onChanged: (ProjectDuration? value) {
                     setState(() {
                       _projectDuration = value!;
+                      widget.project.timeOption = projectDurationToString(
+                          _projectDuration); // Cập nhật timeOption của project
                     });
                   },
-                  projectDurationToString(value),
                 );
               }).toList(),
             ),
