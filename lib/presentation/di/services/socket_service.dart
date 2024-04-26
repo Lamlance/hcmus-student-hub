@@ -3,8 +3,9 @@ import 'package:boilerplate/data/models/socket_api_models.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import "dart:developer";
+export "package:boilerplate/data/models/socket_api_models.dart";
 
-typedef ReceiveMsgCallback = Function();
+typedef ReceiveMsgCallback = Function(SocketReceiveMessageEvent? data);
 
 class SocketChatService {
   static const _receiveMsgEventName = "RECEIVE_MESSAGE";
@@ -29,7 +30,8 @@ class SocketChatService {
   }
 
   void _receiveMsgCallback(dynamic data) {
-    if (onReceiveMsg != null) onReceiveMsg!();
+    final msgData = SocketReceiveMessageEvent.tryFromJson(data);
+    if (onReceiveMsg != null) onReceiveMsg!(msgData);
   }
 
   void connectToProject(int projectId, ReceiveMsgCallback listener) {

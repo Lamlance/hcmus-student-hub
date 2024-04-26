@@ -2,12 +2,17 @@ class MessageData {
   final String content;
   final String sender;
   final int senderId;
+  final int receiveId;
   final DateTime timeStamp;
-  MessageData(
-      {required this.sender,
-      required this.senderId,
-      required this.content,
-      required this.timeStamp});
+  final String receive;
+  MessageData({
+    required this.sender,
+    required this.senderId,
+    required this.content,
+    required this.timeStamp,
+    required this.receiveId,
+    required this.receive,
+  });
 }
 
 class MessageHistory {

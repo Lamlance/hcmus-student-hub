@@ -56,7 +56,7 @@ class SocketReceiveMessageEvent {
 
   static SocketReceiveMessageEvent? tryFromJson(Map<String, dynamic> json) {
     final flags = ["content", "senderId", "receiverId", "messageFlag"];
-    if (flags.firstWhere((e) => json[e] == null, orElse: () => "").isEmpty) {
+    if (flags.firstWhere((e) => json[e] == null, orElse: () => "").isNotEmpty) {
       return null;
     }
 
