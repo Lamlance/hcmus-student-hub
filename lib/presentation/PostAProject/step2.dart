@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step3.dart';
 import 'styles.dart';
-import 'package:boilerplate/core/stores/project/post_project.dart';
 
 enum ProjectDuration { shortTerm, longTerm }
 
@@ -20,16 +19,43 @@ String projectDurationToString(ProjectDuration duration) {
 }
 
 class S2PostAProjectPage extends StatefulWidget {
-  final Project project;
-
-  S2PostAProjectPage({required this.project});
+  final String projectName;
+  const S2PostAProjectPage({super.key, required this.projectName});
 
   @override
-  _S2PostAProjectState createState() => _S2PostAProjectState();
+  State<StatefulWidget> createState() {
+    return _S2PostAProjectState();
+  }
 }
 
 class _S2PostAProjectState extends State<S2PostAProjectPage> {
+  final _numberOfStudentController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   ProjectDuration _projectDuration = ProjectDuration.shortTerm;
+
+  void _handleProjectDurationChange(ProjectDuration? value) {
+    if (value == null) return;
+    setState(() {
+      _projectDuration = value;
+    });
+  }
+
+  void _handleNextPageClick() {
+    if (_formKey.currentState!.validate() == false) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => S3PostAProjectPage(
+          projectDuration: switch (_projectDuration) {
+            ProjectDuration.shortTerm => 3,
+            ProjectDuration.longTerm => 6
+          },
+          projectName: widget.projectName,
+          numberOfStudent: int.parse(_numberOfStudentController.text),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,15 +70,11 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
               size: 30,
               color: Colors.black,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
+            onPressed: () => Navigator.pushNamed(context, Routes.profile),
           ),
         ],
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
@@ -83,13 +105,7 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
                   title: Text(projectDurationToString(duration)),
                   value: duration,
                   groupValue: _projectDuration,
-                  onChanged: (ProjectDuration? value) {
-                    setState(() {
-                      _projectDuration = value!;
-                      widget.project.timeOption = projectDurationToString(
-                          _projectDuration); // Cập nhật timeOption của project
-                    });
-                  },
+                  onChanged: _handleProjectDurationChange,
                 );
               }).toList(),
             ),
@@ -99,21 +115,27 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
               style: AppStyles.titleStyle, // Use the title style
             ),
             SizedBox(height: 20),
-            TextField(
-              decoration: AppStyles.inputDecoration, // Use the input decoration
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || int.tryParse(value) == null) {
+                    return "Please insert valid number";
+                  }
+                  return value.isEmpty ? "Please insert a number" : null;
+                },
+                controller: _numberOfStudentController,
+                keyboardType: TextInputType.number,
+                decoration:
+                    AppStyles.inputDecoration, // Use the input decoration
+              ),
             ),
             SizedBox(height: 30),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => S3PostAProjectPage()),
-                  );
-                },
-                child: Text('Next'),
+                onPressed: _handleNextPageClick,
+                child: Text('Next: Descripption'),
                 style: AppStyles.elevatedButtonStyle,
               ),
             ),

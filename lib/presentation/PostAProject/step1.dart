@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
 import 'styles.dart';
-import 'package:boilerplate/core/stores/project/post_project.dart';
 
 class S1PostAProjectPage extends StatefulWidget {
   @override
@@ -10,8 +9,19 @@ class S1PostAProjectPage extends StatefulWidget {
 }
 
 class _S1PostAProjectState extends State<S1PostAProjectPage> {
-  Project project =
-      Project(title: "", timeOption: "", studentCount: 0, description: "");
+  TextEditingController _txtNameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  void _handleNextPageClick() {
+    if (_formKey.currentState!.validate() == false) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => S2PostAProjectPage(
+          projectName: _txtNameController.text,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +37,11 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
               size: 30,
               color: Colors.black,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
+            onPressed: () => Navigator.pushNamed(context, Routes.profile),
           ),
         ],
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
@@ -57,13 +63,15 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
                 "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!",
                 style: AppStyles.normalTextStyle),
             SizedBox(height: 30),
-            TextField(
-              decoration: AppStyles.inputDecoration,
-              onChanged: (value) {
-                setState(() {
-                  project.title = value;
-                });
-              },
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                validator: (value) => value == null || value.isEmpty
+                    ? "Please insert project name"
+                    : null,
+                controller: _txtNameController,
+                decoration: AppStyles.inputDecoration,
+              ),
             ),
             SizedBox(height: 30),
             Text(
@@ -92,14 +100,8 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => S2PostAProjectPage()),
-                  );
-                },
-                child: Text('Next'),
+                onPressed: _handleNextPageClick,
+                child: Text('Next: Scope'),
                 style: AppStyles.elevatedButtonStyle,
               ),
             ),

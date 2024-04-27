@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    var processSnack = ScaffoldMessenger.of(context).showSnackBar(
+    final processSnack = ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Processing Data')),
     );
     _authApi.signIn(
@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         password: _passTxt.text,
       ),
       listener: (v) {
+        processSnack.close();
         if ((v.statusCode ?? 500) >= 300) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

@@ -1,3 +1,5 @@
+import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step4.dart';
@@ -5,11 +7,38 @@ import 'bullet_widget.dart';
 import 'styles.dart';
 
 class S3PostAProjectPage extends StatefulWidget {
+  final String projectName;
+  final int numberOfStudent;
+  final int projectDuration;
+  const S3PostAProjectPage(
+      {super.key,
+      required this.projectName,
+      required this.numberOfStudent,
+      required this.projectDuration});
   @override
-  _S3PostAProjectState createState() => _S3PostAProjectState();
+  State<StatefulWidget> createState() => _S3PostAProjectState();
 }
 
 class _S3PostAProjectState extends State<S3PostAProjectPage> {
+  final _projectDescController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  void _handleNextPageClick() {
+    if (_formKey.currentState!.validate() == false) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => S4PostAProjectPage(
+          projectDuration: widget.projectDuration,
+          projectName: widget.projectName,
+          numberOfStudent: widget.numberOfStudent,
+          projectDesc: _projectDescController.text,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,22 +98,22 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
               style: AppStyles.titleStyle, // Use the title style
             ),
             SizedBox(height: 20),
-            TextField(
-              decoration:
-                  AppStyles.inputDecorationHeight, // Use the input decoration
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                validator: (v) => v == null || v.isEmpty
+                    ? "Please give some description"
+                    : null,
+                controller: _projectDescController,
+                decoration: AppStyles.inputDecorationHeight,
+              ),
             ),
             SizedBox(height: 30),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => S4PostAProjectPage()),
-                  );
-                },
-                child: Text('Next'),
+                onPressed: _handleNextPageClick,
+                child: Text('Review'),
                 style: AppStyles.elevatedButtonStyle,
               ),
             ),

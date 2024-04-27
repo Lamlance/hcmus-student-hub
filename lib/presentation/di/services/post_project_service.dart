@@ -7,7 +7,7 @@ import 'package:boilerplate/data/models/post_project_api_model.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:dio/dio.dart';
-export 'package:boilerplate/data/models/proposal_api_models.dart';
+export 'package:boilerplate/data/models/post_project_api_model.dart';
 
 typedef ListenerCallback = void Function(Response response);
 
@@ -31,12 +31,12 @@ class PostProjectService {
       Endpoints.postProject,
       data: data,
       options: Options(
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
         headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
       ),
     )
-        .catchError((res) {
-      log("Post project error");
-    }).then((value) {
+        .then((value) {
       if (value.statusCode != 200) {
         if (listener != null) listener(value);
         return;
@@ -44,6 +44,9 @@ class PostProjectService {
       final project = ProjectData.fromJson(value.data["result"]);
       _dashBoardStore.addProjects([project]);
       if (listener != null) listener(value);
+    }).catchError((err, stack) {
+      log("Post project error");
+      return null;
     });
   }
 }
