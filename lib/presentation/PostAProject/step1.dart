@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
 import 'styles.dart';
+import 'package:boilerplate/core/stores/project/post_project.dart';
 
 class S1PostAProjectPage extends StatefulWidget {
   @override
@@ -9,6 +10,9 @@ class S1PostAProjectPage extends StatefulWidget {
 }
 
 class _S1PostAProjectState extends State<S1PostAProjectPage> {
+  Project project =
+      Project(title: "", timeOption: "", studentCount: 0, description: "");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +58,12 @@ class _S1PostAProjectState extends State<S1PostAProjectPage> {
                 style: AppStyles.normalTextStyle),
             SizedBox(height: 30),
             TextField(
-              decoration: AppStyles.inputDecoration, // Use the input decoration
+              decoration: AppStyles.inputDecoration,
+              onChanged: (value) {
+                setState(() {
+                  project.title = value;
+                });
+              },
             ),
             SizedBox(height: 30),
             Text(
