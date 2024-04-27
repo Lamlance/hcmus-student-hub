@@ -1,13 +1,14 @@
 import 'package:boilerplate/presentation/message/message_detail.dart';
-import 'package:boilerplate/presentation/message/models/message_data.dart';
+import 'package:boilerplate/data/models/message_models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HistoryItem extends StatelessWidget {
   static final DateFormat _dateFormat = DateFormat("dd/MM/yyyy");
   final MessageHistory history;
-
-  const HistoryItem({super.key, required this.history});
+  final int projectId;
+  const HistoryItem(
+      {super.key, required this.history, required this.projectId});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,7 +17,10 @@ class HistoryItem extends StatelessWidget {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => MessageDetailScreen(history: history),
+              builder: (ctx) => MessageDetailScreen(
+                history: history,
+                projectId: projectId,
+              ),
             ),
           ),
           child: Row(children: [
@@ -24,6 +28,7 @@ class HistoryItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

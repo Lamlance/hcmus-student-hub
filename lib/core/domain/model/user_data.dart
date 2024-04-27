@@ -43,7 +43,7 @@ class StudentProfile extends BaseProfile {
       id: json["id"],
       techStackId: json["techStackId"] ?? json["techStack"]["id"],
       skillSets: ((json["skillSets"] ?? []) as List<dynamic>)
-          .map((e) => int.parse('$e'))
+          .map((e) => e["id"] as int)
           .toList(),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:flutter/material.dart';
 
-// TODO: Get student data in proposal
 class HireItem extends StatelessWidget {
   final ProposalData hireData;
 
@@ -34,17 +33,13 @@ class HireItem extends StatelessWidget {
           children: [
             Icon(Icons.person, size: 64),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Student id - ${hireData.id}'),
-              Text('? (th) year student')
+              Text(hireData.userName),
             ])
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text("SKill"), Text("good")],
-        ),
+        Text(hireData.techStackData.name),
         SizedBox(height: 16),
-        Text("Desc desc", maxLines: 3),
+        Text(hireData.coverLetter, maxLines: 3),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

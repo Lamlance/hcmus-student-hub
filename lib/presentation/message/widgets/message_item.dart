@@ -1,4 +1,4 @@
-import 'package:boilerplate/presentation/message/models/message_data.dart';
+import 'package:boilerplate/data/models/message_models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -49,7 +49,12 @@ class GetProjectService {
   getAllProjects(
       {void Function(Response<dynamic>? response, List<ProjectData>? data)?
           listener}) {
-    _dioClient.dio.get(Endpoints.getAllProjects).then((value) {
+    _dioClient.dio
+        .get(Endpoints.getAllProjects,
+            options: Options(
+              headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+            ))
+        .then((value) {
       if (listener == null) return;
       listener(
         value,

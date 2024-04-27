@@ -1,7 +1,10 @@
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
-import 'package:boilerplate/presentation/message/models/message_data.dart';
+import 'package:boilerplate/data/models/message_api_model.dart';
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/message/widgets/history_item.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/data/models/message_models.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -11,7 +14,26 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  final List<MessageHistory> messageHistories = MessageHistory.mockData;
+  final List<GetMyMessageItem> messageHistories = [];
+  final MessageService _messageService = getIt<MessageService>();
+
+  void _getMyMessage() {
+    _messageService.getMyMessage(listener: (res, msgs) {
+      if (msgs == null) return;
+      setState(() {
+        if (messageHistories.isNotEmpty) {
+          messageHistories.removeRange(0, messageHistories.length);
+        }
+        messageHistories.addAll(msgs.messages);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getMyMessage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +60,28 @@ class _MessageScreenState extends State<MessageScreen> {
           title: const Text("Student hub - message"),
         ),
         bottomNavigationBar: MainBottomNavBar(),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.only(right: 16),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: searchBox,
-              ),
-              SizedBox(height: 16),
-              ...messageHistories.map((e) => HistoryItem(history: e))
-            ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            _getMyMessage();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.only(right: 16),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: searchBox,
+                ),
+                SizedBox(height: 16),
+                ...messageHistories.map(
+                  (e) => HistoryItem(
+                    history: e.messageHistory,
+                    projectId: e.projectData.id,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
