@@ -74,6 +74,7 @@ class ProjectData {
       {required this.id,
       required this.companyId,
       required this.title,
+      required this.monthTime,
       this.numberOfStudent = 5,
       this.description = "description",
       this.status = ProjectStatus.none,
@@ -86,8 +87,7 @@ class ProjectData {
             .length,
         proposalCount = (proposals ?? [])
             .where((e) => e.statusFlag == ProposalStatus.none)
-            .length,
-        monthTime = (createdDate?.difference(DateTime.now()).inDays ?? 0) ~/ 30;
+            .length;
 
   factory ProjectData.fromJson(Map<String, dynamic> json) {
     return ProjectData(
@@ -96,6 +96,7 @@ class ProjectData {
         createdDate: DateTime.tryParse(json["createAt"] ?? ""),
         title: json["title"],
         description: json["description"],
+        monthTime: switch (json["projectScopeFlag"] as int) { 0 => 3, _ => 6 },
         proposals: (json["proposals"] as List<dynamic>?)
             ?.map((e) => ProposalData.fromJson(e))
             .toList());

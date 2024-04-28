@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/di/services/get_project_service.dart';
+import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/di/services/misc_service.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
@@ -52,5 +52,9 @@ mixin StoreModule {
     ));
     getIt.registerSingleton<SocketChatService>(
         SocketChatService(userStore: getIt<UserStore>()));
+    getIt.registerSingleton<InterviewService>(InterviewService(
+      dioClient: getIt<DioClient>(),
+      userStore: getIt<UserStore>(),
+    ));
   }
 }

@@ -1,7 +1,20 @@
+import 'dart:developer';
+
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CreateMeetingModal extends StatefulWidget {
+  final int projectId;
+  final int senderId;
+  final int receiverId;
+
+  const CreateMeetingModal(
+      {super.key,
+      required this.projectId,
+      required this.senderId,
+      required this.receiverId});
   @override
   State<StatefulWidget> createState() {
     return _CreateMeetingModalState();
@@ -10,8 +23,30 @@ class CreateMeetingModal extends StatefulWidget {
 
 class _CreateMeetingModalState extends State<CreateMeetingModal> {
   static final DateFormat _dateFormat = DateFormat("dd/MM/yyyy HH:mm");
+  final _interviewService = getIt<InterviewService>();
+  final _titleController = TextEditingController();
   DateTime? startTime;
   DateTime? endTime;
+
+  void _handleSubmitInterview() {
+    if (startTime == null || endTime == null || _titleController.text.isEmpty) {
+      return;
+    }
+
+    _interviewService.createInterview(
+      data: CreateInterviewRequest(
+        title: _titleController.text,
+        startTime: startTime!,
+        endTime: endTime!,
+        projectId: widget.projectId,
+        senderId: widget.senderId,
+        receiverId: widget.receiverId,
+      ),
+      listener: (res) {
+        log("Create interview ${res.data}");
+      },
+    );
+  }
 
   Future<DateTime?> _showDatePicker(BuildContext ctx) async {
     var date = await showDatePicker(
@@ -44,8 +79,11 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
+                controller: _titleController,
                 decoration: InputDecoration(
-                    labelText: "Title", border: OutlineInputBorder()),
+                  labelText: "Title",
+                  border: OutlineInputBorder(),
+                ),
               ),
               SizedBox(height: 16),
               Text("Start time"),
@@ -78,7 +116,8 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
                     icon: Icon(Icons.calendar_month, size: 32))
               ]),
               SizedBox(height: 16),
-              TextButton(onPressed: () {}, child: Text("Submit")),
+              TextButton(
+                  onPressed: _handleSubmitInterview, child: Text("Submit")),
               Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),

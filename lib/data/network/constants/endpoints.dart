@@ -40,4 +40,7 @@ class Endpoints {
 
   //Messages
   static String getMyMessage = '$baseUrl/message';
+
+  //Interview
+  static String createInterview = '$baseUrl/interview';
 }

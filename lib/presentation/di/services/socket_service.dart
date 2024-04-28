@@ -72,4 +72,8 @@ class SocketChatService {
     socket.emit(_sendMsgEmitName, msg.toJson());
     return true;
   }
+
+  void closeSocket() {
+    socket.close();
+  }
 }

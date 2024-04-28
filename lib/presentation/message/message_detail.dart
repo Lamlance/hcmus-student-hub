@@ -30,9 +30,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final List<MessageData> messages = [];
   final UserStore _userStore = getIt<UserStore>();
   late int targetId;
-  late String targetName;
+  late String targetName = "";
   Widget _buildMakeMeetingModal(BuildContext ctx) {
-    return CreateMeetingModal();
+    return CreateMeetingModal(
+      projectId: widget.projectId,
+      senderId: _userStore.selectedUser!.userId,
+      receiverId: targetId,
+    );
   }
 
   void _handleSendMsg() {
@@ -46,6 +50,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   }
 
   void _connectToProject() {
+    log("Connect to project ${widget.projectId}");
     _socketChatService.connectToProject(widget.projectId, (data) {
       log(data == null ? "Get null msg" : "Get msg");
       if (data == null) return;

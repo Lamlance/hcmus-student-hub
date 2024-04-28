@@ -41,13 +41,14 @@ class ProjectDetailScreenState extends State<ProjectDetailScreen> {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-              title: Text(widget.projectData.title),
-              bottom: TabBar(tabs: [
-                Tab(text: "Proposal"),
-                Tab(text: "Detail"),
-                Tab(text: "Message"),
-                Tab(text: "Hired")
-              ])),
+            title: Text(widget.projectData.title),
+            bottom: TabBar(tabs: [
+              Tab(text: "Proposal"),
+              Tab(text: "Detail"),
+              Tab(text: "Message"),
+              Tab(text: "Hired")
+            ]),
+          ),
           body: TabBarView(children: [
             ProjectProposalScreen(
               projectData: widget.projectData,

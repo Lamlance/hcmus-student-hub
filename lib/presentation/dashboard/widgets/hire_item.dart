@@ -1,21 +1,51 @@
+import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:flutter/material.dart';
 
-class HireItem extends StatelessWidget {
+class HireItem extends StatefulWidget {
   final ProposalData hireData;
+  HireItem({super.key, required this.hireData});
 
-  const HireItem({super.key, required this.hireData});
+  @override
+  State<StatefulWidget> createState() {
+    return _HireItemState();
+  }
+}
+
+class _HireItemState extends State<HireItem> {
+  final _chatService = getIt<SocketChatService>();
+  void _handleSendMessage() {
+    _chatService.sendMsg(
+      content: "Hello can we chat about the project",
+      receiveId: widget.hireData.studentId,
+      projectId: widget.hireData.projectId,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _chatService.connectToProject(widget.hireData.projectId, (data) {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _chatService.closeSocket();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var hireButton = Expanded(
+    final hireButton = Expanded(
       flex: 1,
       child: TextButton(
         onPressed: () {},
-        child: switch (hireData.statusFlag) {
+        child: switch (widget.hireData.statusFlag) {
           ProposalStatus.none => Text("Sent hire offer"),
-          ProposalStatus.notHired => Text("Hire"),
-          ProposalStatus.hiredOfferSent => Text("Hire"),
+          ProposalStatus.notHired => Text("Sent hire offer"),
+          ProposalStatus.hiredOfferSent => Text("Waiting acception"),
           ProposalStatus.hired => Text("Already hired")
         },
         style: ButtonStyle(
@@ -33,13 +63,13 @@ class HireItem extends StatelessWidget {
           children: [
             Icon(Icons.person, size: 64),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(hireData.userName),
+              Text(widget.hireData.userName),
             ])
           ],
         ),
-        Text(hireData.techStackData.name),
+        Text(widget.hireData.techStackData.name),
         SizedBox(height: 16),
-        Text(hireData.coverLetter, maxLines: 3),
+        Text(widget.hireData.coverLetter, maxLines: 3),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +77,7 @@ class HireItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: TextButton(
-                onPressed: () {},
+                onPressed: _handleSendMessage,
                 child: const Text("Message"),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(

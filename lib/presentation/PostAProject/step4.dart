@@ -42,7 +42,10 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
     _projectService.postProject(
       data: PostProjectApiModel(
         companyId: companyId,
-        projectScopeFlag: 0,
+        projectScopeFlag: switch (widget.projectDuration) {
+          3 => 0,
+          _ => 1,
+        },
         title: widget.projectName,
         numberOfStudents: widget.numberOfStudent,
         description: widget.projectDesc,
