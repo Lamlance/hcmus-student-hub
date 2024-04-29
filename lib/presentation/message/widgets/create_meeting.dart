@@ -1,20 +1,13 @@
-import 'dart:developer';
-
-import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CreateMeetingModal extends StatefulWidget {
-  final int projectId;
-  final int senderId;
-  final int receiverId;
+  final Function(
+      {required String title,
+      required DateTime startTime,
+      required DateTime endTime}) onSubmit;
 
-  const CreateMeetingModal(
-      {super.key,
-      required this.projectId,
-      required this.senderId,
-      required this.receiverId});
+  const CreateMeetingModal({super.key, required this.onSubmit});
   @override
   State<StatefulWidget> createState() {
     return _CreateMeetingModalState();
@@ -23,7 +16,6 @@ class CreateMeetingModal extends StatefulWidget {
 
 class _CreateMeetingModalState extends State<CreateMeetingModal> {
   static final DateFormat _dateFormat = DateFormat("dd/MM/yyyy HH:mm");
-  final _interviewService = getIt<InterviewService>();
   final _titleController = TextEditingController();
   DateTime? startTime;
   DateTime? endTime;
@@ -32,19 +24,10 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
     if (startTime == null || endTime == null || _titleController.text.isEmpty) {
       return;
     }
-
-    _interviewService.createInterview(
-      data: CreateInterviewRequest(
-        title: _titleController.text,
-        startTime: startTime!,
-        endTime: endTime!,
-        projectId: widget.projectId,
-        senderId: widget.senderId,
-        receiverId: widget.receiverId,
-      ),
-      listener: (res) {
-        log("Create interview ${res.data}");
-      },
+    widget.onSubmit(
+      title: _titleController.text,
+      startTime: startTime!,
+      endTime: endTime!,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
@@ -27,7 +29,9 @@ class _HireItemState extends State<HireItem> {
   @override
   void initState() {
     super.initState();
-    _chatService.connectToProject(widget.hireData.projectId, (data) {});
+    _chatService.connectToProject(widget.hireData.projectId, (data) {
+      log(data?.content ?? "No content");
+    });
   }
 
   @override

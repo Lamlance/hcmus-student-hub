@@ -10,17 +10,10 @@ class GetMyMessageItem {
 
   static List<GetMyMessageItem> manyFromJson(Map<String, dynamic> json) {
     final project = ProjectData.fromJson(json["project"]);
-    final msgs = json["messages"] as List<dynamic>;
+    final msgs = (json["messages"] ?? []) as List<dynamic>;
 
     final msgBySender = msgs.fold({}, (prev, e) {
-      final data = MessageData(
-        receive: e["receiver"]["fullname"],
-        receiveId: e["receiver"]["id"],
-        sender: e["sender"]["fullname"],
-        senderId: e["sender"]["id"],
-        content: e["content"],
-        timeStamp: DateTime.tryParse(e["createdAt"]) ?? DateTime.now(),
-      );
+      final data = MessageData.fromJson(e);
       final keyArr = [
         e["sender"]["id"].toString(),
         e["receiver"]["id"].toString()
@@ -51,20 +44,9 @@ class GetMyMessageItem {
     return GetMyMessageItem(
       projectData: ProjectData.fromJson(json["project"]),
       messageHistory: MessageHistory(
-          historyName: json["project"]["title"],
-          initData: (json["messages"] as List<dynamic>)
-              .map(
-                (e) => MessageData(
-                  receive: e["receiver"]["fullname"],
-                  receiveId: e["receiver"]["id"],
-                  sender: e["sender"]["fullname"],
-                  senderId: e["sender"]["id"],
-                  content: e["content"],
-                  timeStamp:
-                      DateTime.tryParse(e["createdAt"]) ?? DateTime.now(),
-                ),
-              )
-              .toList()),
+        historyName: json["project"]["title"],
+        initData: [MessageData.fromJson(json)],
+      ),
     );
   }
 }
@@ -75,10 +57,10 @@ class GetMyMessageRespond {
   factory GetMyMessageRespond.fromJson(Map<String, dynamic> json) {
     final List<GetMyMessageItem> msgs = [];
     return GetMyMessageRespond(
-      messages: (json["result"] as List<dynamic>).fold(
+      messages: ((json["result"] ?? []) as List<dynamic>).fold(
         msgs,
         (prev, e) {
-          prev.addAll(GetMyMessageItem.manyFromJson(e));
+          prev.add(GetMyMessageItem.fromJson(e));
           return prev;
         },
       ),

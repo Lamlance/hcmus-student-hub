@@ -13,6 +13,17 @@ class MessageData {
     required this.receiveId,
     required this.receive,
   });
+
+  factory MessageData.fromJson(Map<String, dynamic> e) {
+    return MessageData(
+      receive: e["receiver"]["fullname"],
+      receiveId: e["receiver"]["id"],
+      sender: e["sender"]["fullname"],
+      senderId: e["sender"]["id"],
+      content: e["content"],
+      timeStamp: DateTime.tryParse(e["createdAt"]) ?? DateTime.now(),
+    );
+  }
 }
 
 class MessageHistory {
@@ -22,5 +33,8 @@ class MessageHistory {
     if (initData != null) {
       histories.addAll(initData);
     }
+  }
+  void addHistories(Iterable<MessageData> datas) {
+    histories.addAll(datas);
   }
 }

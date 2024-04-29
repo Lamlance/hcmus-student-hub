@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:collection/collection.dart';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
@@ -63,13 +63,16 @@ class AuthService {
           return authMe(
               token: token,
               listener: (p0, userData) {
+                if (userData == null) {
+                  return;
+                }
                 if (listener != null) {
                   listener(p0);
                 }
-                log(userData?.role.toString() ?? "No id");
+                log(userData.role.toString());
                 _userStore.setSelectedUser(userData, accessToken: token);
                 final profile =
-                    userData?.getProfiles().firstWhere((e) => e.id >= 0);
+                    userData.getProfiles().firstWhereOrNull((e) => e.id >= 0);
                 _userStore.setSelectedType(profile?.type ?? AccountType.none);
               });
         }

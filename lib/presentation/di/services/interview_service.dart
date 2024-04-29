@@ -12,22 +12,4 @@ class InterviewService {
   InterviewService({required DioClient dioClient, required UserStore userStore})
       : _dioClient = dioClient,
         _userStore = userStore;
-
-  void createInterview({
-    required CreateInterviewRequest data,
-    void Function(Response<dynamic> res)? listener,
-  }) {
-    _dioClient.dio
-        .post(Endpoints.createInterview,
-            data: data,
-            options: Options(
-              headers: {"authorization": "Bearer ${_userStore.token}"},
-              contentType: Headers.jsonContentType,
-              responseType: ResponseType.json,
-              validateStatus: (status) => true,
-            ))
-        .then((value) {
-      if (listener != null) listener(value);
-    });
-  }
 }

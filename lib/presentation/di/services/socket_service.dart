@@ -1,4 +1,5 @@
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/data/models/interview_api_models.dart';
 import 'package:boilerplate/data/models/socket_api_models.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -10,6 +11,8 @@ typedef ReceiveMsgCallback = Function(SocketReceiveMessageEvent? data);
 class SocketChatService {
   static const _receiveMsgEventName = "RECEIVE_MESSAGE";
   static const _sendMsgEmitName = "SEND_MESSAGE";
+  static const _sendInterviewEmitName = "SCHEDULE_INTERVIEW";
+
   final UserStore _userStore;
   final socket = IO.io(
       Endpoints.socketUrl,
@@ -70,6 +73,16 @@ class SocketChatService {
         receiveId: receiveId,
         messageFlag: flag);
     socket.emit(_sendMsgEmitName, msg.toJson());
+    return true;
+  }
+
+  bool sendInterview(CreateInterviewRequest data) {
+    if (socket.connected == false) return false;
+    final senderId = _userStore.selectedUser?.userId;
+    if (senderId == null) return false;
+
+    socket.emit(_sendInterviewEmitName, data.toJson());
+
     return true;
   }
 

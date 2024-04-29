@@ -40,7 +40,8 @@ class Endpoints {
 
   //Messages
   static String getMyMessage = '$baseUrl/message';
-
+  static String getMyMessageWith(int projectId, int targetId) =>
+      '$baseUrl/message/$projectId/user/$targetId';
   //Interview
   static String createInterview = '$baseUrl/interview';
 }

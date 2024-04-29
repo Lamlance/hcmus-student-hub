@@ -30,4 +30,28 @@ class MessageService {
       }
     });
   }
+
+  void getMyMessageWith({
+    required int projectId,
+    required int targetId,
+    Function(Response<dynamic> res, List<MessageData>? data)? listener,
+  }) {
+    _dioClient.dio
+        .get(Endpoints.getMyMessageWith(projectId, targetId),
+            options: Options(
+              headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+            ))
+        .then((v) {
+      if (listener != null) {
+        return listener(
+          v,
+          v.statusCode != 200
+              ? null
+              : (v.data["result"] as List<dynamic>)
+                  .map((e) => MessageData.fromJson(e))
+                  .toList(),
+        );
+      }
+    });
+  }
 }

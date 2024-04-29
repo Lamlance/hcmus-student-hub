@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/data/models/interview_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
 import 'package:boilerplate/presentation/message/widgets/message_item.dart';
@@ -24,7 +26,8 @@ class MessageDetailScreen extends StatefulWidget {
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   static final _dateFormatOnlyDate = DateFormat("dd/MM/yyyy");
-  final SocketChatService _socketChatService = getIt<SocketChatService>();
+  final _socketChatService = getIt<SocketChatService>();
+  final _messageService = getIt<MessageService>();
   final TextEditingController _msgController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final List<MessageData> messages = [];
@@ -33,10 +36,23 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   late String targetName = "";
   Widget _buildMakeMeetingModal(BuildContext ctx) {
     return CreateMeetingModal(
+      onSubmit: _handleCreateInterview,
+    );
+  }
+
+  void _handleCreateInterview({
+    required DateTime endTime,
+    required DateTime startTime,
+    required String title,
+  }) {
+    _socketChatService.sendInterview(CreateInterviewRequest(
+      title: title,
+      startTime: startTime,
+      endTime: endTime,
       projectId: widget.projectId,
       senderId: _userStore.selectedUser!.userId,
       receiverId: targetId,
-    );
+    ));
   }
 
   void _handleSendMsg() {
@@ -77,7 +93,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   @override
   void initState() {
     super.initState();
-    messages.addAll(widget.history.histories);
     final first = widget.history.histories.first;
     if (first.senderId == first.receiveId) {
       targetId = first.receiveId;
@@ -89,6 +104,15 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       targetName = first.sender;
     }
     log('$targetId & $targetName');
+    _messageService.getMyMessageWith(
+        projectId: widget.projectId,
+        targetId: targetId,
+        listener: (res, data) {
+          if (data == null) return log("Missing data");
+          setState(() {
+            messages.addAll(data);
+          });
+        });
     _connectToProject();
   }
 
