@@ -138,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Icon(
-                    Icons.person,
+                    Icons.person_off_rounded,
                   ),
                 ),
                 Text("Logout")

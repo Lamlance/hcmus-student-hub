@@ -4,6 +4,7 @@ import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
@@ -63,45 +64,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           title: Text("Student hub"),
           actions: [
             IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.profile);
-                },
-                icon: Icon(Icons.person))
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.PostAProject);
+              },
+              icon: Icon(Icons.add),
+            ),
+            ProfileIconButton()
           ],
-          flexibleSpace: _userStore.selectedType != AccountType.business
-              ? null
-              : FlexibleSpaceBar(
-                  stretchModes: const <StretchMode>[
-                    StretchMode.zoomBackground,
-                    StretchMode.blurBackground,
-                    StretchMode.fadeTitle,
-                  ],
-                  background: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Your Project"),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.PostAProject);
-                          },
-                          child: Text("Post a Project"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(
-                80.0), // Adjust this value as per your requirement
-            child: TabBar(onTap: (i) => handleTabTap(i), tabs: [
-              Tab(text: "All projects"),
-              Tab(text: "Working"),
-              Tab(text: "Archived")
-            ]),
-          ),
+          bottom: TabBar(onTap: (i) => handleTabTap(i), tabs: [
+            Tab(text: "All projects"),
+            Tab(text: "Working"),
+            Tab(text: "Archived")
+          ]),
         ),
         bottomNavigationBar: MainBottomNavBar(),
         body: RefreshIndicator(

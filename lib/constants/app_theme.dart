@@ -40,7 +40,7 @@ class AppThemeData {
       primaryColor: const Color(0xFF030303),
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.background,
-        elevation: 0,
+        elevation: 20,
         iconTheme: IconThemeData(color: colorScheme.primary),
       ),
       iconTheme: IconThemeData(color: colorScheme.onPrimary),
@@ -60,11 +60,11 @@ class AppThemeData {
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
-    primary: Color(0xFFd21e1d),
+    primary: Colors.blue,
     primaryContainer: Color(0xFF9e1718),
     secondary: Color(0xFFEFF3F3),
     secondaryContainer: Color(0xFFFAFBFB),
-    background: Color(0xFFE6EBEB),
+    background: Colors.white,
     surface: Color(0xFFFAFBFB),
     onBackground: Colors.white,
     error: _lightFillColor,

@@ -1,4 +1,5 @@
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
@@ -44,30 +45,8 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
-        title: Text('StudentHub', style: TextStyle(fontSize: 20)),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
-          ),
-        ],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
-          ),
-        ),
+        title: Text('StudentHub'),
+        actions: <Widget>[ProfileIconButton()],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),

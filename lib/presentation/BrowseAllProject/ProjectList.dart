@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/get_project_service.dart';
@@ -42,32 +43,9 @@ class _ProjectListState extends State<ProjectList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
-        title: Text('StudentHub', style: TextStyle(fontSize: 20)),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
-          ),
-        ],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context, Routes.profile);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
-          ),
-        ),
+        title: Text('StudentHub'),
+        actions: <Widget>[ProfileIconButton()],
       ),
       body: RefreshIndicator(
         onRefresh: () async {

@@ -15,19 +15,7 @@ class _SignupTypeState extends State<SignupTypePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('StudentHub', style: TextStyle(fontSize: 20)),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              // Handle the person icon tap
-            },
-          ),
-        ],
+        title: Text('StudentHub'),
       ),
       body: SafeArea(
         child: Container(
