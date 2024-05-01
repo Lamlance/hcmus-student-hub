@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:boilerplate/core/stores/user/user_store.dart';
-import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +18,8 @@ class HireItem extends StatefulWidget {
 
 class _HireItemState extends State<HireItem> {
   final _chatService = getIt<SocketChatService>();
+  final _proposalService = getIt<ProposalService>();
+
   void _handleSendMessage() {
     _chatService.sendMsg(
       content: "Hello can we chat about the project",
@@ -45,7 +47,15 @@ class _HireItemState extends State<HireItem> {
     final hireButton = Expanded(
       flex: 1,
       child: TextButton(
-        onPressed: () {},
+        onPressed: widget.hireData.statusFlag == ProposalStatus.hired ||
+                widget.hireData.statusFlag == ProposalStatus.hiredOfferSent
+            ? null
+            : () => _proposalService.updateProposal(
+                  updateData: UpdateProposalByProposalId(
+                    proposalId: widget.hireData.id,
+                    statusFlag: ProposalStatus.hiredOfferSent,
+                  ),
+                ),
         child: switch (widget.hireData.statusFlag) {
           ProposalStatus.none => Text("Sent hire offer"),
           ProposalStatus.notHired => Text("Sent hire offer"),

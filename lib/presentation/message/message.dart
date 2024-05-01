@@ -1,4 +1,5 @@
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
+import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/message_api_model.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
@@ -58,6 +59,7 @@ class _MessageScreenState extends State<MessageScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Student hub - message"),
+          actions: [ProfileIconButton()],
         ),
         bottomNavigationBar: MainBottomNavBar(),
         body: RefreshIndicator(
@@ -66,7 +68,7 @@ class _MessageScreenState extends State<MessageScreen> {
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16, top: 16),
             child: Column(
               children: [
                 Padding(

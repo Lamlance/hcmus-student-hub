@@ -4,9 +4,32 @@ import 'package:intl/intl.dart';
 
 class MessageItem extends StatelessWidget {
   static final DateFormat _dateFormat = DateFormat("HH:mm");
+  static final DateFormat _interviewDateFormat = DateFormat("dd/MM/yyyy HH:mm");
+
   final MessageData data;
 
   const MessageItem({super.key, required this.data});
+
+  Widget _makeInterviewMsg(InterviewData data) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(data.title),
+        Text('Start time: ${_interviewDateFormat.format(data.startTime)}'),
+        Text('End time: ${_interviewDateFormat.format(data.endTime)}'),
+        TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16 * 2),
+          ),
+          onPressed: () {},
+          child: Text("Join", style: TextStyle(color: Colors.black)),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,7 +61,9 @@ class MessageItem extends StatelessWidget {
                       ),
                     ),
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                    child: Text(data.content),
+                    child: data.interview != null
+                        ? _makeInterviewMsg(data.interview!)
+                        : Text(data.content),
                   ),
                 )
               ],
