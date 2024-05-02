@@ -48,17 +48,18 @@ class SocketChatService {
   }
 
   void _receiveMsgCallback(dynamic data) {
-    final msgData = SocketReceiveMessageEvent.tryFromJson(data);
+    //log(data.toString());
+    final msgData = SocketReceiveMessageEvent.tryFromJson(data["notification"]);
     if (onReceiveMsg != null) onReceiveMsg!(msgData);
   }
 
   void _handleNotification(dynamic data) {
     log("Get notfication");
-    _notificationService.showNotification(
-      id: DateTime.now().millisecondsSinceEpoch % 100,
-      title: "Got notification",
-      body: "Noti noti noti",
-    );
+    // _notificationService.showNotification(
+    //   id: DateTime.now().millisecondsSinceEpoch % 100,
+    //   title: "Got notification",
+    //   body: "Noti noti noti",
+    // );
   }
 
   void connectToProject(int projectId, ReceiveMsgCallback listener) {

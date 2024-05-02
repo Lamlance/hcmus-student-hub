@@ -55,16 +55,17 @@ class SocketReceiveMessageEvent {
       required this.messageFlag});
 
   static SocketReceiveMessageEvent? tryFromJson(Map<String, dynamic> json) {
-    final flags = ["content", "senderId", "receiverId", "messageFlag"];
+    final flags = ["content", "sender", "receiver", "message"];
     if (flags.firstWhere((e) => json[e] == null, orElse: () => "").isNotEmpty) {
       return null;
     }
 
     return SocketReceiveMessageEvent(
-      content: json["content"],
-      senderId: json["senderId"],
-      receiveId: json["receiverId"],
-      messageFlag: SocketMsgFlagUtils.intToMsgFlag(json["messageFlag"]),
+      content: json["message"]["content"],
+      senderId: json["sender"]["id"],
+      receiveId: json["receiver"]["id"],
+      messageFlag:
+          SocketMsgFlagUtils.intToMsgFlag(json["message"]["messageFlag"]),
     );
   }
 }
