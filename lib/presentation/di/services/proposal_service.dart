@@ -54,7 +54,7 @@ class ProposalService {
     });
   }
 
-  updateProposal({
+  void updateProposal({
     required UpdateProposalByProposalId updateData,
     void Function(Response<dynamic> res)? listener,
   }) {

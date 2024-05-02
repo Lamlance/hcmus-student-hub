@@ -60,6 +60,8 @@ dependencies:
   xxtea: ^2.1.0
   json_annotation: ^4.8.1
   socket_io_client: ^3.0.0-beta.2
+  flutter_local_notifications: ^17.1.1
+  timezone: ^0.9.3
   # Y
   # Z
 

@@ -10,6 +10,7 @@ import 'package:boilerplate/presentation/di/services/get_project_service.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/di/services/misc_service.dart';
+import 'package:boilerplate/presentation/di/services/notification_service.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:boilerplate/presentation/di/services/post_project_service.dart';
@@ -26,6 +27,9 @@ mixin StoreModule {
     );
 
     // stores:------------------------------------------------------------------
+    getIt.registerSingleton<LocalNotificationService>(
+      LocalNotificationService(),
+    );
     getIt.registerSingleton<UserStore>(UserStore());
     getIt.registerSingleton<DashBoardStore>(DashBoardStore());
     getIt.registerSingleton<RoutesStore>(RoutesStore());
@@ -51,7 +55,10 @@ mixin StoreModule {
       userStore: getIt<UserStore>(),
     ));
     getIt.registerSingleton<SocketChatService>(
-        SocketChatService(userStore: getIt<UserStore>()));
+      SocketChatService(
+          userStore: getIt<UserStore>(),
+          notificationService: getIt<LocalNotificationService>()),
+    );
     getIt.registerSingleton<InterviewService>(InterviewService(
       dioClient: getIt<DioClient>(),
       userStore: getIt<UserStore>(),

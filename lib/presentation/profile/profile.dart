@@ -2,6 +2,8 @@ import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/notification_service.dart';
+import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
@@ -17,7 +19,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final UserStore _userStore = getIt<UserStore>();
+  final _userStore = getIt<UserStore>();
+  final _socketService = getIt<SocketChatService>();
   AccountType _selectType = AccountType.none;
 
   String _getAccountSubtitle(AccountType type) {
@@ -67,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .where((e) => e.id != -1)
         .firstOrNull;
     _userStore.setSelectedType(firstProfile?.type ?? AccountType.student);
+    _socketService.connectToNotification(_userStore.selectedUser!.userId);
   }
 
   @override
