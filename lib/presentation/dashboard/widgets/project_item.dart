@@ -10,13 +10,15 @@ class ProjectItem extends StatelessWidget {
   final ProjectData projectData;
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final bool displayNumber;
+  final bool displayEndLine;
   final Function(ProjectData data)? onOptionClick;
 
   ProjectItem(
       {super.key,
       required this.projectData,
       this.onOptionClick,
-      this.displayNumber = true});
+      this.displayNumber = true,
+      this.displayEndLine = true});
 
   void _onIemClick(BuildContext context) {
     if (displayNumber == false) return;
@@ -82,7 +84,9 @@ class ProjectItem extends StatelessWidget {
               : [],
           Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Container(height: 2, color: Colors.grey))
+              child: displayEndLine
+                  ? Container(height: 2, color: Colors.grey)
+                  : null)
         ]));
   }
 }

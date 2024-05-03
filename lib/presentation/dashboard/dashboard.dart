@@ -9,7 +9,7 @@ import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_student.dart';
-import 'package:boilerplate/presentation/di/services/get_project_service.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -23,8 +23,6 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   final UserStore _userStore = getIt<UserStore>();
-  final GetProjectService _projectService = getIt<GetProjectService>();
-  final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   ProjectStatus seletedStatus = ProjectStatus.none;
   final List<ProjectData> projects = [];
 
@@ -35,23 +33,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         seletedStatus = newStatus;
       });
     }
-  }
-
-  _getAllProjects() {
-    _projectService.getProjectsByCompanyId(listener: (response, data) {
-      if (data != null) {
-        setState(() {
-          projects.removeWhere((e) => true);
-          projects.addAll(data);
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getAllProjects();
   }
 
   @override
@@ -81,7 +62,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         body: RefreshIndicator(
           onRefresh: () async {
             log("REFRESH");
-            _getAllProjects();
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -90,7 +70,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               builder: (ctx) => _userStore.selectedType == AccountType.business
                   ? DashBoardCompanyScreen(
                       seletedStatus: seletedStatus,
-                      projects: projects,
                     )
                   : DashBoardStudentScreen(seletedStatus: seletedStatus),
             ),

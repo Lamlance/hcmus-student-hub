@@ -3,9 +3,8 @@ import 'dart:developer';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/di/services/get_project_service.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/presentation/BrowseAllProject/widgets/project_item_student.dart';
 
@@ -18,7 +17,7 @@ class ProjectList extends StatefulWidget {
 
 class _ProjectListState extends State<ProjectList> {
   final List<ProjectData> _list = List.empty(growable: true);
-  final GetProjectService _getProjectService = getIt<GetProjectService>();
+  final ProjectService _getProjectService = getIt<ProjectService>();
 
   void _getAllProject() {
     _getProjectService.getAllProjects(listener: ((response, data) {
@@ -35,7 +34,6 @@ class _ProjectListState extends State<ProjectList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getAllProject();
   }

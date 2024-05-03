@@ -21,6 +21,14 @@ class _HireItemState extends State<HireItem> {
   final _proposalService = getIt<ProposalService>();
 
   void _handleSendMessage() {
+    if (widget.hireData.statusFlag == ProposalStatus.none) {
+      _proposalService.updateProposal(
+        updateData: UpdateProposalByProposalId(
+          proposalId: widget.hireData.id,
+          statusFlag: ProposalStatus.active,
+        ),
+      );
+    }
     _chatService.sendMsg(
       content: "Hello can we chat about the project",
       receiveId: widget.hireData.studentId,
@@ -58,7 +66,7 @@ class _HireItemState extends State<HireItem> {
                 ),
         child: switch (widget.hireData.statusFlag) {
           ProposalStatus.none => Text("Sent hire offer"),
-          ProposalStatus.notHired => Text("Sent hire offer"),
+          ProposalStatus.active => Text("Sent hire offer"),
           ProposalStatus.hiredOfferSent => Text("Waiting acception"),
           ProposalStatus.hired => Text("Already hired")
         },

@@ -76,3 +76,32 @@ class UpdateProposalByProposalId {
     return {"statusFlag": ProposalData.statusToInt(statusFlag)};
   }
 }
+
+class GetProposalByStudentIdResponse {
+  final ProjectData projectData;
+  final int id;
+  final int projectId;
+  final int studentId;
+  final String coverLetter;
+  final ProposalStatus statusFlag;
+
+  GetProposalByStudentIdResponse({
+    required this.projectData,
+    required this.id,
+    required this.projectId,
+    required this.studentId,
+    required this.statusFlag,
+    required this.coverLetter,
+  });
+
+  factory GetProposalByStudentIdResponse.fromJson(Map<String, dynamic> json) {
+    return GetProposalByStudentIdResponse(
+      projectData: ProjectData.fromJson(json["project"]),
+      id: json["id"],
+      projectId: json["projectId"],
+      studentId: json["studentId"],
+      coverLetter: json["coverLetter"],
+      statusFlag: ProposalData.intToStatus(json["statusFlag"]),
+    );
+  }
+}

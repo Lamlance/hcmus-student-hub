@@ -1,10 +1,8 @@
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/di/services/post_project_service.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
-import 'step2.dart';
-import 'bullet_widget.dart';
 import 'styles.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 
@@ -25,7 +23,7 @@ class S4PostAProjectPage extends StatefulWidget {
 }
 
 class _S4PostAProjectState extends State<S4PostAProjectPage> {
-  final PostProjectService _projectService = getIt<PostProjectService>();
+  final ProjectService _projectService = getIt<ProjectService>();
   final _userStore = getIt<UserStore>();
 
   void _handlePostJob() {

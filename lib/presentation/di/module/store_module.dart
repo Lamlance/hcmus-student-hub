@@ -6,14 +6,13 @@ import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
-import 'package:boilerplate/presentation/di/services/get_project_service.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/di/services/misc_service.dart';
 import 'package:boilerplate/presentation/di/services/notification_service.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
-import 'package:boilerplate/presentation/di/services/post_project_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import '../../../di/service_locator.dart';
 
@@ -36,7 +35,7 @@ mixin StoreModule {
 
     getIt.registerSingleton<AuthService>(AuthService(
         dioClient: getIt<DioClient>(), userStore: getIt<UserStore>()));
-    getIt.registerSingleton<GetProjectService>(GetProjectService(
+    getIt.registerSingleton<ProjectService>(ProjectService(
         dioClient: getIt<DioClient>(),
         userStore: getIt<UserStore>(),
         dashBoardStore: getIt<DashBoardStore>()));
@@ -46,10 +45,6 @@ mixin StoreModule {
         MiscService(dioClient: getIt<DioClient>()));
     getIt.registerSingleton<ProposalService>(ProposalService(
         dioClient: getIt<DioClient>(), userStore: getIt<UserStore>()));
-    getIt.registerSingleton<PostProjectService>(PostProjectService(
-        dioClient: getIt<DioClient>(),
-        userStore: getIt<UserStore>(),
-        dashBoardStore: getIt<DashBoardStore>()));
     getIt.registerSingleton<MessageService>(MessageService(
       dioClient: getIt<DioClient>(),
       userStore: getIt<UserStore>(),

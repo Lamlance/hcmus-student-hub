@@ -6,7 +6,7 @@ class ProfileIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        Navigator.of(context).pushNamed(Routes.profile);
+        Navigator.of(context).pushReplacementNamed(Routes.profile);
       },
       icon: Icon(Icons.person),
     );

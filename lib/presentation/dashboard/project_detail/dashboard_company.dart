@@ -2,18 +2,43 @@ import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
 
-class DashBoardCompanyScreen extends StatelessWidget {
+class DashBoardCompanyScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
+
+  DashBoardCompanyScreen({
+    super.key,
+    this.seletedStatus = ProjectStatus.none,
+  });
+
+  @override
+  State<StatefulWidget> createState() {
+    return _DashBoardCompanyScreenState();
+  }
+}
+
+class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
   final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final List<ProjectData> _projects = [];
+  final ProjectService _projectService = getIt<ProjectService>();
 
-  DashBoardCompanyScreen(
-      {super.key,
-      this.seletedStatus = ProjectStatus.none,
-      List<ProjectData>? projects}) {
-    if (projects != null) _projects.addAll(projects);
+  _getAllProjects() {
+    _projectService.getProjectsByCompanyId(listener: (response, data) {
+      if (data != null) {
+        setState(() {
+          _projects.removeWhere((e) => true);
+          _projects.addAll(data);
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllProjects();
   }
 
   Widget _buildBottomSheet(BuildContext buildContext, ProjectData data) {
@@ -64,7 +89,8 @@ class DashBoardCompanyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var tabProjects = _projects
         .where((p) =>
-            seletedStatus == ProjectStatus.none || seletedStatus == p.status)
+            widget.seletedStatus == ProjectStatus.none ||
+            widget.seletedStatus == p.status)
         .map((e) {
       return ProjectItem(
         projectData: e,

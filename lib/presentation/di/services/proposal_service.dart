@@ -5,6 +5,8 @@ import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:dio/dio.dart';
 export 'package:boilerplate/data/models/proposal_api_models.dart';
 
+typedef ResponseListener<T> = Function(Response<dynamic> res, T? data);
+
 class ProposalService {
   final DioClient _dioClient;
   final UserStore _userStore;
@@ -70,6 +72,35 @@ class ProposalService {
     )
         .then((value) {
       if (listener != null) return listener(value);
+    });
+  }
+
+  void getProposalByStudentId({
+    ResponseListener<Iterable<GetProposalByStudentIdResponse>>? listener,
+  }) {
+    _dioClient.dio
+        .get(
+      Endpoints.getProposalByStudentId(_userStore.selectedUser!.student!.id),
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((v) {
+      if (v.statusCode != 200) {
+        if (listener != null) listener(v, null);
+        return;
+      }
+      if (listener != null) {
+        listener(
+          v,
+          ((v.data["result"] ?? []) as List<dynamic>).map(
+            (e) => GetProposalByStudentIdResponse.fromJson(e),
+          ),
+        );
+      }
     });
   }
 }
