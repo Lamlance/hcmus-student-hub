@@ -46,4 +46,8 @@ class Endpoints {
       '$baseUrl/message/$projectId/user/$targetId';
   //Interview
   static String createInterview = '$baseUrl/interview';
+  static String cancelInterview(int interviewId) =>
+      '$baseUrl/interview/$interviewId/disable';
+  static String editInterview(int interviewId) =>
+      '$baseUrl/interview/$interviewId';
 }

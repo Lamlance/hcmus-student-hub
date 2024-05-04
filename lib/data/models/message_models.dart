@@ -6,6 +6,7 @@ class InterviewData {
   final DateTime endTime;
   final String roomCode;
   final String roomId;
+  final bool disableFlag;
 
   InterviewData({
     required this.id,
@@ -15,6 +16,7 @@ class InterviewData {
     required this.endTime,
     required this.roomCode,
     required this.roomId,
+    this.disableFlag = false,
   });
   factory InterviewData.fromJson(Map<String, dynamic> json) {
     return InterviewData(
@@ -25,6 +27,7 @@ class InterviewData {
       endTime: DateTime.tryParse(json["endTime"]) ?? DateTime.now(),
       roomCode: json["meetingRoom"]["meeting_room_code"],
       roomId: json["meetingRoom"]["meeting_room_id"],
+      disableFlag: json["disableFlag"] == 1,
     );
   }
 }

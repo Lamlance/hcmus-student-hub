@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/interview_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
@@ -27,6 +28,7 @@ class MessageDetailScreen extends StatefulWidget {
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   static final _dateFormatOnlyDate = DateFormat("dd/MM/yyyy");
   final _socketChatService = getIt<SocketChatService>();
+  final _interviewService = getIt<InterviewService>();
   final _messageService = getIt<MessageService>();
   final TextEditingController _msgController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -34,25 +36,34 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final UserStore _userStore = getIt<UserStore>();
   late int targetId;
   late String targetName = "";
-  Widget _buildMakeMeetingModal(BuildContext ctx) {
-    return CreateMeetingModal(
-      onSubmit: _handleCreateInterview,
-    );
-  }
 
-  void _handleCreateInterview({
-    required DateTime endTime,
-    required DateTime startTime,
+  void _handleMeetingModalSubmit({
     required String title,
+    required DateTime startTime,
+    required DateTime endTime,
+    InterviewData? prevData,
   }) {
-    _socketChatService.sendInterview(CreateInterviewRequest(
-      title: title,
+    if (prevData == null) {
+      _socketChatService.sendInterview(CreateInterviewRequest(
+        title: title,
+        startTime: startTime,
+        endTime: endTime,
+        projectId: widget.projectId,
+        senderId: _userStore.selectedUser!.userId,
+        receiverId: targetId,
+      ));
+      return;
+    }
+
+    _interviewService.editInterview(
+      interviewId: prevData.id,
       startTime: startTime,
       endTime: endTime,
-      projectId: widget.projectId,
-      senderId: _userStore.selectedUser!.userId,
-      receiverId: targetId,
-    ));
+      title: title,
+      listener: (res) {
+        log("Update interview: ${res.statusCode}");
+      },
+    );
   }
 
   void _handleSendMsg() {
@@ -90,6 +101,24 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     });
   }
 
+  void _handleCancelMeeting(InterviewData data) {
+    _interviewService.cancelInterview(
+        interviewId: data.id,
+        listener: (res) {
+          log('Cancel interview ${res.statusCode}');
+        });
+  }
+
+  void _handleEditMeeting(InterviewData data) {
+    _showModalBottomSheet(
+      context,
+      (ctx) => CreateMeetingModal(
+        onSubmit: _handleMeetingModalSubmit,
+        editData: data,
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -125,8 +154,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton(
-                onPressed: () =>
-                    _showModalBottomSheet(ctx, _buildMakeMeetingModal),
+                onPressed: () => _showModalBottomSheet(
+                  ctx,
+                  (ctx) => CreateMeetingModal(
+                    onSubmit: _handleMeetingModalSubmit,
+                  ),
+                ),
                 child: Text("Schedule an interview"),
               )
             ],
@@ -169,7 +202,16 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           ],
         ),
       ));
-      previousValue.addAll(e.value.map((e) => MessageItem(data: e)));
+      previousValue.addAll(
+        e.value.map(
+          (e) => MessageItem(
+            data: e,
+            handleCancelMeeting:
+                e.interview == null ? null : _handleCancelMeeting,
+            handleEditMeeting: e.interview == null ? null : _handleEditMeeting,
+          ),
+        ),
+      );
       return previousValue;
     });
 
@@ -179,8 +221,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           title: Text(widget.history.historyName),
           actions: [
             IconButton(
-                onPressed: () =>
-                    _showModalBottomSheet(context, _buildBottomMenu),
+                onPressed: () => _showModalBottomSheet(
+                      context,
+                      _buildBottomMenu,
+                    ),
                 icon: Icon(Icons.more_horiz))
           ],
         ),

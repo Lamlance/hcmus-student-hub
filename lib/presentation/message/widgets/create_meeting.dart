@@ -1,13 +1,24 @@
+import 'package:boilerplate/data/models/message_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CreateMeetingModal extends StatefulWidget {
-  final Function(
-      {required String title,
-      required DateTime startTime,
-      required DateTime endTime}) onSubmit;
+typedef MeetingModalOnSumbit = Function({
+  required String title,
+  required DateTime startTime,
+  required DateTime endTime,
+  InterviewData? prevData,
+});
 
-  const CreateMeetingModal({super.key, required this.onSubmit});
+class CreateMeetingModal extends StatefulWidget {
+  final MeetingModalOnSumbit onSubmit;
+
+  final InterviewData? editData;
+
+  const CreateMeetingModal({
+    super.key,
+    required this.onSubmit,
+    this.editData,
+  });
   @override
   State<StatefulWidget> createState() {
     return _CreateMeetingModalState();
@@ -28,6 +39,7 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
       title: _titleController.text,
       startTime: startTime!,
       endTime: endTime!,
+      prevData: widget.editData,
     );
   }
 
@@ -45,6 +57,18 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
     if (time == null) return null;
 
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.editData != null) {
+      setState(() {
+        startTime = widget.editData!.startTime;
+        endTime = widget.editData!.endTime;
+        _titleController.text = widget.editData!.title;
+      });
+    }
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:boilerplate/constants/font_family.dart';
 import 'package:boilerplate/data/models/message_models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,11 +7,44 @@ class MessageItem extends StatelessWidget {
   static final DateFormat _dateFormat = DateFormat("HH:mm");
   static final DateFormat _interviewDateFormat = DateFormat("dd/MM/yyyy HH:mm");
 
+  final Function(InterviewData data)? handleCancelMeeting;
+  final Function(InterviewData data)? handleEditMeeting;
+
   final MessageData data;
 
-  const MessageItem({super.key, required this.data});
+  const MessageItem({
+    super.key,
+    required this.data,
+    this.handleCancelMeeting,
+    this.handleEditMeeting,
+  });
 
-  Widget _makeInterviewMsg(InterviewData data) {
+  void _showInterviewEditDialog(InterviewData data, BuildContext ctx) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text(
+              'Edit ${data.title}',
+              style: TextStyle(fontFamily: FontFamily.roboto),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    if (handleCancelMeeting != null) handleCancelMeeting!(data);
+                  },
+                  child: Text("Cancel meeting")),
+              TextButton(
+                  onPressed: () {
+                    if (handleEditMeeting != null) handleEditMeeting!(data);
+                  },
+                  child: Text("Reschedule"))
+            ],
+          );
+        });
+  }
+
+  Widget _makeInterviewMsg(InterviewData data, BuildContext ctx) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,14 +52,24 @@ class MessageItem extends StatelessWidget {
         Text(data.title),
         Text('Start time: ${_interviewDateFormat.format(data.startTime)}'),
         Text('End time: ${_interviewDateFormat.format(data.endTime)}'),
-        TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 16 * 2),
-          ),
-          onPressed: () {},
-          child: Text("Join", style: TextStyle(color: Colors.black)),
-        )
+        Row(
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: data.disableFlag ? Colors.red : Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 16 * 2),
+              ),
+              onPressed: data.disableFlag ? null : () {},
+              child: Text(data.disableFlag ? "Canceled" : "Join",
+                  style: TextStyle(color: Colors.black)),
+            ),
+            IconButton(
+                onPressed: () {
+                  _showInterviewEditDialog(data, ctx);
+                },
+                icon: Icon(Icons.more_horiz))
+          ],
+        ),
       ],
     );
   }
@@ -62,7 +106,7 @@ class MessageItem extends StatelessWidget {
                     ),
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     child: data.interview != null
-                        ? _makeInterviewMsg(data.interview!)
+                        ? _makeInterviewMsg(data.interview!, context)
                         : Text(data.content),
                   ),
                 )
