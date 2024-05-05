@@ -112,7 +112,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Student Hub"),
       ),
-      bottomNavigationBar: MainBottomNavBar(),
+      bottomNavigationBar: switch (_selectType) {
+        AccountType.none => null,
+        AccountType.business =>
+          _userStore.selectedUser?.company == null ? null : MainBottomNavBar(),
+        AccountType.student =>
+          _userStore.selectedUser?.student == null ? null : MainBottomNavBar()
+      },
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         profiles,
         SizedBox(
