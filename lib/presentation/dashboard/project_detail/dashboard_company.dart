@@ -1,5 +1,4 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'dart:developer';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
@@ -65,9 +64,12 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                         child: Container(height: 2, color: Colors.grey)),
                     TextButton(
                         onPressed: () {
-                          data.status = ProjectStatus.working;
-                          _dashBoardStore.updateProject(data);
-                          Navigator.pop(buildContext);
+                          _projectService.startWorkingOnProject(
+                            data: data,
+                            listener: (res) {
+                              log("Start working: ${res.statusCode}");
+                            },
+                          );
                         },
                         child: const Text("Start working"))
                   ]

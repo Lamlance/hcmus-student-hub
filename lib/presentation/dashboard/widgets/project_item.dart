@@ -37,7 +37,7 @@ class ProjectItem extends StatelessWidget {
     if (onOptionClick != null) {
       onOptionClick!(projectData);
     }
-    _dashBoardStore.setSelectProject(projectData);
+    // _dashBoardStore.setSelectProject(projectData);
   }
 
   @override

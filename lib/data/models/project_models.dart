@@ -96,6 +96,13 @@ class ProjectData {
         messageCount: json["countMessages"] ?? -1,
         proposalCount: json["countProposals"] ?? -1,
         hiredCount: json["countHired"] ?? -1,
+        numberOfStudent: json["numberOfStudents"],
+        status: switch (json["typeFlag"] ?? 0) {
+          0 => ProjectStatus.none,
+          1 => ProjectStatus.working,
+          2 => ProjectStatus.archive,
+          _ => ProjectStatus.none
+        },
         monthTime: switch (json["projectScopeFlag"] as int) { 0 => 3, _ => 6 },
         proposals: (json["proposals"] as List<dynamic>?)
             ?.map((e) => ProposalData.fromJson(e))

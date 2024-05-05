@@ -1,10 +1,9 @@
 import 'package:boilerplate/core/domain/model/user_data.dart';
-import 'package:boilerplate/data/models/profile_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
 import 'package:boilerplate/presentation/profile/widgets/company_info_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:boilerplate/core/stores/user/user_store.dart';
 
 class CompanyProfileInputScreen extends StatefulWidget {
   @override
@@ -13,12 +12,30 @@ class CompanyProfileInputScreen extends StatefulWidget {
 
 class _CompanyProfileInputScreenState extends State<CompanyProfileInputScreen> {
   final ProfileService _profileService = getIt<ProfileService>();
-
+  final _userStore = getIt<UserStore>();
   static const String welcomeTxt = "Welcome to student hub";
   static const String descTxt =
       "Tell us about your company and you will be on your way connect with high-skilled students";
-  static const EdgeInsets listTilePadding =
-      EdgeInsets.symmetric(horizontal: 16);
+
+  void _handleSubmitProfile(CompanyProfile profile) {
+    if (_userStore.selectedUser?.company != null) {
+      return;
+    }
+    _profileService.createCompanyProfile(
+      profile: CreateCompanyProfile(
+        companyName: profile.companyName,
+        companySize: switch (profile.companySize) {
+          CompanySize.only1 => 0,
+          CompanySize.less9 => 1,
+          CompanySize.less99 => 2,
+          CompanySize.less1000 => 3,
+          CompanySize.more1000 => 4
+        },
+        website: profile.website,
+        description: profile.desc,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +55,7 @@ class _CompanyProfileInputScreenState extends State<CompanyProfileInputScreen> {
           SizedBox(height: 24),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: CompanyInfoForm(
-              onSubmit: (profile) {
-                _profileService.createCompanyProfile(
-                  profile: CreateCompanyProfile(
-                      companyName: profile.companyName,
-                      companySize: 69,
-                      website: profile.website,
-                      description: profile.desc),
-                );
-              },
-            ),
+            child: CompanyInfoForm(onSubmit: _handleSubmitProfile),
           ),
           Padding(
             padding: EdgeInsets.only(
