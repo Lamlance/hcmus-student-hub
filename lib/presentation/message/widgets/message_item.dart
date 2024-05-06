@@ -1,5 +1,6 @@
 import 'package:boilerplate/constants/font_family.dart';
 import 'package:boilerplate/data/models/message_models.dart';
+import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -30,15 +31,17 @@ class MessageItem extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    if (handleCancelMeeting != null) handleCancelMeeting!(data);
-                  },
-                  child: Text("Cancel meeting")),
+                onPressed: () {
+                  if (handleCancelMeeting != null) handleCancelMeeting!(data);
+                },
+                child: Text("Cancel meeting"),
+              ),
               TextButton(
-                  onPressed: () {
-                    if (handleEditMeeting != null) handleEditMeeting!(data);
-                  },
-                  child: Text("Reschedule"))
+                onPressed: () {
+                  if (handleEditMeeting != null) handleEditMeeting!(data);
+                },
+                child: Text("Reschedule"),
+              )
             ],
           );
         });
@@ -59,7 +62,15 @@ class MessageItem extends StatelessWidget {
                 backgroundColor: data.disableFlag ? Colors.red : Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 16 * 2),
               ),
-              onPressed: data.disableFlag ? null : () {},
+              onPressed: () {
+                Navigator.of(ctx).push(
+                  MaterialPageRoute(
+                    builder: (context) => InterviewCallScreen(
+                      interviewData: data,
+                    ),
+                  ),
+                );
+              },
               child: Text(data.disableFlag ? "Canceled" : "Join",
                   style: TextStyle(color: Colors.black)),
             ),

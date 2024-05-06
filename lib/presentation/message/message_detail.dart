@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:boilerplate/core/stores/user/user_store.dart';
-import 'package:boilerplate/data/models/interview_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
@@ -9,7 +8,6 @@ import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
 import 'package:boilerplate/presentation/message/widgets/message_item.dart';
 import 'package:flutter/material.dart';
-import "dart:math" as math;
 import 'package:boilerplate/data/models/message_models.dart';
 import 'package:intl/intl.dart';
 
