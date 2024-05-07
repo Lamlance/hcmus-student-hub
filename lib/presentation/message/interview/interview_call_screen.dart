@@ -1,7 +1,11 @@
 import 'dart:developer';
 
 import 'package:agora_uikit/agora_uikit.dart';
+import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/message_models.dart';
+import 'package:boilerplate/data/network/constants/endpoints.dart';
+import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/di/services/agora_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -16,9 +20,10 @@ class InterviewCallScreen extends StatefulWidget {
 
 class _InterviewCallScreenState extends State<InterviewCallScreen> {
   static final _users = <int>[];
-  bool muted = false;
-  // RtcEngine? _engine;
-  // AgoraRtmChannel? _channel;
+  final _agoraService = getIt<AgoraSerivce>();
+  final _userStore = getIt<UserStore>();
+
+  bool isInitalize = false;
   AgoraClient? _client;
 
   Future<bool> _handleGetPermission() async {
@@ -34,95 +39,66 @@ class _InterviewCallScreenState extends State<InterviewCallScreen> {
     return cameraStatus && micStatus;
   }
 
-  void _createClient() async {
+  void _createClient(String channel, String token, int? uid) {
     _client = AgoraClient(
       agoraConnectionData: AgoraConnectionData(
         appId: "04f9320fa1e941a6a62ffcbade25beed",
-        channelName: "demo-room",
-        tempToken:
-            "007eJxTYND73XJGxmKfIkPt41P6chZ/DhySm38+tSqq2VpMR6Y/3UyBwcAkzdLYyCAt0TDV0sQw0SzRzCgtLTkpMSXVyDQpNTVF96NFWkMgI4NofSwrIwMEgvicDCmpufm6Rfn5uQwMAHiLH74=",
+        uid: uid ?? 0,
+        username: _userStore.selectedUser!.fullName,
+        channelName: channel,
+        tempToken: token,
+        rtmEnabled: false,
+      ),
+      agoraEventHandlers: AgoraRtcEventHandlers(
+        onError: ((err, msg) {
+          log("Error $msg: $err");
+        }),
+        onConnectionStateChanged: (con, state, reason) {
+          log("State change: $state + $reason");
+        },
       ),
     );
   }
-
-  Future<void> _createChannels() async {
-    // final instance =
-    //     await AgoraRtmClient.createInstance("04f9320fa1e941a6a62ffcbade25beed");
-    // await instance.createChannel(widget.interviewData.roomCode);
-  }
-
-  /*
-  void _initEngine() async {
-    _engine = createAgoraRtcEngine();
-    _engine!.initialize(
-      RtcEngineContext(
-        appId: "04f9320fa1e941a6a62ffcbade25beed",
-      ),
-    );
-
-    _engine!.registerEventHandler(RtcEngineEventHandler(
-      onError: (type, code) {
-        setState(() {
-          final info = 'onError: $code';
-          _infoStrings.add(info);
-        });
-      },
-      onJoinChannelSuccess: (conn, elapsed) {
-        setState(() {
-          final info =
-              'onJoinChannel: ${conn.channelId}, uid: ${conn.localUid}';
-          _infoStrings.add(info);
-        });
-      },
-      onLeaveChannel: (conn, stats) {
-        setState(() {
-          _infoStrings.add('onLeaveChannel');
-          _users.clear();
-        });
-      },
-      onUserJoined: (conn, uid, elapsed) {
-        setState(() {
-          final info = 'userJoined: $uid';
-          _infoStrings.add(info);
-          _users.add(uid);
-        });
-      },
-      onUserOffline: (conn, uid, reason) {
-        setState(() {
-          final info = 'userOffline: $uid , reason: $reason';
-          _infoStrings.add(info);
-          _users.remove(uid);
-        });
-      },
-      onFirstRemoteVideoFrame: (conn, uid, width, height, elapsed) {
-        setState(() {
-          final info = 'firstRemoteVideoFrame: $uid';
-          _infoStrings.add(info);
-        });
-      },
-    ));
-  }
-  */
 
   @override
   void initState() {
     super.initState();
     _handleGetPermission().then((isGranted) {
       log('Access granted: $isGranted');
+      if (isGranted == false) return;
+      _agoraService.getRTCToken(
+        interview: widget.interviewData,
+        listener: (res, data) {
+          if (data == null) return;
+          //log("Channel: ${data.channelName} ${data.token}");
+          _createClient(data.channelName, data.token, data.uid);
+          _client?.initialize().then((v) {
+            setState(() {
+              isInitalize = true;
+            });
+          });
+        },
+      );
+
+      // _createClient(
+      //     "1_1714387190546771",
+      //     "007eJxSYJhp+lXB5WCScUbNgdOZLQsX/5n3t4IvYVvSu22uR3JT7YsVGAxM0iyNjQzSEg1TLU0ME80SzYzS0pKTElNSjUyTUlNTwr5apgnwMTBkM9SwMjJAIIgvxGAYb2huaGJsYW5oaWBqYmZubsjAAAgAAP//cdQhyA==",
+      //     0);
+      // _client?.initialize().then((v) {
+      //   setState(() {
+      //     isInitalize = true;
+      //   });
+      // });
     });
-    _createClient();
-    _createChannels().then((data) {
-      log("Trying to initalize client");
-      _client?.initialize();
-    });
+
     //_initEngine();
   }
 
   @override
   void dispose() {
     // _channel?.leave();
-    _client?.release();
-    _users.clear();
+    // _client?.release();
+    // _users.clear();
     // _engine?.leaveChannel();
     // _engine?.release();
     super.dispose();
@@ -134,11 +110,13 @@ class _InterviewCallScreenState extends State<InterviewCallScreen> {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Video call ${widget.interviewData.roomId}"),
+          title: Text(isInitalize
+              ? "${_client!.agoraConnectionData.uid} - ${_client!.agoraConnectionData.channelName}"
+              : "Video call ${widget.interviewData.roomId}"),
         ),
         body: SafeArea(
           child: Stack(
-            children: _client == null
+            children: isInitalize == false
                 ? []
                 : [
                     AgoraVideoViewer(

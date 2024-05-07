@@ -4,7 +4,7 @@ class Endpoints {
   // base url
   static const String baseUrl = "http://10.0.2.2:4400/api";
   static const String socketUrl = "http://10.0.2.2:4400";
-
+  static const String agoraTokenUrl = "http://10.0.2.2:8080";
   // receiveTimeout
   static const int receiveTimeout = 15000;
   // connectTimeout

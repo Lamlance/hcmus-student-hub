@@ -5,6 +5,7 @@ import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/presentation/di/services/agora_service.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
@@ -55,6 +56,11 @@ mixin StoreModule {
           notificationService: getIt<LocalNotificationService>()),
     );
     getIt.registerSingleton<InterviewService>(InterviewService(
+      dioClient: getIt<DioClient>(),
+      userStore: getIt<UserStore>(),
+    ));
+
+    getIt.registerSingleton<AgoraSerivce>(AgoraSerivce(
       dioClient: getIt<DioClient>(),
       userStore: getIt<UserStore>(),
     ));
