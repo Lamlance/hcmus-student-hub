@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/PostAProject/step1.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ class DashBoardCompanyScreen extends StatefulWidget {
 }
 
 class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
-  final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final List<ProjectData> _projects = [];
   final ProjectService _projectService = getIt<ProjectService>();
 
@@ -54,8 +54,30 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Container(height: 2, color: Colors.grey)),
             TextButton(onPressed: () {}, child: const Text("View job posting")),
-            TextButton(onPressed: () {}, child: const Text("Edit posting")),
-            TextButton(onPressed: () {}, child: const Text("Remove posting")),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(buildContext).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => S1PostAProjectPage(
+                        projectData: data,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text("Edit posting")),
+            TextButton(
+                onPressed: () {
+                  _projectService.deleteProject(
+                    projectId: data.id,
+                    listener: (res) {
+                      if (res.statusCode == 200) {
+                        _getAllProjects();
+                        Navigator.pop(buildContext);
+                      }
+                    },
+                  );
+                },
+                child: const Text("Remove posting")),
             ...(data.status != ProjectStatus.working &&
                     data.hiredCount == data.numberOfStudent
                 ? [

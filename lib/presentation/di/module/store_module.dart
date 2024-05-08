@@ -52,6 +52,7 @@ mixin StoreModule {
     ));
     getIt.registerSingleton<SocketChatService>(
       SocketChatService(
+          dioClient: getIt<DioClient>(),
           userStore: getIt<UserStore>(),
           notificationService: getIt<LocalNotificationService>()),
     );

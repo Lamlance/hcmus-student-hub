@@ -7,6 +7,7 @@ import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/PostAProject/step1.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_company.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/dashboard_student.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
@@ -46,7 +47,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.PostAProject);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => S1PostAProjectPage(),
+                  ),
+                );
               },
               icon: Icon(Icons.add),
             ),

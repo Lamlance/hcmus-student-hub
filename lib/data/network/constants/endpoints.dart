@@ -21,6 +21,7 @@ class Endpoints {
   static String getAllProjects = "$baseUrl/project/";
   static String postProject = '$baseUrl/project';
   static String updateProject(int projectId) => '$baseUrl/project/$projectId';
+  static String deleteProject(int projectId) => '$baseUrl/project/$projectId';
   //Profiles
   static String createCompany = '$baseUrl/profile/company';
   static String updateCompanyById(int id) => '$baseUrl/profile/company/$id';
@@ -44,6 +45,7 @@ class Endpoints {
   static String getMyMessage = '$baseUrl/message';
   static String getMyMessageWith(int projectId, int targetId) =>
       '$baseUrl/message/$projectId/user/$targetId';
+  static String sendMessage = "$baseUrl/message/sendMessage";
   //Interview
   static String createInterview = '$baseUrl/interview';
   static String cancelInterview(int interviewId) =>

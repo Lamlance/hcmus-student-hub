@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
 import 'package:boilerplate/presentation/profile/widgets/company_info_form.dart';
+import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 
@@ -19,6 +22,24 @@ class _CompanyProfileInputScreenState extends State<CompanyProfileInputScreen> {
 
   void _handleSubmitProfile(CompanyProfile profile) {
     if (_userStore.selectedUser?.company != null) {
+      _profileService.updateCompanyProfile(
+          profile: UpdateCompanyProfile(
+            companyId: _userStore.selectedUser!.company!.id,
+            companyName: profile.companyName,
+            companySize: switch (profile.companySize) {
+              CompanySize.only1 => 0,
+              CompanySize.less9 => 1,
+              CompanySize.less99 => 2,
+              CompanySize.less1000 => 3,
+              CompanySize.more1000 => 4
+            },
+            website: profile.website,
+            description: profile.desc,
+          ),
+          listener: (res) {
+            log("Update company profile");
+            Navigator.of(context).pushReplacementNamed(Routes.profile);
+          });
       return;
     }
     _profileService.createCompanyProfile(
@@ -34,7 +55,15 @@ class _CompanyProfileInputScreenState extends State<CompanyProfileInputScreen> {
         website: profile.website,
         description: profile.desc,
       ),
+      listener: (response) {
+        Navigator.of(context).pushReplacementNamed(Routes.profile);
+      },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

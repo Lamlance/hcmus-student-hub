@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/misc_service.dart';
 import 'package:boilerplate/presentation/profile/widgets/skillset_dialog.dart';
@@ -17,6 +18,7 @@ class SkillSet extends StatefulWidget {
 class _SkillSetState extends State<SkillSet> {
   final MiscService _miscService = getIt<MiscService>();
   GetAllSkillSetResponse? _skillSetResponse;
+  final _userStore = getIt<UserStore>();
 
   final List<SkillSetData> _selectedSkillSet = [];
   void _showSkillSetDialog(BuildContext buildContext) {
@@ -41,6 +43,12 @@ class _SkillSetState extends State<SkillSet> {
       _miscService.getAllSkillSet(listener: (res, data) {
         setState(() {
           _skillSetResponse = data;
+          if (_userStore.selectedUser?.student == null) return;
+          final preSkills = data!.skillSets.where(
+            (sk) => _userStore.selectedUser!.student!.skillSets
+                .any((e) => sk.id == e),
+          );
+          _selectedSkillSet.addAll(preSkills);
         });
       });
     }

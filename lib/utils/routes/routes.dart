@@ -22,7 +22,6 @@ class Routes {
 
   static const String profile = "/profile";
   static const String dashboard = "/dashboard";
-  static const String PostAProject = "/PostAProject";
   static const String message = "/message";
   static const String BrowseAllProject = "/BrowseAllProject";
   static const String alert = "/alert";
@@ -35,7 +34,6 @@ class Routes {
     message: (context) => MessageScreen(),
     signUpType: (ctx) => SignupTypePage(),
     signUp: (ctx) => SignupPage(accountType: 0),
-    PostAProject: (context) => S1PostAProjectPage(),
     BrowseAllProject: (context) => ProjectList(),
     alert: (context) => AlertScreen(),
   };

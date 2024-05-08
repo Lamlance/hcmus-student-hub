@@ -13,12 +13,13 @@ class ProjectItem extends StatelessWidget {
   final bool displayEndLine;
   final Function(ProjectData data)? onOptionClick;
 
-  ProjectItem(
-      {super.key,
-      required this.projectData,
-      this.onOptionClick,
-      this.displayNumber = true,
-      this.displayEndLine = true});
+  ProjectItem({
+    super.key,
+    required this.projectData,
+    this.onOptionClick,
+    this.displayNumber = true,
+    this.displayEndLine = true,
+  });
 
   void _onIemClick(BuildContext context) {
     if (displayNumber == false) return;

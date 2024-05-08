@@ -3,7 +3,10 @@ import 'package:boilerplate/data/models/interview_api_models.dart';
 import 'package:boilerplate/data/models/socket_api_models.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/presentation/di/services/notification_service.dart';
+import 'package:dio/dio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:boilerplate/core/data/network/dio/dio_client.dart';
+
 import "dart:developer";
 export "package:boilerplate/data/models/socket_api_models.dart";
 
@@ -11,10 +14,10 @@ typedef ReceiveMsgCallback = Function(SocketReceiveMessageEvent? data);
 
 class SocketChatService {
   static const _receiveMsgEventName = "RECEIVE_MESSAGE";
-  static const _sendMsgEmitName = "SEND_MESSAGE";
   static const _sendInterviewEmitName = "SCHEDULE_INTERVIEW";
 
   final UserStore _userStore;
+  final DioClient _dioClient;
   final LocalNotificationService _notificationService;
   int? currUserId;
 
@@ -25,26 +28,18 @@ class SocketChatService {
           .disableAutoConnect()
           .build());
 
-  final _notiSocket = IO.io(
-      Endpoints.socketUrl,
-      IO.OptionBuilder()
-          .setTransports(["websocket"])
-          .disableAutoConnect()
-          .build());
-
   ReceiveMsgCallback? onReceiveMsg;
 
   SocketChatService(
       {required UserStore userStore,
-      required LocalNotificationService notificationService})
+      required LocalNotificationService notificationService,
+      required DioClient dioClient})
       : _userStore = userStore,
-        _notificationService = notificationService {
+        _notificationService = notificationService,
+        _dioClient = dioClient {
     socket.onConnect((data) => log("On socket connect"));
     socket.onError((data) => log("On socket error"));
     socket.on(_receiveMsgEventName, _receiveMsgCallback);
-
-    _notiSocket.onConnect((data) => log("On notification socket connect"));
-    _notiSocket.onError((data) => log("On notification socket error"));
   }
 
   void _receiveMsgCallback(dynamic data) {
@@ -82,20 +77,20 @@ class SocketChatService {
   }
 
   void connectToNotification(int userId) {
-    _notiSocket.io.options?["extraHeaders"] = {
+    socket.io.options?["extraHeaders"] = {
       "Authorization": 'Bearer ${_userStore.token}'
     };
     if (currUserId != userId) {
-      _notiSocket.on("NOTI_$userId", _handleNotification);
-      _notiSocket.off("NOTI_$currUserId");
+      socket.on("NOTI_$userId", _handleNotification);
+      socket.off("NOTI_$currUserId");
       currUserId = userId;
-      if (_notiSocket.connected == false) {
-        _notiSocket.connect();
+      if (socket.connected == false) {
+        socket.connect();
       } else {
-        _notiSocket.close().connect();
+        socket.close().connect();
       }
-    } else if (_notiSocket.connected == false) {
-      _notiSocket.connect();
+    } else if (socket.connected == false) {
+      socket.connect();
     }
   }
 
@@ -115,7 +110,17 @@ class SocketChatService {
         senderId: senderId,
         receiveId: receiveId,
         messageFlag: flag);
-    socket.emit(_sendMsgEmitName, msg.toJson());
+
+    _dioClient.dio.post(
+      Endpoints.sendMessage,
+      data: msg.toJson(),
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (s) => true,
+      ),
+    );
     return true;
   }
 

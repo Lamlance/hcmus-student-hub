@@ -52,7 +52,7 @@ class CreateStudentProfile {
 }
 
 class UpdateStudentProfile extends CreateStudentProfile {
-  final String studentId;
+  final int studentId;
 
   UpdateStudentProfile(
       {required super.techStackId,

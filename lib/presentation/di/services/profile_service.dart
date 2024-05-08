@@ -16,7 +16,7 @@ class ProfileService {
 
   createCompanyProfile(
       {required CreateCompanyProfile profile,
-      Function({Response<dynamic> response})? listener}) {
+      Function(Response<dynamic> response)? listener}) {
     _dioClient.dio
         .post(
       Endpoints.createCompany,
@@ -32,13 +32,13 @@ class ProfileService {
         final companyProfile = CompanyProfile.fromJson(value.data["result"]);
         _userStore.updateCompany(companyProfile);
       }
-      if (listener != null) listener(response: value);
+      if (listener != null) listener(value);
     });
   }
 
   updateCompanyProfile(
       {required UpdateCompanyProfile profile,
-      Function({Response<dynamic> response})? listener}) {
+      Function(Response<dynamic> response)? listener}) {
     _dioClient.dio
         .put(
       Endpoints.updateCompanyById(profile.companyId),
@@ -54,7 +54,7 @@ class ProfileService {
         final companyProfile = CompanyProfile.fromJson(value.data["result"]);
         _userStore.updateCompany(companyProfile);
       }
-      if (listener != null) listener(response: value);
+      if (listener != null) listener(value);
     });
   }
 
@@ -77,6 +77,25 @@ class ProfileService {
         _userStore.updateStudent(studentProfile);
       }
       if (listener != null) listener(value);
+    });
+  }
+
+  void updateStudentProfile({
+    required UpdateStudentProfile data,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .put(
+      Endpoints.updateStudentById(data.studentId),
+      data: data.toJson(),
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    )
+        .then((v) {
+      if (listener != null) listener(v);
     });
   }
 }

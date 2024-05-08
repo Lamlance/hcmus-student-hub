@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/misc_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/profile_service.dart';
@@ -18,7 +19,7 @@ class _StudentInputScreenState extends State<StudentInputScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final ProfileService _profileService = getIt<ProfileService>();
-
+  final UserStore _userStore = getIt<UserStore>();
   final List<SkillSetData> _skillSetList = [];
   TechStackData? _techStackData;
 
@@ -53,6 +54,20 @@ class _StudentInputScreenState extends State<StudentInputScreen>
           StudentCVInputScreen(
             onFinishInput: () {
               if (_techStackData == null || _skillSetList.isEmpty) return;
+              if (_userStore.selectedUser?.student != null) {
+                _profileService.updateStudentProfile(
+                    data: UpdateStudentProfile(
+                      techStackId: _techStackData!.id,
+                      skillSets: _skillSetList.map((e) => e.id).toList(),
+                      studentId: _userStore.selectedUser!.student!.id,
+                    ),
+                    listener: (res) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.profile);
+                    });
+                return;
+              }
+
               _profileService.createStudentProfile(
                 profile: CreateStudentProfile(
                     techStackId: _techStackData!.id,

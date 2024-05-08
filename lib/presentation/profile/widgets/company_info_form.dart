@@ -1,4 +1,6 @@
 import 'package:boilerplate/core/domain/model/user_data.dart';
+import 'package:boilerplate/core/stores/user/user_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +23,7 @@ class _CompanyInfoFormState extends State<CompanyInfoForm> {
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _userStore = getIt<UserStore>();
 
   ListTile _makeEmployeeSizeRadio(String label, CompanySize companySize) {
     return ListTile(
@@ -54,6 +57,18 @@ class _CompanyInfoFormState extends State<CompanyInfoForm> {
         companyName: _nameController.text,
         website: _websiteController.text,
         desc: _descController.text));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (_userStore.selectedUser?.company == null) return;
+    setState(() {
+      _nameController.text = _userStore.selectedUser!.company!.companyName;
+      _descController.text = _userStore.selectedUser!.company!.desc;
+      _companySize = _userStore.selectedUser!.company!.companySize;
+      _websiteController.text = _userStore.selectedUser!.company!.website;
+    });
   }
 
   @override

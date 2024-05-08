@@ -26,7 +26,7 @@ class ProjectService {
       : _dioClient = dioClient,
         _userStore = userStore,
         _dashBoardStore = dashBoardStore;
-  getProjectsByCompanyId(
+  void getProjectsByCompanyId(
       {void Function(Response<dynamic>? response, List<ProjectData>? data)?
           listener}) {
     final companyId = _userStore.selectedUser?.company?.id;
@@ -54,7 +54,7 @@ class ProjectService {
     });
   }
 
-  getAllProjects(
+  void getAllProjects(
       {void Function(Response<dynamic>? response, List<ProjectData>? data)?
           listener}) {
     _dioClient.dio
@@ -103,6 +103,27 @@ class ProjectService {
     });
   }
 
+  void updateProject({
+    required int projectId,
+    required PostProjectApiModel data,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .patch(
+      Endpoints.updateProject(projectId),
+      data: data,
+      options: Options(
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((v) {
+      if (listener != null) listener(v);
+    });
+  }
+
   void startWorkingOnProject(
       {required ProjectData data, Function(Response<dynamic> res)? listener}) {
     _dioClient.dio
@@ -124,6 +145,25 @@ class ProjectService {
     )
         .then((value) {
       if (listener != null) listener(value);
+    });
+  }
+
+  void deleteProject({
+    required int projectId,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .delete(
+      Endpoints.deleteProject(projectId),
+      options: Options(
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((v) {
+      if (listener != null) listener(v);
     });
   }
 }

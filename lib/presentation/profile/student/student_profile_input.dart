@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/misc_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/misc_service.dart';
@@ -24,6 +25,7 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
   final MiscService _miscService = getIt<MiscService>();
   final _formKey = GlobalKey<FormState>();
 
+  final _userStore = getIt<UserStore>();
   final List<TechStackData> _techList = List.empty(growable: true);
   TechStackData? _selectedTech;
   final List<SkillSetData> _skillSetList = [];
@@ -38,6 +40,10 @@ class _StudentProfileInputScreenState extends State<StudentProfileInputScreen> {
         if (data != null) {
           setState(() {
             _techList.addAll(data.response);
+            if (_userStore.selectedUser?.student == null) return;
+            _selectedTech = _techList.firstWhere(
+              (e) => e.id == _userStore.selectedUser!.student!.techStackId,
+            );
           });
         }
       });
