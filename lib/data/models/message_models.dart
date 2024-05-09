@@ -25,8 +25,8 @@ class InterviewData {
       title: json["title"],
       startTime: DateTime.tryParse(json["startTime"]) ?? DateTime.now(),
       endTime: DateTime.tryParse(json["endTime"]) ?? DateTime.now(),
-      roomCode: json["meetingRoom"]["meeting_room_code"],
-      roomId: json["meetingRoom"]["meeting_room_id"],
+      roomCode: json["meetingRoom"]?["meeting_room_code"] ?? "",
+      roomId: json["meetingRoom"]?["meeting_room_id"] ?? "",
       disableFlag: json["disableFlag"] == 1,
     );
   }

@@ -50,34 +50,64 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
             TextButton(onPressed: () {}, child: const Text("View proposals")),
             TextButton(onPressed: () {}, child: const Text("View messages")),
             TextButton(onPressed: () {}, child: const Text("View hired")),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Container(height: 2, color: Colors.grey)),
+            Divider(color: Colors.black),
             TextButton(onPressed: () {}, child: const Text("View job posting")),
             TextButton(
-                onPressed: () {
-                  Navigator.of(buildContext).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => S1PostAProjectPage(
-                        projectData: data,
-                      ),
+              onPressed: () {
+                Navigator.of(buildContext).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => S1PostAProjectPage(
+                      projectData: data,
                     ),
-                  );
-                },
-                child: const Text("Edit posting")),
+                  ),
+                );
+              },
+              child: const Text("Edit posting"),
+            ),
             TextButton(
-                onPressed: () {
-                  _projectService.deleteProject(
-                    projectId: data.id,
-                    listener: (res) {
-                      if (res.statusCode == 200) {
-                        _getAllProjects();
-                        Navigator.pop(buildContext);
-                      }
-                    },
-                  );
-                },
-                child: const Text("Remove posting")),
+              onPressed: () {
+                _projectService.deleteProject(
+                  projectId: data.id,
+                  listener: (res) {
+                    if (res.statusCode == 200) {
+                      _getAllProjects();
+                      Navigator.pop(buildContext);
+                    }
+                  },
+                );
+              },
+              child: const Text("Remove posting"),
+            ),
+            Divider(color: Colors.black),
+            TextButton(
+              onPressed: () {
+                _projectService.closeProject(
+                  data: data,
+                  isSuccess: true,
+                  listener: (res) {
+                    log("Close as succeed: ${res.statusCode}");
+                    _getAllProjects();
+                    Navigator.pop(buildContext);
+                  },
+                );
+              },
+              child: const Text("Close as succeed"),
+            ),
+            TextButton(
+              onPressed: () {
+                _projectService.closeProject(
+                  data: data,
+                  isSuccess: false,
+                  listener: (res) {
+                    log("Remove posting: ${res.statusCode}");
+                    _getAllProjects();
+                    Navigator.pop(buildContext);
+                  },
+                );
+              },
+              child: const Text("Close as failed"),
+            ),
+            Divider(color: Colors.black),
             ...(data.status != ProjectStatus.working &&
                     data.hiredCount == data.numberOfStudent
                 ? [
@@ -90,6 +120,8 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                             data: data,
                             listener: (res) {
                               log("Start working: ${res.statusCode}");
+                              _getAllProjects();
+                              Navigator.pop(buildContext);
                             },
                           );
                         },
@@ -121,8 +153,18 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
         onOptionClick: (p) => _showModalBottomSheet(context, p),
       );
     });
-    return Column(
-      children: [...tabProjects],
+    return RefreshIndicator(
+      onRefresh: () async {
+        log("REFRESH");
+        _getAllProjects();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          children: [...tabProjects],
+        ),
+      ),
     );
   }
 }

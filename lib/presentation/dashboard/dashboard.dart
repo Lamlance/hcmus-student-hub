@@ -64,21 +64,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           ]),
         ),
         bottomNavigationBar: MainBottomNavBar(),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            log("REFRESH");
-          },
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Observer(
-              builder: (ctx) => _userStore.selectedType == AccountType.business
-                  ? DashBoardCompanyScreen(
-                      seletedStatus: seletedStatus,
-                    )
-                  : DashBoardStudentScreen(seletedStatus: seletedStatus),
-            ),
-          ),
+        body: Observer(
+          builder: (ctx) => _userStore.selectedType == AccountType.business
+              ? DashBoardCompanyScreen(
+                  seletedStatus: seletedStatus,
+                )
+              : DashBoardStudentScreen(seletedStatus: seletedStatus),
         ),
       ),
     );

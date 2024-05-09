@@ -1,10 +1,11 @@
 import 'package:boilerplate/core/domain/model/user_data.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
-import 'package:boilerplate/presentation/di/services/profile_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
+import 'package:boilerplate/presentation/profile/change_pwd.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_edit.dart';
 import 'package:boilerplate/presentation/profile/company/company_profile_input.dart';
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
@@ -22,6 +23,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _userStore = getIt<UserStore>();
   final _socketService = getIt<SocketChatService>();
   final _authService = getIt<AuthService>();
+  final _miscStore = getIt<MiscStore>();
+
   AccountType _selectType = AccountType.none;
 
   String _getAccountSubtitle(AccountType type) {
@@ -149,19 +152,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(color: Colors.amber)),
               ),
               InkWell(
-                  onTap: () => _onProfileClick(context),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        child: Icon(
-                          Icons.person,
-                        ),
+                onTap: () => _onProfileClick(context),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Icon(
+                        Icons.person,
                       ),
-                      Text("Profile")
-                    ],
-                  )),
+                    ),
+                    Text("Profile")
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ChangePwdPage(),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Icon(Icons.lock_outlined),
+                    ),
+                    Text("Change password")
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  _miscStore.changeTheme(!_miscStore.isDarkTheme);
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: _miscStore.isDarkTheme
+                          ? Icon(Icons.nightlight_round)
+                          : Icon(Icons.sunny),
+                    ),
+                    Text("Change theme")
+                  ],
+                ),
+              ),
               InkWell(
                 onTap: () =>
                     Navigator.pushReplacementNamed(context, Routes.login),

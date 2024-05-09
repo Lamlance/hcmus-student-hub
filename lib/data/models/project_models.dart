@@ -5,6 +5,8 @@ enum ProjectStatus { none, working, archive }
 
 enum ProposalStatus { none, hired, hiredOfferSent, active }
 
+enum ProjectCloseStatus { work, success, fail }
+
 class ProposalData {
   static ProposalStatus intToStatus(int status) {
     return switch (status) {
@@ -59,6 +61,15 @@ class ProposalData {
 }
 
 class ProjectData {
+  static int projectStatusToTypeFlagInt(ProjectStatus status) {
+    return switch (status) {
+      ProjectStatus.none => 0,
+      ProjectStatus.working => 1,
+      ProjectStatus.archive => 2,
+    };
+  }
+
+  final ProjectCloseStatus closeStatus;
   final int id;
   final int companyId;
   final String title;
@@ -82,6 +93,7 @@ class ProjectData {
       this.proposalCount = 0,
       this.numberOfStudent = 5,
       required this.isFav,
+      this.closeStatus = ProjectCloseStatus.work,
       this.description = "description",
       this.status = ProjectStatus.none,
       List<ProposalData>? proposals,
@@ -94,6 +106,12 @@ class ProjectData {
         companyId: int.parse(json["companyId"].toString()),
         createdDate: DateTime.tryParse(json["createAt"] ?? ""),
         title: json["title"],
+        closeStatus: switch (json['status'] ?? 0) {
+          0 => ProjectCloseStatus.work,
+          1 => ProjectCloseStatus.success,
+          2 => ProjectCloseStatus.fail,
+          _ => ProjectCloseStatus.work
+        },
         description: json["description"],
         messageCount: json["countMessages"] ?? -1,
         proposalCount: json["countProposals"] ?? -1,

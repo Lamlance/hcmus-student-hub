@@ -54,11 +54,29 @@ class ProjectService {
     });
   }
 
-  void getAllProjects(
-      {void Function(Response<dynamic>? response, List<ProjectData>? data)?
-          listener}) {
+  void getAllProjects({
+    String? filterTitle,
+    int? filterDuration,
+    int? filterNumberOfStudent,
+    void Function(
+      Response<dynamic>? response,
+      List<ProjectData>? data,
+    )? listener,
+  }) {
+    final query = Map<String, String>();
+    if (filterTitle != null) {
+      query["title"] = filterTitle;
+    }
+    if (filterDuration != null) {
+      query["projectScopeFlag"] = filterDuration.toString();
+    }
+    if (filterNumberOfStudent != null) {
+      query["numberOfStudents"] = filterNumberOfStudent.toString();
+    }
+
     _dioClient.dio
         .get(Endpoints.getAllProjects,
+            queryParameters: query,
             options: Options(
               headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
               validateStatus: (status) => true,
@@ -189,7 +207,35 @@ class ProjectService {
         "title": data.title,
         "description": data.description,
         "numberOfStudents": data.numberOfStudent,
+        "typeFlag": ProjectData.projectStatusToTypeFlagInt(data.status),
+      },
+      options: Options(
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((value) {
+      if (listener != null) listener(value);
+    });
+  }
+
+  void closeProject({
+    required ProjectData data,
+    required bool isSuccess,
+    Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .patch(
+      Endpoints.updateProject(data.id),
+      data: {
+        "projectScopeFlag": 0,
+        "title": data.title,
+        "description": data.description,
+        "numberOfStudents": data.numberOfStudent,
         "typeFlag": 1,
+        "status": isSuccess ? 1 : 2,
       },
       options: Options(
         contentType: Headers.jsonContentType,

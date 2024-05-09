@@ -43,14 +43,29 @@ class ProjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final closeStats = switch (projectData.closeStatus) {
+      ProjectCloseStatus.work => Container(),
+      ProjectCloseStatus.fail => Text(
+          "Project closed as FAILED",
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+        ),
+      ProjectCloseStatus.success => Text(
+          "Project closed as SUCCEED",
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green),
+        ),
+    };
     return InkWell(
         onTap: () => _onIemClick(context),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(projectData.title,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text(
+                projectData.title,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
               ...displayNumber
                   ? [
                       IconButton(
@@ -65,6 +80,8 @@ class ProjectItem extends StatelessWidget {
                   : []
             ],
           ),
+          closeStats,
+          SizedBox(height: 8),
           Text("Created ${_dateFormat.format(projectData.createdDate)}"),
           SizedBox(height: 8),
           Text(projectData.description, maxLines: 4),

@@ -14,6 +14,8 @@ class Endpoints {
   static const String signUp = '$baseUrl/auth/sign-up';
   static const String signIn = '$baseUrl/auth/sign-in';
   static const String authMe = '$baseUrl/auth/me';
+  static const String forgotPwd = '$baseUrl/user/forgotPassword';
+  static const String changePwd = '$baseUrl/user/changePassword';
 
   //Projects
   static String getProjectsByCompanyId(int companyId) =>
@@ -50,6 +52,7 @@ class Endpoints {
   static String sendMessage = "$baseUrl/message/sendMessage";
   //Interview
   static String createInterview = '$baseUrl/interview';
+  static String getInterviews = '$baseUrl/interview';
   static String cancelInterview(int interviewId) =>
       '$baseUrl/interview/$interviewId/disable';
   static String editInterview(int interviewId) =>

@@ -5,6 +5,7 @@ import 'package:boilerplate/data/models/message_api_model.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:dio/dio.dart';
 export "package:boilerplate/data/models/interview_api_models.dart";
+export 'package:boilerplate/data/models/message_api_model.dart';
 
 class InterviewService {
   final DioClient _dioClient;
@@ -54,5 +55,34 @@ class InterviewService {
     ).then((value) {
       if (listener != null) listener(value);
     });
+  }
+
+  void getAllInterviews(
+      {void Function(Response<dynamic> res, List<InterviewData>? data)?
+          listener}) {
+    _dioClient.dio
+        .get(
+      Endpoints.getInterviews,
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (res) => true,
+      ),
+    )
+        .then(
+      (value) {
+        if (listener == null) return;
+        if (value.statusCode != 200) return listener(value, null);
+        listener(
+          value,
+          (value.data["result"] as List<dynamic>)
+              .map(
+                (e) => InterviewData.fromJson(e),
+              )
+              .toList(),
+        );
+      },
+    );
   }
 }

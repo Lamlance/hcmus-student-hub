@@ -3,6 +3,7 @@ import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/message_api_model.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/message_service.dart';
+import 'package:boilerplate/presentation/message/interview_list.dart';
 import 'package:boilerplate/presentation/message/widgets/history_item.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/data/models/message_models.dart';
@@ -55,35 +56,48 @@ class _MessageScreenState extends State<MessageScreen> {
       ),
     );
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Student hub - message"),
-          actions: [ProfileIconButton()],
-        ),
-        bottomNavigationBar: MainBottomNavBar(),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            _getMyMessage();
-          },
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.only(right: 16, top: 16),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: searchBox,
-                ),
-                SizedBox(height: 16),
-                ...messageHistories.map(
-                  (e) => HistoryItem(
-                    history: e.messageHistory,
-                    projectId: e.projectData.id,
-                  ),
-                )
-              ],
+    final msgScreen = RefreshIndicator(
+      onRefresh: () async {
+        _getMyMessage();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.only(right: 16, top: 16),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: searchBox,
             ),
+            SizedBox(height: 16),
+            ...messageHistories.map(
+              (e) => HistoryItem(
+                history: e.messageHistory,
+                projectId: e.projectData.id,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
+    final interviewScreen = InterviewListScreen();
+
+    return DefaultTabController(
+      length: 2,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Student hub - message"),
+            actions: [ProfileIconButton()],
+            bottom: TabBar(tabs: [
+              Tab(text: "Messages"),
+              Tab(text: "Interviews"),
+            ]),
+          ),
+          bottomNavigationBar: MainBottomNavBar(),
+          body: TabBarView(
+            children: [msgScreen, interviewScreen],
           ),
         ),
       ),

@@ -35,6 +35,21 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
     });
   }
 
+  void _toDetailScreen(ProjectData data) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => Scaffold(
+          appBar: AppBar(
+            title: Text(data.title),
+          ),
+          body: ProjectDetailInfoScreen(
+            projectData: data,
+          ),
+        ),
+      ),
+    );
+  }
+
   Iterable<Widget> _buildProjectItem() {
     return switch (widget.seletedStatus) {
       (ProjectStatus.working) => _proposals
@@ -54,34 +69,44 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                         e.statusFlag == ProposalStatus.hiredOfferSent ||
                         e.statusFlag == ProposalStatus.active)
                     .map(
-                      (e) => Column(children: [
-                        ProjectItem(
-                          projectData: e.projectData,
-                          displayNumber: false,
-                          displayEndLine:
-                              e.statusFlag != ProposalStatus.hiredOfferSent,
+                      (e) => InkWell(
+                        child: Column(
+                          children: [
+                            ProjectItem(
+                              projectData: e.projectData,
+                              displayNumber: false,
+                              displayEndLine: false,
+                            ),
+                            TextButton(
+                              onPressed: () => _toDetailScreen(e.projectData),
+                              child: Text("View detail"),
+                            ),
+                            ...(e.statusFlag == ProposalStatus.hiredOfferSent
+                                ? [
+                                    TextButton(
+                                      onPressed: () {
+                                        _proposalService.updateProposal(
+                                          updateData:
+                                              UpdateProposalByProposalId(
+                                            proposalId: e.id,
+                                            statusFlag: ProposalStatus.hired,
+                                          ),
+                                        );
+                                      },
+                                      child: Text("Accept offer"),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 8),
+                                      child: Container(
+                                          height: 2, color: Colors.grey),
+                                    )
+                                  ]
+                                : []),
+                            Divider(color: Colors.black)
+                          ],
                         ),
-                        ...(e.statusFlag == ProposalStatus.hiredOfferSent
-                            ? [
-                                TextButton(
-                                  onPressed: () {
-                                    _proposalService.updateProposal(
-                                      updateData: UpdateProposalByProposalId(
-                                        proposalId: e.id,
-                                        statusFlag: ProposalStatus.hired,
-                                      ),
-                                    );
-                                  },
-                                  child: Text("Accept offer"),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8),
-                                  child:
-                                      Container(height: 2, color: Colors.grey),
-                                )
-                              ]
-                            : [])
-                      ]),
+                      ),
                     )
               ],
             ),
@@ -98,9 +123,19 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                 ..._proposals
                     .where((e) => e.statusFlag != ProposalStatus.hiredOfferSent)
                     .map(
-                      (e) => ProjectItem(
-                        projectData: e.projectData,
-                        displayNumber: false,
+                      (e) => Column(
+                        children: [
+                          ProjectItem(
+                            projectData: e.projectData,
+                            displayNumber: false,
+                            displayEndLine: false,
+                          ),
+                          TextButton(
+                            onPressed: () => _toDetailScreen(e.projectData),
+                            child: Text("View detail"),
+                          ),
+                          Divider(color: Colors.black)
+                        ],
                       ),
                     )
               ],
@@ -120,8 +155,15 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
   @override
   Widget build(BuildContext context) {
     var tabProjects = _buildProjectItem();
-    return Column(
-      children: [SizedBox(height: 16), ...tabProjects],
+    return RefreshIndicator(
+      onRefresh: () async {},
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          children: [SizedBox(height: 16), ...tabProjects],
+        ),
+      ),
     );
   }
 }

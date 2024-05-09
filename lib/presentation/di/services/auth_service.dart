@@ -103,4 +103,44 @@ class AuthService {
       }
     });
   }
+
+  void forgotPassword({
+    required String email,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .post(
+      Endpoints.forgotPwd,
+      data: {"email": email},
+      options: Options(
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((v) {
+      if (listener != null) listener(v);
+    });
+  }
+
+  void changePassword({
+    required String oldPwd,
+    required String newPwd,
+    void Function(Response<dynamic> res)? listener,
+  }) {
+    _dioClient.dio
+        .put(
+      Endpoints.changePwd,
+      data: {"oldPassword": oldPwd, "newPassword": newPwd},
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((res) {
+      if (listener != null) listener(res);
+    });
+  }
 }

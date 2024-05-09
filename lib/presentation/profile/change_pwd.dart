@@ -6,48 +6,32 @@ import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signupType.dart';
 
-class LoginPage extends StatefulWidget {
+class ChangePwdPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<ChangePwdPage> createState() => _ChangePwdPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ChangePwdPageState extends State<ChangePwdPage> {
   final AuthService _authApi = getIt<AuthService>();
   final _formKey = GlobalKey<FormState>();
-  final _emailTxt = TextEditingController();
-  final _passTxt = TextEditingController();
+  final _oldPass = TextEditingController();
+  final _newPass = TextEditingController();
+  final _newPass2 = TextEditingController();
 
   void _handleLogin() {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    final processSnack = ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Processing Data')),
-    );
-    _authApi.signIn(
-      data: AuthApiSignInRequest(
-        email: _emailTxt.text,
-        password: _passTxt.text,
-      ),
-      listener: (v) {
-        processSnack.close();
-        if ((v.statusCode ?? 500) >= 300) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Sign up error code ${v.statusCode ?? "unkown"}'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-          return;
-        }
+    _authApi.changePassword(
+      oldPwd: _oldPass.text,
+      newPwd: _newPass.text,
+      listener: (res) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login success'),
-            duration: Duration(seconds: 1),
+            content: Text(res.statusCode == 200
+                ? "Update completed"
+                : 'Update fail code ${res.statusCode}'),
           ),
-        );
-        Future.delayed(const Duration(seconds: 1)).then(
-          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
         );
       },
     );
@@ -57,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         title: Text('StudentHub'),
@@ -74,17 +59,13 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "Login",
+                      "Change password",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      "Login to your account",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )
                   ],
                 ),
                 Padding(
@@ -93,12 +74,28 @@ class _LoginPageState extends State<LoginPage> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        inputFile(label: "Email", controller: _emailTxt),
+                        inputFile(
+                          label: "Old password",
+                          obscureText: true,
+                          controller: _oldPass,
+                        ),
                         SizedBox(height: 16),
                         inputFile(
-                          label: "Password",
+                          label: "New password",
                           obscureText: true,
-                          controller: _passTxt,
+                          controller: _newPass,
+                          validator: TextValidator.strongPasswordValidator,
+                        ),
+                        SizedBox(height: 16),
+                        inputFile(
+                          label: "Confirm new password",
+                          obscureText: true,
+                          controller: _newPass2,
+                          validator: (v) {
+                            return _newPass.text == _newPass2.text
+                                ? null
+                                : "Password not match";
+                          },
                         )
                       ],
                     ),
@@ -116,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
-                      "Login",
+                      "Change password",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -124,49 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Don't have an account?"),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.signUpType,
-                        );
-                      },
-                      child: Text(
-                        " Sign up",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => ForgotPasswordScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        " Forgot your password ?",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 100),
@@ -190,11 +144,12 @@ class _LoginPageState extends State<LoginPage> {
 Widget inputFile(
     {required String label,
     bool obscureText = false,
-    TextEditingController? controller}) {
+    TextEditingController? controller,
+    String? Function(String?)? validator}) {
   return TextFormField(
     controller: controller,
     obscureText: obscureText,
-    validator: TextValidator.txtIsNotEmptyValidator,
+    validator: validator ?? TextValidator.txtIsNotEmptyValidator,
     decoration: InputDecoration(
       labelText: label,
       errorMaxLines: 2,

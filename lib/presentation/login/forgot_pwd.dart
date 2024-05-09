@@ -1,56 +1,36 @@
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
-import 'package:boilerplate/presentation/login/forgot_pwd.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signupType.dart';
 
-class LoginPage extends StatefulWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<ForgotPasswordScreen> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<ForgotPasswordScreen> {
   final AuthService _authApi = getIt<AuthService>();
   final _formKey = GlobalKey<FormState>();
   final _emailTxt = TextEditingController();
-  final _passTxt = TextEditingController();
 
   void _handleLogin() {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    final processSnack = ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Processing Data')),
-    );
-    _authApi.signIn(
-      data: AuthApiSignInRequest(
+    _authApi.forgotPassword(
         email: _emailTxt.text,
-        password: _passTxt.text,
-      ),
-      listener: (v) {
-        processSnack.close();
-        if ((v.statusCode ?? 500) >= 300) {
+        listener: (res) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Sign up error code ${v.statusCode ?? "unkown"}'),
-              duration: Duration(seconds: 2),
+              content: Text(
+                res.statusCode == 201 ? "Email sent" : "Something went wrong",
+              ),
+              duration: Duration(seconds: 1),
             ),
           );
-          return;
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login success'),
-            duration: Duration(seconds: 1),
-          ),
-        );
-        Future.delayed(const Duration(seconds: 1)).then(
-          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
-        );
-      },
-    );
+        });
   }
 
   @override
@@ -74,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "Login",
+                      "Forgot password",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
@@ -82,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     Text(
-                      "Login to your account",
+                      "Get an email to change your account",
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                     )
                   ],
@@ -94,12 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: <Widget>[
                         inputFile(label: "Email", controller: _emailTxt),
-                        SizedBox(height: 16),
-                        inputFile(
-                          label: "Password",
-                          obscureText: true,
-                          controller: _passTxt,
-                        )
                       ],
                     ),
                   ),
@@ -116,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
-                      "Login",
+                      "Get email",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -138,28 +112,6 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: Text(
                         " Sign up",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => ForgotPasswordScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        " Forgot your password ?",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,

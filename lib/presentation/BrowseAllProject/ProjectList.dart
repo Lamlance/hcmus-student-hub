@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/BrowseAllProject/widgets/filter_project_sheet.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
@@ -18,10 +19,12 @@ class ProjectList extends StatefulWidget {
 class _ProjectListState extends State<ProjectList> {
   final List<ProjectData> _list = List.empty(growable: true);
   final ProjectService _getProjectService = getIt<ProjectService>();
+  FilterData? _filterData;
+
   bool _enableFavorite = false;
 
-  void _getAllProject({bool favorite = false}) {
-    if (favorite) {
+  void _getAllProject({bool? favorite = false, FilterData? filterData}) {
+    if (favorite ?? _enableFavorite) {
       _getProjectService.getAllFavProjects(listener: ((response, data) {
         if (data != null) {
           setState(() {
@@ -35,16 +38,40 @@ class _ProjectListState extends State<ProjectList> {
       return;
     }
 
-    _getProjectService.getAllProjects(listener: ((response, data) {
-      if (data != null) {
-        setState(() {
-          if (_list.isNotEmpty) {
-            _list.removeRange(0, _list.length);
+    _getProjectService.getAllProjects(
+        filterTitle: filterData?.title ?? _filterData?.title,
+        filterDuration: filterData?.duration ?? _filterData?.duration,
+        filterNumberOfStudent:
+            filterData?.numberOfStudent ?? _filterData?.numberOfStudent,
+        listener: ((response, data) {
+          if (data != null) {
+            setState(() {
+              if (_list.isNotEmpty) {
+                _list.removeRange(0, _list.length);
+              }
+              _list.addAll(data);
+            });
           }
-          _list.addAll(data);
-        });
-      }
-    }));
+        }));
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) {
+        return FilterProjectSheet(
+          onSubmit: (data) {
+            setState(() {
+              _filterData = data;
+            });
+            _getAllProject(filterData: data);
+
+            Navigator.pop(ctx);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -72,28 +99,16 @@ class _ProjectListState extends State<ProjectList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      height: 43.0,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: "Search",
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // rounded corners
-                          ),
-                          prefixIcon:
-                              Icon(Icons.search), // search icon at the start
-                          fillColor: Colors.grey[200], // fill color
-                          filled: true, // enable fill color
-                        ),
-                      ),
-                    ),
+                  IconButton(
+                    onPressed: () {
+                      _showBottomSheet();
+                    },
+                    icon: _filterData == null
+                        ? Icon(Icons.filter_alt_off)
+                        : Icon(Icons.filter_alt),
                   ),
-                  SizedBox(
-                      width:
-                          20), // add some space between the search bar and the button
                   IconButton(
                     icon: CircleAvatar(
                       backgroundColor: _enableFavorite
@@ -110,14 +125,19 @@ class _ProjectListState extends State<ProjectList> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
               //Text("Title of the job", style: AppStyles.titleStyle),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Container(height: 2, color: Colors.grey),
               ),
               SizedBox(height: 15),
-              ..._list.map((e) => ProjectItemTab(projectData: e))
+              ..._list.map(
+                (e) => ProjectItemTab(projectData: e),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+              ),
             ],
           ),
         ),

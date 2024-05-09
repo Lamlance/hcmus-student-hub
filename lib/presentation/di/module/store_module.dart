@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/presentation/di/services/agora_service.dart';
@@ -30,6 +31,7 @@ mixin StoreModule {
     getIt.registerSingleton<LocalNotificationService>(
       LocalNotificationService(),
     );
+    getIt.registerSingleton<MiscStore>(MiscStore());
     getIt.registerSingleton<UserStore>(UserStore());
     getIt.registerSingleton<DashBoardStore>(DashBoardStore());
     getIt.registerSingleton<RoutesStore>(RoutesStore());
