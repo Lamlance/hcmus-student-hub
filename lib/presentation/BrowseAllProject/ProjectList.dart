@@ -18,8 +18,23 @@ class ProjectList extends StatefulWidget {
 class _ProjectListState extends State<ProjectList> {
   final List<ProjectData> _list = List.empty(growable: true);
   final ProjectService _getProjectService = getIt<ProjectService>();
+  bool _enableFavorite = false;
 
-  void _getAllProject() {
+  void _getAllProject({bool favorite = false}) {
+    if (favorite) {
+      _getProjectService.getAllFavProjects(listener: ((response, data) {
+        if (data != null) {
+          setState(() {
+            if (_list.isNotEmpty) {
+              _list.removeRange(0, _list.length);
+            }
+            _list.addAll(data);
+          });
+        }
+      }));
+      return;
+    }
+
     _getProjectService.getAllProjects(listener: ((response, data) {
       if (data != null) {
         setState(() {
@@ -81,13 +96,16 @@ class _ProjectListState extends State<ProjectList> {
                           20), // add some space between the search bar and the button
                   IconButton(
                     icon: CircleAvatar(
-                      backgroundColor:
-                          Colors.red, // background color of the circle
-                      child: Icon(Icons.favorite,
-                          color: Colors.white), // heart icon
+                      backgroundColor: _enableFavorite
+                          ? Colors.red
+                          : Colors.white, // background color of the circle
+                      child: Icon(Icons.favorite_border, color: Colors.black),
                     ),
                     onPressed: () {
-                      // handle button press
+                      _getAllProject(favorite: !_enableFavorite);
+                      setState(() {
+                        _enableFavorite = !_enableFavorite;
+                      });
                     },
                   ),
                 ],

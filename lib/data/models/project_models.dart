@@ -70,6 +70,7 @@ class ProjectData {
   int proposalCount = 0;
   int messageCount = 0;
   int hiredCount = 0;
+  final bool isFav;
 
   ProjectData(
       {required this.id,
@@ -80,6 +81,7 @@ class ProjectData {
       this.messageCount = 0,
       this.proposalCount = 0,
       this.numberOfStudent = 5,
+      required this.isFav,
       this.description = "description",
       this.status = ProjectStatus.none,
       List<ProposalData>? proposals,
@@ -103,6 +105,7 @@ class ProjectData {
           2 => ProjectStatus.archive,
           _ => ProjectStatus.none
         },
+        isFav: json["isFavorite"] ?? true,
         monthTime: switch (json["projectScopeFlag"] as int) { 0 => 3, _ => 6 },
         proposals: (json["proposals"] as List<dynamic>?)
             ?.map((e) => ProposalData.fromJson(e))

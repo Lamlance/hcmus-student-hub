@@ -1,35 +1,44 @@
+import 'dart:developer';
+
 import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/BrowseAllProject/apply_project.dart';
+import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ProjectItemTab extends StatelessWidget {
-  static final DateFormat _dateFormat = DateFormat("dd-MM-yyyy");
+class ProjectItemTab extends StatefulWidget {
   final ProjectData projectData;
   final Function(ProjectData data)? onOptionClick;
-
   ProjectItemTab({
     super.key,
     required this.projectData,
     this.onOptionClick,
   });
+  @override
+  State<StatefulWidget> createState() {
+    return _ProjectItemTabState();
+  }
+}
+
+class _ProjectItemTabState extends State<ProjectItemTab> {
+  static final DateFormat _dateFormat = DateFormat("dd-MM-yyyy");
+  final _projectService = getIt<ProjectService>();
 
   void _onIemClick(BuildContext context) {
-    // if (displayNumber == false) return;
-    // _dashBoardStore.setSelectProject(projectData);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (ctx) => SafeArea(
-          child: ApplyProjectScreen(data: projectData),
+          child: ApplyProjectScreen(data: widget.projectData),
         ),
       ),
     );
   }
 
   void _onOptionsClick() {
-    if (onOptionClick != null) {
-      onOptionClick!(projectData);
+    if (widget.onOptionClick != null) {
+      widget.onOptionClick!(widget.projectData);
     }
     // _dashBoardStore.setSelectProject(projectData);
   }
@@ -43,15 +52,30 @@ class ProjectItemTab extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                projectData.title,
+                widget.projectData.title,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border))
+              IconButton(
+                onPressed: () {
+                  _projectService.makeProjectFav(
+                      projectId: widget.projectData.id,
+                      isFavorite: !widget.projectData.isFav,
+                      listener: (res) {
+                        log("Fav status: ${res?.statusCode ?? "null"}");
+                      });
+                },
+                icon: !widget.projectData.isFav
+                    ? Icon(Icons.favorite_border)
+                    : Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+              )
             ],
           ),
-          Text("Created ${_dateFormat.format(projectData.createdDate)}"),
+          Text("Created ${_dateFormat.format(widget.projectData.createdDate)}"),
           SizedBox(height: 8),
-          Text(projectData.description, maxLines: 4),
+          Text(widget.projectData.description, maxLines: 4),
           SizedBox(height: 16),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8),

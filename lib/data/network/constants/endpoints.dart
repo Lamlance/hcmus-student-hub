@@ -22,6 +22,8 @@ class Endpoints {
   static String postProject = '$baseUrl/project';
   static String updateProject(int projectId) => '$baseUrl/project/$projectId';
   static String deleteProject(int projectId) => '$baseUrl/project/$projectId';
+  static String getFavProjects(int studentId) =>
+      '$baseUrl/favoriteProject/$studentId';
   //Profiles
   static String createCompany = '$baseUrl/profile/company';
   static String updateCompanyById(int id) => '$baseUrl/profile/company/$id';

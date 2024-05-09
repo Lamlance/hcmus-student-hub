@@ -76,6 +76,36 @@ class ProjectService {
     });
   }
 
+  void getAllFavProjects({
+    void Function(Response<dynamic>? response, List<ProjectData>? data)?
+        listener,
+  }) {
+    if (_userStore.selectedUser?.student == null) {
+      if (listener != null) listener(null, null);
+      return;
+    }
+
+    _dioClient.dio
+        .get(
+      Endpoints.getFavProjects(_userStore.selectedUser!.student!.id),
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((value) {
+      if (listener == null) return;
+      listener(
+        value,
+        value.statusCode != 200
+            ? null
+            : (value.data["result"] as List<dynamic>)
+                .map((e) => ProjectData.fromJson(e["project"]))
+                .toList(),
+      );
+    });
+  }
+
   void postProject(
       {required PostProjectApiModel data, ListenerCallback? listener}) {
     _dioClient.dio
@@ -100,6 +130,31 @@ class ProjectService {
     }).catchError((err, stack) {
       log("Post project error");
       return null;
+    });
+  }
+
+  void makeProjectFav(
+      {required int projectId,
+      required bool isFavorite,
+      void Function(Response<dynamic>? response)? listener}) {
+    if (_userStore.selectedUser?.student == null) {
+      if (listener != null) listener(null);
+      return;
+    }
+    _dioClient.dio
+        .patch(
+      Endpoints.getFavProjects(_userStore.selectedUser!.student!.id),
+      data: {
+        "projectId": projectId,
+        "disableFlag": isFavorite ? 0 : 1,
+      },
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+        validateStatus: (status) => true,
+      ),
+    )
+        .then((value) {
+      if (listener != null) listener(value);
     });
   }
 
