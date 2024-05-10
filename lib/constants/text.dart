@@ -266,4 +266,16 @@ class AppStrings {
   static const String giveDescription_en = "Please give some description";
   static const String review_vn = "Xem lại";
   static const String review_en = "Review";
+
+  /* Step 4 */
+  static const String processingFaild_vn = "Xử lý thất bại";
+  static const String processingFaild_en = "Processing failed";
+  static const String step4Title_vn = "Bước 4/4    Chi tiết dự án";
+  static const String step4Title_en = "Step 4/4    Project details";
+  static const String projectScope_vn = "Phạm vi dự án:";
+  static const String projectScope_en = "Project scope:";
+  static const String studentRequired_vn = "Sinh viên cần:";
+  static const String studentRequired_en = "Students required:";
+  static const String postJob_vn = "Đăng việc";
+  static const String postJob_en = "Post job";
 }
