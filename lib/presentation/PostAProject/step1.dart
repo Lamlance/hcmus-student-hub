@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
 import 'styles.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class S1PostAProjectPage extends StatefulWidget {
   final ProjectData? projectData;
@@ -51,12 +54,16 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "1/4    Let's start with a strong title",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step1Title_en
+                : AppStrings.step1Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 30),
           Text(
-            "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step1Desc_en
+                : AppStrings.step1Desc_vn,
             style: AppStyles.normalTextStyle,
           ),
           SizedBox(height: 30),
@@ -64,7 +71,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             key: _formKey,
             child: TextFormField(
               validator: (value) => value == null || value.isEmpty
-                  ? "Please insert project name"
+                  ? Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.step1Hint_en
+                      : AppStrings.step1Hint_vn
                   : null,
               controller: _txtNameController,
               decoration: InputDecoration(
@@ -78,15 +87,19 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
           ),
           SizedBox(height: 30),
           Text(
-            'Example titles',
-            style: AppStyles.titleStyle, // Use the title style
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.exampleTitle_en
+                : AppStrings.exampleTitle_vn,
+            style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
           Container(
             width: double.infinity, // Take up all available horizontal space
             child: RichText(
               text: AppStyles.bulletListStyle(
-                  '• Build responsive WordPress site with booking/payment functionality',
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.buildProject_en
+                      : AppStrings.buildProject_vn,
                   AppStyles.normalTextStyle),
             ),
           ),
@@ -95,7 +108,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             width: double.infinity, // Take up all available horizontal space
             child: RichText(
               text: AppStyles.bulletListStyle(
-                  'Facebook ad specialist need for product launch',
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.facebookAd_en
+                      : AppStrings.facebookAd_vn,
                   AppStyles.normalTextStyle),
             ),
           ),
@@ -104,7 +119,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
-              child: Text('Next: Scope'),
+              child: Text(Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.nextScope_en
+                  : AppStrings.nextScope_vn),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),

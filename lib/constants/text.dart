@@ -239,6 +239,8 @@ class AppStrings {
       "• Facebook ad specialist need for product launch";
   static const String nextScope_vn = "Tiếp theo: Phạm vi";
   static const String nextScope_en = "Next: Scope";
+  static const String exampleTitle_vn = "Tiêu đề mẫu";
+  static const String exampleTitle_en = "Example titles";
 
   /* Step 2 */
   static const String step2Title_vn =
