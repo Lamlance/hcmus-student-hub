@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class FilterData {
   final String? title;
@@ -46,12 +49,18 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("Filter projects"),
+          Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.filterProjects_en
+                : AppStrings.filterProjects_vn,
+          ),
           Divider(color: Colors.black),
           TextFormField(
             controller: _titleController,
             decoration: InputDecoration(
-              labelText: "Project title",
+              labelText: Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.projectTitle_en
+                  : AppStrings.projectTitle_vn,
               suffixIcon: IconButton(
                 onPressed: () => _titleController.clear(),
                 icon: Icon(Icons.clear),
@@ -69,7 +78,9 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             controller: _numberOfStudentController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Number of students",
+              labelText: Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.numberOfStudent_en
+                  : AppStrings.numberOfStudent_vn,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
@@ -83,10 +94,18 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             ),
           ),
           Divider(color: Colors.black),
-          Text("Project duration"),
+          Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.projectDuration_en
+                : AppStrings.projectDuration_vn,
+          ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(null),
-            title: const Text('None'),
+            title: Text(
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.none_en
+                  : AppStrings.none_vn,
+            ),
             leading: Radio<int?>(
               value: null,
               groupValue: _filterProjectScope,
@@ -95,7 +114,11 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(0),
-            title: const Text('1 to 3 month'),
+            title: Text(
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.oneToThreeMonth_en
+                  : AppStrings.oneToThreeMonth_vn,
+            ),
             leading: Radio<int?>(
               value: 0,
               groupValue: _filterProjectScope,
@@ -104,7 +127,11 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(1),
-            title: const Text('3 to 6 month'),
+            title: Text(
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.threeToSixMonth_en
+                  : AppStrings.threeToSixMonth_vn,
+            ),
             leading: Radio<int?>(
               value: 1,
               groupValue: _filterProjectScope,
@@ -113,26 +140,33 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           Divider(color: Colors.black),
           TextButton(
-              onPressed: () {
-                widget.onSubmit(
-                  FilterData(
-                    duration: _filterProjectScope,
-                    title: _titleController.text.isEmpty
-                        ? null
-                        : _titleController.text,
-                    numberOfStudent:
-                        int.tryParse(_numberOfStudentController.text),
-                  ),
-                );
-              },
-              child: Text("Submit")),
+            onPressed: () {
+              widget.onSubmit(
+                FilterData(
+                  duration: _filterProjectScope,
+                  title: _titleController.text.isEmpty
+                      ? null
+                      : _titleController.text,
+                  numberOfStudent:
+                      int.tryParse(_numberOfStudentController.text),
+                ),
+              );
+            },
+            child: Text(
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.submit_en
+                  : AppStrings.submit_vn,
+            ),
+          ),
           Divider(color: Colors.black),
           TextButton(
             onPressed: () {
               widget.onSubmit(null);
             },
             child: Text(
-              "Disable filter",
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.disableFilter_en
+                  : AppStrings.disableFilter_vn,
               style: TextStyle(color: Colors.red),
             ),
           ),

@@ -119,6 +119,8 @@ class AppStrings {
   static const String threeToSixMonth_en = "3 to 6 month";
   static const String submit_vn = "Xác nhận";
   static const String submit_en = "Submit";
+  static const String disableFilter_vn = "Bỏ bộ lọc";
+  static const String disableFilter_en = "Disable filter";
 
   /* Dashboard Company */
   static const String viewProposal_vn = "Xem đề xuất";
