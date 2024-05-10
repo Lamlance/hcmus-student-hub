@@ -5,6 +5,9 @@ import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class DashBoardStudentScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
@@ -62,7 +65,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Active proposal"),
+                Text(
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.activeProposal_en
+                      : AppStrings.activeProposal_vn,
+                ),
                 SizedBox(height: 16),
                 ..._proposals
                     .where((e) =>
@@ -79,7 +86,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                             ),
                             TextButton(
                               onPressed: () => _toDetailScreen(e.projectData),
-                              child: Text("View detail"),
+                              child: Text(
+                                Provider.of<LanguageProvider>(context).isEnglish
+                                    ? AppStrings.viewDetail_en
+                                    : AppStrings.viewDetail_vn,
+                              ),
                             ),
                             ...(e.statusFlag == ProposalStatus.hiredOfferSent
                                 ? [
@@ -93,7 +104,12 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                                           ),
                                         );
                                       },
-                                      child: Text("Accept offer"),
+                                      child: Text(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isEnglish
+                                            ? AppStrings.acceptOffer_en
+                                            : AppStrings.acceptOffer_vn,
+                                      ),
                                     ),
                                     Padding(
                                       padding:
@@ -118,7 +134,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Proposal"),
+                Text(
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.proposal_en
+                      : AppStrings.proposal_vn,
+                ),
                 SizedBox(height: 16),
                 ..._proposals
                     .where((e) => e.statusFlag != ProposalStatus.hiredOfferSent)
@@ -132,7 +152,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                           ),
                           TextButton(
                             onPressed: () => _toDetailScreen(e.projectData),
-                            child: Text("View detail"),
+                            child: Text(
+                              Provider.of<LanguageProvider>(context).isEnglish
+                                  ? AppStrings.viewDetail_en
+                                  : AppStrings.viewDetail_vn,
+                            ),
                           ),
                           Divider(color: Colors.black)
                         ],
@@ -142,7 +166,13 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             ),
           )
         ],
-      _ => [Text("Empty")]
+      _ => [
+          Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.empty_en
+                : AppStrings.empty_vn,
+          )
+        ]
     };
   }
 
