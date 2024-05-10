@@ -52,11 +52,11 @@ class SocketChatService {
 
   void _handleNotification(dynamic data) {
     log("Get notfication");
-    // _notificationService.showNotification(
-    //   id: DateTime.now().millisecondsSinceEpoch % 100,
-    //   title: "Got notification",
-    //   body: "Noti noti noti",
-    // );
+    _notificationService.showNotification(
+      id: DateTime.now().millisecondsSinceEpoch % 100,
+      title: "You got a message",
+      body: "You got a message",
+    );
   }
 
   void connectToProject(int projectId, ReceiveMsgCallback listener) {

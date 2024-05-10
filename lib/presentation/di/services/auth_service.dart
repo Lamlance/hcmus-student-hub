@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
-import 'package:collection/collection.dart';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
@@ -71,9 +69,14 @@ class AuthService {
                 }
                 log(userData.role.toString());
                 _userStore.setSelectedUser(userData, accessToken: token);
-                final profile =
-                    userData.getProfiles().firstWhereOrNull((e) => e.id >= 0);
-                _userStore.setSelectedType(profile?.type ?? AccountType.none);
+                final profile = userData.getProfiles();
+                if (profile[0].id >= 0) {
+                  _userStore.setSelectedType(profile[0].type);
+                } else if (profile[1].id >= 0) {
+                  _userStore.setSelectedType(profile[1].type);
+                } else {
+                  _userStore.setSelectedType(AccountType.none);
+                }
               });
         }
       }
@@ -97,7 +100,7 @@ class AuthService {
       ),
     )
         .then((value) {
-      log("Sign up status: ${value.statusCode}");
+      log("Sign up status: ${value.statusCode} ${value.data}");
       if (listener != null) {
         listener(value);
       }

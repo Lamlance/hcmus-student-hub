@@ -46,7 +46,6 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         title: Text('StudentHub'),

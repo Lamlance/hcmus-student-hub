@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/misc_api_models.dart';
 import 'package:boilerplate/di/service_locator.dart';
@@ -53,7 +55,10 @@ class _StudentInputScreenState extends State<StudentInputScreen>
           ),
           StudentCVInputScreen(
             onFinishInput: () {
-              if (_techStackData == null || _skillSetList.isEmpty) return;
+              if (_techStackData == null || _skillSetList.isEmpty) {
+                return log(
+                    "Missing data ${_techStackData == null},${_skillSetList.isEmpty}");
+              }
               if (_userStore.selectedUser?.student != null) {
                 _profileService.updateStudentProfile(
                     data: UpdateStudentProfile(
@@ -62,6 +67,7 @@ class _StudentInputScreenState extends State<StudentInputScreen>
                       studentId: _userStore.selectedUser!.student!.id,
                     ),
                     listener: (res) {
+                      log("Update student ${res.statusCode}");
                       Navigator.of(context)
                           .pushReplacementNamed(Routes.profile);
                     });

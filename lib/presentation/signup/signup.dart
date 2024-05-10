@@ -28,13 +28,10 @@ class _SignupPageState extends State<SignupPage> {
   final _miscStore = getIt<MiscStore>();
 
   void _handleFromSubmit() {
-    Navigator.of(context).pushReplacementNamed(Routes.login);
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    var processSnack = ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Processing Data')),
-    );
+
     _authApi.signUp(
       data: AuthApiSignUpRequest(
         email: _emailTxt.text,
@@ -42,25 +39,11 @@ class _SignupPageState extends State<SignupPage> {
         fullName: _fullNameTxt.text,
       ),
       listener: (v) {
-        processSnack.close();
         if ((v.statusCode ?? 500) >= 300) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Sign up error code ${v.statusCode ?? "unkown"}'),
-              duration: Duration(seconds: 2),
-            ),
-          );
           return;
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login success'),
-            duration: Duration(seconds: 1),
-          ),
-        );
-        Future.delayed(const Duration(seconds: 1)).then(
-          (value) => Navigator.of(context).pushReplacementNamed(Routes.profile),
-        );
+
+        Navigator.of(context).pushReplacementNamed(Routes.login);
       },
     );
   }
@@ -69,7 +52,6 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         title: Text('StudentHub', style: TextStyle(fontSize: 20)),
@@ -78,7 +60,6 @@ class _SignupPageState extends State<SignupPage> {
             icon: Icon(
               Icons.person,
               size: 30,
-              color: Colors.black,
             ),
             onPressed: () {
               // Handle the person icon tap
@@ -92,7 +73,6 @@ class _SignupPageState extends State<SignupPage> {
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
           ),
         ),
       ),

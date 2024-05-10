@@ -20,7 +20,6 @@ class _SignupTypeState extends State<SignupTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('StudentHub'),
       ),
