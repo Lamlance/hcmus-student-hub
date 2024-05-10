@@ -5,6 +5,9 @@ import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/proposals.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class ProjectDetailScreen extends StatefulWidget {
   final ProjectData projectData;
@@ -43,10 +46,26 @@ class ProjectDetailScreenState extends State<ProjectDetailScreen> {
           appBar: AppBar(
             title: Text(widget.projectData.title),
             bottom: TabBar(tabs: [
-              Tab(text: "Proposal"),
-              Tab(text: "Detail"),
-              Tab(text: "Message"),
-              Tab(text: "Hired")
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.proposal_en
+                    : AppStrings.proposal_vn,
+              ),
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.detail_en
+                    : AppStrings.detail_vn,
+              ),
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.message_en
+                    : AppStrings.message_vn,
+              ),
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.hired_en
+                    : AppStrings.hired_vn,
+              ),
             ]),
           ),
           body: TabBarView(children: [
