@@ -126,4 +126,16 @@ class AppStrings {
   static const String closeProjectFail_en = "Close as failed";
   static const String startWorking_vn = "Bắt đầu làm việc";
   static const String startWorking_en = "Start working";
+
+  /* Dashboard Student */
+  static const String activeProposal_vn = "Đề xuất hoạt động";
+  static const String activeProposal_en = "Active proposal";
+  static const String viewDetail_vn = "Xem chi tiết";
+  static const String viewDetail_en = "View detail";
+  static const String acceptOffer_vn = "Chấp nhận đề xuất";
+  static const String acceptOffer_en = "Accept offer";
+  static const String proposal_vn = "Đề xuất";
+  static const String proposal_en = "Proposal";
+  static const String empty_vn = "Trống";
+  static const String empty_en = "Empty";
 }
