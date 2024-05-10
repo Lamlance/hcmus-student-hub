@@ -1,9 +1,12 @@
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/main.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/login/login.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
   final int accountType;
@@ -102,7 +105,9 @@ class _SignupPageState extends State<SignupPage> {
               Column(
                 children: <Widget>[
                   Text(
-                    "Sign up",
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.signup_en
+                        : AppStrings.signup_vn,
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -112,9 +117,11 @@ class _SignupPageState extends State<SignupPage> {
                     height: 20,
                   ),
                   Text(
-                    "Create an account, It's free ",
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.signupTitle_en
+                        : AppStrings.signupTitle_vn,
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                  )
+                  ),
                 ],
               ),
               Form(
@@ -125,19 +132,28 @@ class _SignupPageState extends State<SignupPage> {
                       children: <Widget>[
                         //Name input
                         _createInputField(
-                            label: "Full name",
+                            label:
+                                Provider.of<LanguageProvider>(context).isEnglish
+                                    ? AppStrings.name_en
+                                    : AppStrings.name_vn,
                             validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _fullNameTxt),
                         SizedBox(height: 16),
                         //Email input
                         _createInputField(
-                            label: "Email",
+                            label:
+                                Provider.of<LanguageProvider>(context).isEnglish
+                                    ? AppStrings.email_en
+                                    : AppStrings.email_vn,
                             validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _emailTxt),
                         SizedBox(height: 16),
                         //Password input
                         _createInputField(
-                          label: "Password",
+                          label:
+                              Provider.of<LanguageProvider>(context).isEnglish
+                                  ? AppStrings.password_en
+                                  : AppStrings.password_vn,
                           obscureText: true,
                           controller: _passTxt,
                           validator: TextValidator.strongPasswordValidator,
@@ -145,20 +161,32 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(height: 16),
                         //Password re-input
                         _createInputField(
-                          label: "Re-enter password ",
+                          label:
+                              Provider.of<LanguageProvider>(context).isEnglish
+                                  ? AppStrings.rePassword_en
+                                  : AppStrings.rePassword_vn,
                           obscureText: true,
                           controller: _rePassTxt,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Field must not be empty";
+                              return Provider.of<LanguageProvider>(context)
+                                      .isEnglish
+                                  ? AppStrings.emptyField_en
+                                  : AppStrings.emptyField_vn;
                             }
                             return _passTxt.text == _rePassTxt.text
                                 ? null
-                                : "Password does not match";
+                                : Provider.of<LanguageProvider>(context)
+                                        .isEnglish
+                                    ? AppStrings.passwordNotMatch_en
+                                    : AppStrings.passwordNotMatch_vn;
                           },
                         ),
                         checkboxInput(
-                          title: "Yes, I understand and agree to StudentHub",
+                          title:
+                              Provider.of<LanguageProvider>(context).isEnglish
+                                  ? AppStrings.checkbox_en
+                                  : AppStrings.checkbox_vn,
                           isChecked: _isChecked,
                           onChanged: (bool? value) {
                             if (value != null) {
@@ -205,7 +233,11 @@ class _SignupPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Already have an account?"),
+                  Text(
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.alreadyAccount_en
+                        : AppStrings.alreadyAccount_vn,
+                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -214,7 +246,9 @@ class _SignupPageState extends State<SignupPage> {
                       );
                     },
                     child: Text(
-                      " Login",
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.login_en
+                          : AppStrings.login_vn,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
