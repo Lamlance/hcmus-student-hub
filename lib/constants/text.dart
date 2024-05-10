@@ -63,4 +63,16 @@ class AppStrings {
   static const String changeLanguage_en = "Change language";
   static const String logout_vn = "Đăng xuất";
   static const String logout_en = "Logout";
+
+  /* Alert */
+  static const String search_vn = "Tìm kiếm";
+  static const String search_en = "Search";
+  static const String alert1_vn =
+      "Bạn đã gửi yêu cầu tham gia dự án 'Javis-AI copilot'";
+  static const String alert1_en =
+      "You have submitted to join project 'Javis-AI copilot'";
+  static const String alert2_vn =
+      "Bạn đã gửi yêu cầu tham gia dự án 'Javis-AI copilot'";
+  static const String alert2_en =
+      "You have submitted to join project 'Javis-AI copilot'";
 }
