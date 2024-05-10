@@ -3,6 +3,9 @@ import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class MainBottomNavBar extends StatefulWidget {
   const MainBottomNavBar({super.key});
@@ -56,12 +59,29 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
       showUnselectedLabels: true,
       items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined), label: 'Projects'),
+          icon: Icon(Icons.list_alt_outlined),
+          label: Provider.of<LanguageProvider>(context).isEnglish
+              ? AppStrings.project_en
+              : AppStrings.project_vn,
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard), label: 'Dashboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
+          icon: Icon(Icons.dashboard),
+          label: Provider.of<LanguageProvider>(context).isEnglish
+              ? AppStrings.dashboard_en
+              : AppStrings.dashboard_vn,
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.notifications), label: 'Alert'),
+          icon: Icon(Icons.message),
+          label: Provider.of<LanguageProvider>(context).isEnglish
+              ? AppStrings.message_en
+              : AppStrings.message_vn,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          label: Provider.of<LanguageProvider>(context).isEnglish
+              ? AppStrings.alert_en
+              : AppStrings.alert_vn,
+        ),
       ],
     );
   }

@@ -305,4 +305,6 @@ class AppStrings {
   static const String dashboard_en = "Dashboard";
   static const String alert_vn = "Thông báo";
   static const String alert_en = "Alert";
+  static const String project_vn = "Dự án";
+  static const String project_en = "Project";
 }
