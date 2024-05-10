@@ -14,17 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-class LanguageProvider with ChangeNotifier {
-  bool _isEnglish = true;
-
-  bool get isEnglish => _isEnglish;
-
-  void switchLanguage() {
-    _isEnglish = !_isEnglish;
-    notifyListeners();
-  }
-}
-
 class ProfileScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
