@@ -17,7 +17,7 @@ class AppStrings {
   static const String forgotPassword_vn = "Quên mật khẩu?";
   static const String forgotPassword_en = "Forgot your password?";
 
-  /* Signup Screen */
+  /* Signup */
   static const String signupTitle_vn = "Tạo tài khoản mới miễn phí";
   static const String signupTitle_en = "Create an account, It's free ";
   static const String name_vn = "Họ và tên";
@@ -33,6 +33,15 @@ class AppStrings {
   static const String checkbox_en = "Yes, I understand and agree to StudentHub";
   static const String alreadyAccount_vn = "Đã có tài khoản?";
   static const String alreadyAccount_en = "Already have an account?";
+
+  /* Signup Type */
+  static const String joinAs_vn =
+      "Tham gia với tư cách là Công ty hoặc Sinh viên";
+  static const String joinAs_en = "Join as Company or Student";
+  static const String company_vn = "Tôi là công ty, tìm kỹ sư cho dự án";
+  static const String company_en = "I am a company, find engineer for project";
+  static const String studentE_vn = "Tôi là sinh viên, tìm dự án để làm";
+  static const String studentE_en = "I am a student, find project to work on";
 
   /* Change password */
   static const String updateSuccess_vn = "Cập nhật thành công";
