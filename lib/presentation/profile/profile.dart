@@ -12,6 +12,7 @@ import 'package:boilerplate/presentation/profile/company/company_profile_input.d
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -32,11 +33,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _getAccountSubtitle(AccountType type) {
     switch (type) {
       case AccountType.business:
-        return "Business account";
+        return Provider.of<LanguageProvider>(context).isEnglish
+            ? AppStrings.business_en
+            : AppStrings.business_vn;
       case AccountType.student:
-        return "Student account";
+        return Provider.of<LanguageProvider>(context).isEnglish
+            ? AppStrings.student_en
+            : AppStrings.student_vn;
       case AccountType.none:
-        return "Unknow account type";
+        return Provider.of<LanguageProvider>(context).isEnglish
+            ? AppStrings.unknow_en
+            : AppStrings.unknow_vn;
     }
   }
 
@@ -94,7 +101,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = _userStore.selectedUser;
     if (user == null) {
-      return Text("No user found");
+      return Text(
+        Provider.of<LanguageProvider>(context).isEnglish
+            ? AppStrings.noUser_en
+            : AppStrings.noUser_vn,
+      );
     }
     final profilesData = user.getProfiles();
     profilesData.sort((a, b) {
@@ -105,7 +116,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     Widget profiles = profilesData.isEmpty
-        ? Text("No saved user available")
+        ? Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.noSavedUser_en
+                : AppStrings.noSavedUser_vn,
+          )
         : ExpansionTile(
             title: Text(user.fullName),
             subtitle: Text(_getAccountSubtitle(profilesData.first.type)),
@@ -164,7 +179,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Icons.person,
                       ),
                     ),
-                    Text("Profile")
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.profile_en
+                          : AppStrings.profile_vn,
+                    ),
                   ],
                 ),
               ),
@@ -181,7 +200,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Icon(Icons.lock_outlined),
                     ),
-                    Text("Change password")
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.changePwd_en
+                          : AppStrings.changePwd_vn,
+                    ),
                   ],
                 ),
               ),
@@ -198,7 +221,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? Icon(Icons.nightlight_round)
                           : Icon(Icons.sunny),
                     ),
-                    Text("Change theme")
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.changeTheme_en
+                          : AppStrings.changeTheme_vn,
+                    ),
                   ],
                 ),
               ),
@@ -214,7 +241,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Icon(Icons.language),
                     ),
-                    Text("Change language")
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.changeLanguage_en
+                          : AppStrings.changeLanguage_vn,
+                    ),
                   ],
                 ),
               ),
@@ -228,7 +259,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Icon(Icons.person_off_rounded),
                     ),
-                    Text("Logout")
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.logout_en
+                          : AppStrings.logout_vn,
+                    ),
                   ],
                 ),
               )

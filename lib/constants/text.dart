@@ -68,6 +68,8 @@ class AppStrings {
   static const String noUser_en = "No user found";
   static const String noSavedUser_vn = "Không có người dùng nào được lưu trữ";
   static const String noSavedUser_en = "No saved user available";
+  static const String profile_vn = "Hồ sơ";
+  static const String profile_en = "Profile";
   static const String changeTheme_vn = "Thay đổi chủ đề";
   static const String changeTheme_en = "Change theme";
   static const String changeLanguage_vn = "Thay đổi ngôn ngữ";
