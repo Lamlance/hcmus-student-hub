@@ -2,6 +2,9 @@ import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signup.dart';
 import 'package:boilerplate/presentation/login/login.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class SignupTypePage extends StatefulWidget {
   @override
@@ -34,7 +37,9 @@ class _SignupTypeState extends State<SignupTypePage> {
               Column(
                 children: <Widget>[
                   Text(
-                    "Join as Company or Student",
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.joinAs_en
+                        : AppStrings.joinAs_vn,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
@@ -52,7 +57,11 @@ class _SignupTypeState extends State<SignupTypePage> {
                         image: AssetImage("assets/images/join.png"))),
               ),
               RadioListTile<int>(
-                title: const Text('I am a company, find engineer for project'),
+                title: Text(
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.company_en
+                      : AppStrings.company_vn,
+                ),
                 value: 0,
                 groupValue: groupValue,
                 onChanged: (int? value) {
@@ -63,7 +72,11 @@ class _SignupTypeState extends State<SignupTypePage> {
                 activeColor: Colors.blue,
               ),
               RadioListTile<int>(
-                title: const Text('I am a student, find project to work on'),
+                title: Text(
+                  Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.studentE_en
+                      : AppStrings.studentE_vn,
+                ),
                 value: 1,
                 groupValue: groupValue,
                 onChanged: (int? value) {
@@ -103,7 +116,11 @@ class _SignupTypeState extends State<SignupTypePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Already have an account?"),
+                  Text(
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.alreadyAccount_en
+                        : AppStrings.alreadyAccount_vn,
+                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
@@ -112,7 +129,9 @@ class _SignupTypeState extends State<SignupTypePage> {
                       );
                     },
                     child: Text(
-                      " Login",
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.login_en
+                          : AppStrings.login_vn,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
