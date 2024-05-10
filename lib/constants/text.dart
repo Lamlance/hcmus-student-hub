@@ -242,4 +242,28 @@ class AppStrings {
   static const String insertNumber_en = "Please insert number";
   static const String nextEstimate_vn = "Tiếp theo: Mô tả";
   static const String nextEstimate_en = "Next: Descripption";
+
+  /* Step 3 */
+  static const String step3Title_vn =
+      "Bước 3/4    Tiếp theo, cung cấp mô tả dự án";
+  static const String step3Title_en =
+      "Step 3/4    Next, provide project description";
+  static const String step3Desc_vn = "Sinh viên đang tìm kiếm:";
+  static const String step3Desc_en = "Students are looking for:";
+  static const String clearExpectation_vn =
+      "• Kỳ vọng rõ ràng về dự án hoặc sản phẩm cuối cùng của bạn";
+  static const String clearExpectation_en =
+      "• Clear expectation about your project or deliverables";
+  static const String skillRequired_vn =
+      "• Kỹ năng cần thiết cho dự án của bạn";
+  static const String skillRequired_en =
+      "• The skills required for your project";
+  static const String detailProject_vn = "• Chi tiết về dự án của bạn";
+  static const String detailProject_en = "• Detail about your project";
+  static const String describeProject_vn = "Mô tả dự án của bạn";
+  static const String describeProject_en = "Describe your project";
+  static const String giveDescription_vn = "Vui lòng cho một số mô tả";
+  static const String giveDescription_en = "Please give some description";
+  static const String review_vn = "Xem lại";
+  static const String review_en = "Review";
 }

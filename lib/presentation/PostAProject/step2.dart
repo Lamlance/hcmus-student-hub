@@ -132,7 +132,7 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
-              child: Text('Next: Descripption'),
+              child: Text('Next: Description'),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),
