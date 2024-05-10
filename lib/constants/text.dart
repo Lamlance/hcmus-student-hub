@@ -75,4 +75,17 @@ class AppStrings {
       "Bạn đã gửi yêu cầu tham gia dự án 'Javis-AI copilot'";
   static const String alert2_en =
       "You have submitted to join project 'Javis-AI copilot'";
+
+  /* Apply Project */
+  static const String applyNow_vn = "Nộp đơn ngay";
+  static const String applyNow_en = "Apply now";
+  static const String coverLetter_vn = "Thư xin việc";
+  static const String coverLetter_en = "Cover letter";
+  static const String titleDescribe_vn =
+      "Mô tả lý do bạn phù hợp với dự án này";
+  static const String titleDescribe_en = "Describe why you fit this project";
+  static const String missingStudent_vn = "Thiếu thông tin sinh viên";
+  static const String missingStudent_en = "Missing student data";
+  static const String apply_vn = "Nộp đơn!";
+  static const String apply_en = "Apply!";
 }
