@@ -1,8 +1,13 @@
+import 'dart:js';
+
 import 'package:boilerplate/constants/font_family.dart';
 import 'package:boilerplate/data/models/message_models.dart';
 import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class MessageItem extends StatelessWidget {
   static final DateFormat _dateFormat = DateFormat("HH:mm");
@@ -34,13 +39,23 @@ class MessageItem extends StatelessWidget {
                 onPressed: () {
                   if (handleCancelMeeting != null) handleCancelMeeting!(data);
                 },
-                child: Text("Cancel meeting"),
+                child: Text(
+                  Provider.of<LanguageProvider>(context as BuildContext)
+                          .isEnglish
+                      ? AppStrings.cancelMeeting_en
+                      : AppStrings.cancelMeeting_vn,
+                ),
               ),
               TextButton(
                 onPressed: () {
                   if (handleEditMeeting != null) handleEditMeeting!(data);
                 },
-                child: Text("Reschedule"),
+                child: Text(
+                  Provider.of<LanguageProvider>(context as BuildContext)
+                          .isEnglish
+                      ? AppStrings.reschedule_en
+                      : AppStrings.reschedule_vn,
+                ),
               )
             ],
           );
