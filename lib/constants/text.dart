@@ -158,4 +158,44 @@ class AppStrings {
   static const String message_en = "Message";
   static const String hired_vn = "Đã thuê";
   static const String hired_en = "Hired";
+
+  /* Home */
+  static const String homeTitle_vn =
+      "BackSlash Flutter cung cấp các hướng dẫn flutter đặc biệt. Hãy đăng ký nhé!";
+  static const String homeTitle_en =
+      "BackSlash Flutter provides extraordinary flutter tutorials. Do Subscribe! ";
+
+  /* Interview list */
+  static const String canceled_vn = "Đã hủy";
+  static const String canceled_en = "Canceled";
+  static const String join_vn = "Tham gia";
+  static const String join_en = "Join";
+
+  /* Message detail */
+  static const String scheduleInterview_vn = "Lịch hẹn phỏng vấn";
+  static const String scheduleInterview_en = "Schedule an interview";
+
+  /* Message */
+  static const String messages_vn = "Tin nhắn";
+  static const String messages_en = "Messages";
+  static const String interview_vn = "Phỏng vấn";
+  static const String interview_en = "Interviews";
+
+  /* Create meeting */
+  static const String selectStartTime_vn = "Chọn thời gian bắt đầu";
+  static const String selectStartTime_en = "Select start time";
+  static const String selectEndTime_vn = "Chọn thời gian kết thúc";
+  static const String selectEndTime_en = "Select end time";
+  static const String startTime_vn = "Thời gian bắt đầu";
+  static const String startTime_en = "Start time";
+  static const String endTime_vn = "Thời gian kết thúc";
+  static const String endTime_en = "End time";
+
+  /* Message item */
+  static const String edit_vn = "Chỉnh sửa";
+  static const String edit_en = "Edit";
+  static const String cancelMeeting_vn = "Hủy cuộc hẹn";
+  static const String cancelMeeting_en = "Cancel meeting";
+  static const String reschedule_vn = "Đặt lại";
+  static const String reschedule_en = "Reschedule";
 }
