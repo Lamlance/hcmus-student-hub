@@ -289,8 +289,8 @@ class AppStrings {
   static const String review_en = "Review";
 
   /* Step 4 */
-  static const String processingFaild_vn = "Xử lý thất bại";
-  static const String processingFaild_en = "Processing failed";
+  static const String processingFailed_vn = "Xử lý thất bại";
+  static const String processingFailed_en = "Processing failed";
   static const String step4Title_vn = "Bước 4/4    Chi tiết dự án";
   static const String step4Title_en = "Step 4/4    Project details";
   static const String projectScope_vn = "Phạm vi dự án:";

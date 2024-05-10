@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'styles.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class S4PostAProjectPage extends StatefulWidget {
   final String projectName;
@@ -34,8 +37,10 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
     final companyId = _userStore.selectedUser!.company?.id;
     if (companyId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Processing failed'),
+        SnackBar(
+          content: Text(Provider.of<LanguageProvider>(context).isEnglish
+              ? AppStrings.processingFailed_en
+              : AppStrings.processingFailed_vn),
           duration: Duration(seconds: 1),
         ),
       );
@@ -88,7 +93,9 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
         children: <Widget>[
           Flexible(
             child: Text(
-              "4/4    Project details",
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.step4Title_en
+                  : AppStrings.step4Title_vn,
               style: AppStyles.titleStyle,
             ),
           ),
@@ -131,7 +138,9 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handlePostJob,
-              child: Text('Post job'),
+              child: Text(Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.postJob_en
+                  : AppStrings.postJob_vn),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),
