@@ -157,6 +157,8 @@ class AppStrings {
   /* Detail */
   static const String projectDescription_vn = "Mô tả dự án";
   static const String projectDescription_en = "Project description";
+  static const String projectDetail_vn = "Chi tiết dự án";
+  static const String projectDetail_en = "Project detail";
 
   /* Dashboard */
   static const String allProjects_vn = "Tất cả dự án";

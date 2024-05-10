@@ -1,6 +1,9 @@
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class ProjectDetailInfoScreen extends StatelessWidget {
   final ProjectData projectData;
@@ -16,7 +19,9 @@ class ProjectDetailInfoScreen extends StatelessWidget {
         children: [
           SizedBox(height: 8),
           Text(
-            "Project title",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.projectDetail_en
+                : AppStrings.projectDetail_vn,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           Text(projectData.title),
@@ -25,7 +30,9 @@ class ProjectDetailInfoScreen extends StatelessWidget {
             child: Container(height: 2, color: Colors.grey),
           ),
           Text(
-            "Project description",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.projectDescription_en
+                : AppStrings.projectDescription_vn,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           SizedBox(height: 8),
