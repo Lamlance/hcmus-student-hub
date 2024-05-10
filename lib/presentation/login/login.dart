@@ -5,6 +5,9 @@ import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signupType.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -42,7 +45,11 @@ class _LoginPageState extends State<LoginPage> {
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login success'),
+            content: Text(
+              Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.loginSuccess_en
+                  : AppStrings.loginSuccess_vn,
+            ),
             duration: Duration(seconds: 1),
           ),
         );
@@ -74,7 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "Login",
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.login_en
+                          : AppStrings.login_vn,
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
@@ -82,9 +91,11 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     Text(
-                      "Login to your account",
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.loginTitle_vn
+                          : AppStrings.loginTitle_en,
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )
+                    ),
                   ],
                 ),
                 Padding(
@@ -93,10 +104,18 @@ class _LoginPageState extends State<LoginPage> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        inputFile(label: "Email", controller: _emailTxt),
+                        inputFile(
+                            label:
+                                Provider.of<LanguageProvider>(context).isEnglish
+                                    ? AppStrings.email_en
+                                    : AppStrings.email_vn,
+                            controller: _emailTxt),
                         SizedBox(height: 16),
                         inputFile(
-                          label: "Password",
+                          label:
+                              Provider.of<LanguageProvider>(context).isEnglish
+                                  ? AppStrings.password_en
+                                  : AppStrings.password_vn,
                           obscureText: true,
                           controller: _passTxt,
                         )
@@ -128,7 +147,11 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Don't have an account?"),
+                    Text(
+                      Provider.of<LanguageProvider>(context).isEnglish
+                          ? AppStrings.haveAccount_en
+                          : AppStrings.haveAccount_vn,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
@@ -137,7 +160,9 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        " Sign up",
+                        Provider.of<LanguageProvider>(context).isEnglish
+                            ? AppStrings.signup_en
+                            : AppStrings.signup_vn,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -159,7 +184,9 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        " Forgot your password ?",
+                        Provider.of<LanguageProvider>(context).isEnglish
+                            ? AppStrings.forgotPassword_en
+                            : AppStrings.forgotPassword_vn,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,

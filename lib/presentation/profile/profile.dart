@@ -3,6 +3,7 @@ import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/main.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/profile/change_pwd.dart';
@@ -11,7 +12,6 @@ import 'package:boilerplate/presentation/profile/company/company_profile_input.d
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {

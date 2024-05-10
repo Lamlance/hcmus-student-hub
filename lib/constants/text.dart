@@ -1,5 +1,7 @@
 class AppStrings {
   /* Login Screen */
+  static const String loginSuccess_vn = "Đăng nhập thành công";
+  static const String loginSuccess_en = "Login success";
   static const String login_vn = "Đăng nhập";
   static const String login_en = "Login";
   static const String loginTitle_vn = "Đăng nhập vào tài khoản";
