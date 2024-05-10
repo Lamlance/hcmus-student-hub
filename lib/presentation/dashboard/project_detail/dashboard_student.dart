@@ -1,13 +1,10 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class DashBoardStudentScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
@@ -24,6 +21,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
   // final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final List<GetProposalByStudentIdResponse> _proposals = [];
   final _proposalService = getIt<ProposalService>();
+  final _miscStore = getIt<MiscStore>();
 
   void _getPorposalByStudent() {
     _proposalService.getProposalByStudentId(listener: (res, data) {
@@ -66,7 +64,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  Provider.of<LanguageProvider>(context).isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.activeProposal_en
                       : AppStrings.activeProposal_vn,
                 ),
@@ -87,7 +85,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                             TextButton(
                               onPressed: () => _toDetailScreen(e.projectData),
                               child: Text(
-                                Provider.of<LanguageProvider>(context).isEnglish
+                                _miscStore.isEnglish
                                     ? AppStrings.viewDetail_en
                                     : AppStrings.viewDetail_vn,
                               ),
@@ -105,8 +103,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                                         );
                                       },
                                       child: Text(
-                                        Provider.of<LanguageProvider>(context)
-                                                .isEnglish
+                                        _miscStore.isEnglish
                                             ? AppStrings.acceptOffer_en
                                             : AppStrings.acceptOffer_vn,
                                       ),
@@ -135,7 +132,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  Provider.of<LanguageProvider>(context).isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.proposal_en
                       : AppStrings.proposal_vn,
                 ),
@@ -153,7 +150,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                           TextButton(
                             onPressed: () => _toDetailScreen(e.projectData),
                             child: Text(
-                              Provider.of<LanguageProvider>(context).isEnglish
+                              _miscStore.isEnglish
                                   ? AppStrings.viewDetail_en
                                   : AppStrings.viewDetail_vn,
                             ),
@@ -168,9 +165,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
         ],
       _ => [
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
-                ? AppStrings.empty_en
-                : AppStrings.empty_vn,
+            _miscStore.isEnglish ? AppStrings.empty_en : AppStrings.empty_vn,
           )
         ]
     };

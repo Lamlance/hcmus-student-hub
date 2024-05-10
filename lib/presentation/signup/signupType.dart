@@ -1,3 +1,5 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/signup/signup.dart';
@@ -13,6 +15,8 @@ class SignupTypePage extends StatefulWidget {
 
 class _SignupTypeState extends State<SignupTypePage> {
   int? groupValue = null;
+  final _miscStore = getIt<MiscStore>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +41,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               Column(
                 children: <Widget>[
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.joinAs_en
                         : AppStrings.joinAs_vn,
                     style: TextStyle(
@@ -58,7 +62,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.company_en
                       : AppStrings.company_vn,
                 ),
@@ -73,7 +77,7 @@ class _SignupTypeState extends State<SignupTypePage> {
               ),
               RadioListTile<int>(
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.studentE_en
                       : AppStrings.studentE_vn,
                 ),
@@ -117,7 +121,7 @@ class _SignupTypeState extends State<SignupTypePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.alreadyAccount_en
                         : AppStrings.alreadyAccount_vn,
                   ),
@@ -129,7 +133,7 @@ class _SignupTypeState extends State<SignupTypePage> {
                       );
                     },
                     child: Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.login_en
                           : AppStrings.login_vn,
                       style: TextStyle(

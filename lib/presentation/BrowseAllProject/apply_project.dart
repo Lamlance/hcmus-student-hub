@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
@@ -27,6 +28,7 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
   final TextEditingController _coverLetterController = TextEditingController();
   final ProposalService _proposalService = getIt<ProposalService>();
   final UserStore _userStore = getIt<UserStore>();
+  final _miscStore = getIt<MiscStore>();
   @override
   void initState() {
     super.initState();
@@ -62,7 +64,7 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                       child: TextButton(
                         onPressed: () => _tabController.animateTo(1),
                         child: Text(
-                          Provider.of<LanguageProvider>(context).isEnglish
+                          _miscStore.isEnglish
                               ? AppStrings.applyNow_en
                               : AppStrings.applyNow_vn,
                         ),
@@ -84,13 +86,13 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                 children: [
                   SizedBox(height: 16),
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.coverLetter_en
                         : AppStrings.coverLetter_vn,
                   ),
                   SizedBox(height: 16),
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.titleDescribe_en
                         : AppStrings.titleDescribe_vn,
                   ),
@@ -105,10 +107,9 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          labelText:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.coverLetter_en
-                                  : AppStrings.coverLetter_vn,
+                          labelText: _miscStore.isEnglish
+                              ? AppStrings.coverLetter_en
+                              : AppStrings.coverLetter_vn,
                         ),
                       ),
                     ),
@@ -131,7 +132,7 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                           });
                     },
                     child: Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.apply_en
                           : AppStrings.apply_vn,
                     ),

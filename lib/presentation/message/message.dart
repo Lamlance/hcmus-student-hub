@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/message_api_model.dart';
@@ -6,10 +7,7 @@ import 'package:boilerplate/presentation/di/services/message_service.dart';
 import 'package:boilerplate/presentation/message/interview_list.dart';
 import 'package:boilerplate/presentation/message/widgets/history_item.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/data/models/message_models.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -21,6 +19,7 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   final List<GetMyMessageItem> messageHistories = [];
   final MessageService _messageService = getIt<MessageService>();
+  final _miscStore = getIt<MiscStore>();
 
   void _getMyMessage() {
     _messageService.getMyMessage(listener: (res, msgs) {
@@ -95,12 +94,12 @@ class _MessageScreenState extends State<MessageScreen> {
             actions: [ProfileIconButton()],
             bottom: TabBar(tabs: [
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.messages_en
                     : AppStrings.messages_vn,
               ),
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.interview_en
                     : AppStrings.interview_vn,
               ),

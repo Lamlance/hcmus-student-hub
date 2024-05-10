@@ -1,5 +1,5 @@
-import 'dart:js';
-
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
@@ -10,21 +10,6 @@ import 'styles.dart';
 enum ProjectDuration { shortTerm, longTerm }
 
 ProjectDuration _projectDuration = ProjectDuration.shortTerm;
-
-String projectDurationToString(ProjectDuration duration) {
-  switch (duration) {
-    case ProjectDuration.shortTerm:
-      return Provider.of<LanguageProvider>(context as BuildContext).isEnglish
-          ? AppStrings.oneToThreeMonth_en
-          : AppStrings.oneToThreeMonth_vn;
-    case ProjectDuration.longTerm:
-      return Provider.of<LanguageProvider>(context as BuildContext).isEnglish
-          ? AppStrings.threeToSixMonth_en
-          : AppStrings.threeToSixMonth_vn;
-    default:
-      return '';
-  }
-}
 
 class S2PostAProjectPage extends StatefulWidget {
   final String projectName;
@@ -50,6 +35,21 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
   final _numberOfStudentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   ProjectDuration _projectDuration = ProjectDuration.shortTerm;
+  final _miscStore = getIt<MiscStore>();
+  String projectDurationToString(ProjectDuration duration) {
+    switch (duration) {
+      case ProjectDuration.shortTerm:
+        return _miscStore.isEnglish
+            ? AppStrings.oneToThreeMonth_en
+            : AppStrings.oneToThreeMonth_vn;
+      case ProjectDuration.longTerm:
+        return _miscStore.isEnglish
+            ? AppStrings.threeToSixMonth_en
+            : AppStrings.threeToSixMonth_vn;
+      default:
+        return '';
+    }
+  }
 
   void _handleProjectDurationChange(ProjectDuration? value) {
     if (value == null) return;
@@ -89,21 +89,21 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.step2Title_en
                 : AppStrings.step2Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 30),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.step2Desc_en
                 : AppStrings.step2Desc_vn,
             style: AppStyles.normalTextStyle,
           ),
           SizedBox(height: 30),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.projDuration_en
                 : AppStrings.projDuration_vn,
             style: AppStyles.titleStyle,
@@ -120,7 +120,7 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
           ),
           SizedBox(height: 20),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.studentNum_en
                 : AppStrings.studentNum_vn,
             style: AppStyles.titleStyle,
@@ -131,12 +131,12 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
             child: TextFormField(
               validator: (value) {
                 if (value == null || int.tryParse(value) == null) {
-                  return Provider.of<LanguageProvider>(context).isEnglish
+                  return _miscStore.isEnglish
                       ? AppStrings.validNumber_en
                       : AppStrings.validNumber_vn;
                 }
                 return value.isEmpty
-                    ? Provider.of<LanguageProvider>(context).isEnglish
+                    ? _miscStore.isEnglish
                         ? AppStrings.insertNumber_en
                         : AppStrings.insertNumber_vn
                     : null;
@@ -144,7 +144,7 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
               controller: _numberOfStudentController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: Provider.of<LanguageProvider>(context).isEnglish
+                labelText: _miscStore.isEnglish
                     ? AppStrings.numberOfStudent_en
                     : AppStrings.numberOfStudent_vn,
                 border: OutlineInputBorder(),
@@ -160,7 +160,7 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.nextEstimate_en
                     : AppStrings.nextEstimate_vn,
                 style: AppStyles.titleStyle,

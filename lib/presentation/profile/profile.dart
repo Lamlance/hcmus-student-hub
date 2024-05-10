@@ -33,15 +33,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _getAccountSubtitle(AccountType type) {
     switch (type) {
       case AccountType.business:
-        return Provider.of<LanguageProvider>(context).isEnglish
+        return _miscStore.isEnglish
             ? AppStrings.business_en
             : AppStrings.business_vn;
       case AccountType.student:
-        return Provider.of<LanguageProvider>(context).isEnglish
+        return _miscStore.isEnglish
             ? AppStrings.student_en
             : AppStrings.student_vn;
       case AccountType.none:
-        return Provider.of<LanguageProvider>(context).isEnglish
+        return _miscStore.isEnglish
             ? AppStrings.unknow_en
             : AppStrings.unknow_vn;
     }
@@ -102,9 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final user = _userStore.selectedUser;
     if (user == null) {
       return Text(
-        Provider.of<LanguageProvider>(context).isEnglish
-            ? AppStrings.noUser_en
-            : AppStrings.noUser_vn,
+        _miscStore.isEnglish ? AppStrings.noUser_en : AppStrings.noUser_vn,
       );
     }
     final profilesData = user.getProfiles();
@@ -117,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     Widget profiles = profilesData.isEmpty
         ? Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.noSavedUser_en
                 : AppStrings.noSavedUser_vn,
           )
@@ -180,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.profile_en
                           : AppStrings.profile_vn,
                     ),
@@ -201,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Icon(Icons.lock_outlined),
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.changePwd_en
                           : AppStrings.changePwd_vn,
                     ),
@@ -222,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           : Icon(Icons.sunny),
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.changeTheme_en
                           : AppStrings.changeTheme_vn,
                     ),
@@ -231,8 +229,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               InkWell(
                 onTap: () {
-                  Provider.of<LanguageProvider>(context, listen: false)
-                      .switchLanguage();
+                  setState(() {
+                    _miscStore.changeLanguage(!_miscStore.isEnglish);
+                  });
                 },
                 child: Row(
                   children: [
@@ -242,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Icon(Icons.language),
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.changeLanguage_en
                           : AppStrings.changeLanguage_vn,
                     ),
@@ -260,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Icon(Icons.person_off_rounded),
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.logout_en
                           : AppStrings.logout_vn,
                     ),

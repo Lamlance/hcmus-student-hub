@@ -1,13 +1,11 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/login/forgot_pwd.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/presentation/signup/signupType.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailTxt = TextEditingController();
   final _passTxt = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleLogin() {
     if (_formKey.currentState!.validate() == false) {
@@ -46,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.loginSuccess_en
                   : AppStrings.loginSuccess_vn,
             ),
@@ -81,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.login_en
                           : AppStrings.login_vn,
                       style:
@@ -91,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.loginTitle_vn
                           : AppStrings.loginTitle_en,
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
@@ -105,17 +104,15 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: <Widget>[
                         inputFile(
-                            label:
-                                Provider.of<LanguageProvider>(context).isEnglish
-                                    ? AppStrings.email_en
-                                    : AppStrings.email_vn,
+                            label: _miscStore.isEnglish
+                                ? AppStrings.email_en
+                                : AppStrings.email_vn,
                             controller: _emailTxt),
                         SizedBox(height: 16),
                         inputFile(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.password_en
-                                  : AppStrings.password_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.password_en
+                              : AppStrings.password_vn,
                           obscureText: true,
                           controller: _passTxt,
                         )
@@ -148,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.haveAccount_en
                           : AppStrings.haveAccount_vn,
                     ),
@@ -160,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        Provider.of<LanguageProvider>(context).isEnglish
+                        _miscStore.isEnglish
                             ? AppStrings.signup_en
                             : AppStrings.signup_vn,
                         style: TextStyle(
@@ -184,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        Provider.of<LanguageProvider>(context).isEnglish
+                        _miscStore.isEnglish
                             ? AppStrings.forgotPassword_en
                             : AppStrings.forgotPassword_vn,
                         style: TextStyle(

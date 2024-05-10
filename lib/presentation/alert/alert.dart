@@ -1,10 +1,10 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class AlertScreen extends StatefulWidget {
   @override
@@ -15,6 +15,7 @@ class AlertScreen extends StatefulWidget {
 
 class _AlertScreenState extends State<AlertScreen> {
   static final DateFormat _dateFormat = DateFormat("dd-MM-yyyy");
+  final _miscStore = getIt<MiscStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +39,9 @@ class _AlertScreenState extends State<AlertScreen> {
                         height: 43.0,
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText:
-                                Provider.of<LanguageProvider>(context).isEnglish
-                                    ? AppStrings.search_en
-                                    : AppStrings.search_vn,
+                            labelText: _miscStore.isEnglish
+                                ? AppStrings.search_en
+                                : AppStrings.search_vn,
                             border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.circular(30), // rounded corners
@@ -93,7 +93,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     SizedBox(width: 10),
                     Flexible(
                       child: Text(
-                        Provider.of<LanguageProvider>(context).isEnglish
+                        _miscStore.isEnglish
                             ? AppStrings.alert1_en
                             : AppStrings.alert1_vn,
                       ),
@@ -131,7 +131,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 SizedBox(width: 10),
                 Flexible(
                   child: Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.alert2_en +
                             DateFormat('yyyy-MM-dd – kk:mm')
                                 .format(DateTime.now())

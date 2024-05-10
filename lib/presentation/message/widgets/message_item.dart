@@ -1,7 +1,7 @@
-import 'dart:js';
-
 import 'package:boilerplate/constants/font_family.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/data/models/message_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +17,9 @@ class MessageItem extends StatelessWidget {
   final Function(InterviewData data)? handleEditMeeting;
 
   final MessageData data;
+  final _miscStore = getIt<MiscStore>();
 
-  const MessageItem({
+  MessageItem({
     super.key,
     required this.data,
     this.handleCancelMeeting,
@@ -40,8 +41,7 @@ class MessageItem extends StatelessWidget {
                   if (handleCancelMeeting != null) handleCancelMeeting!(data);
                 },
                 child: Text(
-                  Provider.of<LanguageProvider>(context as BuildContext)
-                          .isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.cancelMeeting_en
                       : AppStrings.cancelMeeting_vn,
                 ),
@@ -51,8 +51,7 @@ class MessageItem extends StatelessWidget {
                   if (handleEditMeeting != null) handleEditMeeting!(data);
                 },
                 child: Text(
-                  Provider.of<LanguageProvider>(context as BuildContext)
-                          .isEnglish
+                  _miscStore.isEnglish
                       ? AppStrings.reschedule_en
                       : AppStrings.reschedule_vn,
                 ),

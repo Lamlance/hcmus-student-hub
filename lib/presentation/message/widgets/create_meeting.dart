@@ -1,9 +1,9 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/data/models/message_api_model.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 typedef MeetingModalOnSumbit = Function({
   required String title,
@@ -31,6 +31,8 @@ class CreateMeetingModal extends StatefulWidget {
 class _CreateMeetingModalState extends State<CreateMeetingModal> {
   static final DateFormat _dateFormat = DateFormat("dd/MM/yyyy HH:mm");
   final _titleController = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
+
   DateTime? startTime;
   DateTime? endTime;
 
@@ -77,12 +79,12 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
   @override
   Widget build(BuildContext context) {
     var startTimeTxt = startTime == null
-        ? (Provider.of<LanguageProvider>(context).isEnglish
+        ? (_miscStore.isEnglish
             ? AppStrings.selectStartTime_en
             : AppStrings.selectStartTime_vn)
         : _dateFormat.format(startTime!);
     var endTimeTxt = endTime == null
-        ? (Provider.of<LanguageProvider>(context).isEnglish
+        ? (_miscStore.isEnglish
             ? AppStrings.selectEndTime_en
             : AppStrings.selectEndTime_vn)
         : _dateFormat.format(endTime!);
@@ -96,7 +98,7 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(
-                  labelText: Provider.of<LanguageProvider>(context).isEnglish
+                  labelText: _miscStore.isEnglish
                       ? AppStrings.title_en
                       : AppStrings.title_vn,
                   border: OutlineInputBorder(),
@@ -104,7 +106,7 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
               ),
               SizedBox(height: 16),
               Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.startTime_en
                     : AppStrings.startTime_vn,
               ),
@@ -123,7 +125,7 @@ class _CreateMeetingModalState extends State<CreateMeetingModal> {
               ]),
               SizedBox(height: 16),
               Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.endTime_en
                     : AppStrings.endTime_vn,
               ),

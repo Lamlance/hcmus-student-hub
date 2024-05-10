@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/login/forgot_pwd.dart';
@@ -20,6 +21,7 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
   final _oldPass = TextEditingController();
   final _newPass = TextEditingController();
   final _newPass2 = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleLogin() {
     if (_formKey.currentState!.validate() == false) {
@@ -62,7 +64,7 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.changePwd_en
                           : AppStrings.changePwd_vn,
                       style:
@@ -80,36 +82,32 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
                     child: Column(
                       children: <Widget>[
                         inputFile(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.oldPwd_en
-                                  : AppStrings.oldPwd_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.oldPwd_en
+                              : AppStrings.oldPwd_vn,
                           obscureText: true,
                           controller: _oldPass,
                         ),
                         SizedBox(height: 16),
                         inputFile(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.newPwd_en
-                                  : AppStrings.newPwd_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.newPwd_en
+                              : AppStrings.newPwd_vn,
                           obscureText: true,
                           controller: _newPass,
                           validator: TextValidator.strongPasswordValidator,
                         ),
                         SizedBox(height: 16),
                         inputFile(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.confirmNewPwd_en
-                                  : AppStrings.confirmNewPwd_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.confirmNewPwd_en
+                              : AppStrings.confirmNewPwd_vn,
                           obscureText: true,
                           controller: _newPass2,
                           validator: (v) {
                             return _newPass.text == _newPass2.text
                                 ? null
-                                : Provider.of<LanguageProvider>(context)
-                                        .isEnglish
+                                : _miscStore.isEnglish
                                     ? AppStrings.passwordNotMatch_en
                                     : AppStrings.passwordNotMatch_vn;
                           },

@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
@@ -32,13 +33,14 @@ class S4PostAProjectPage extends StatefulWidget {
 class _S4PostAProjectState extends State<S4PostAProjectPage> {
   final ProjectService _projectService = getIt<ProjectService>();
   final _userStore = getIt<UserStore>();
+  final _miscStore = getIt<MiscStore>();
 
   void _handlePostJob() {
     final companyId = _userStore.selectedUser!.company?.id;
     if (companyId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(Provider.of<LanguageProvider>(context).isEnglish
+          content: Text(_miscStore.isEnglish
               ? AppStrings.processingFailed_en
               : AppStrings.processingFailed_vn),
           duration: Duration(seconds: 1),
@@ -93,7 +95,7 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
         children: <Widget>[
           Flexible(
             child: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.step4Title_en
                   : AppStrings.step4Title_vn,
               style: AppStyles.titleStyle,
@@ -138,7 +140,7 @@ class _S4PostAProjectState extends State<S4PostAProjectPage> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handlePostJob,
-              child: Text(Provider.of<LanguageProvider>(context).isEnglish
+              child: Text(_miscStore.isEnglish
                   ? AppStrings.postJob_en
                   : AppStrings.postJob_vn),
               style: AppStyles.elevatedButtonStyle,

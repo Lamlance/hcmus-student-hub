@@ -1,13 +1,10 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/proposals.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class ProjectDetailScreen extends StatefulWidget {
   final ProjectData projectData;
@@ -22,6 +19,7 @@ class ProjectDetailScreen extends StatefulWidget {
 class ProjectDetailScreenState extends State<ProjectDetailScreen> {
   GetProposalByProjectIdRespond? proposals;
   final ProposalService _proposalService = getIt<ProposalService>();
+  final _miscStore = getIt<MiscStore>();
 
   void _getProposal() {
     _proposalService.getProposalByProjectId(
@@ -47,22 +45,22 @@ class ProjectDetailScreenState extends State<ProjectDetailScreen> {
             title: Text(widget.projectData.title),
             bottom: TabBar(tabs: [
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.proposal_en
                     : AppStrings.proposal_vn,
               ),
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.detail_en
                     : AppStrings.detail_vn,
               ),
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.message_en
                     : AppStrings.message_vn,
               ),
               Tab(
-                text: Provider.of<LanguageProvider>(context).isEnglish
+                text: _miscStore.isEnglish
                     ? AppStrings.hired_en
                     : AppStrings.hired_vn,
               ),

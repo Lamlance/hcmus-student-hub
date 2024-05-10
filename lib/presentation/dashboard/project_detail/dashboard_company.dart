@@ -1,12 +1,11 @@
 import 'dart:developer';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/PostAProject/step1.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class DashBoardCompanyScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
@@ -25,6 +24,7 @@ class DashBoardCompanyScreen extends StatefulWidget {
 class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
   final List<ProjectData> _projects = [];
   final ProjectService _projectService = getIt<ProjectService>();
+  final _miscStore = getIt<MiscStore>();
 
   _getAllProjects() {
     _projectService.getProjectsByCompanyId(listener: (response, data) {
@@ -53,7 +53,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
             TextButton(
               onPressed: () {},
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.viewProposal_en
                     : AppStrings.viewProposal_vn,
               ),
@@ -61,7 +61,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
             TextButton(
               onPressed: () {},
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.viewMessage_en
                     : AppStrings.viewMessage_vn,
               ),
@@ -69,7 +69,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
             TextButton(
               onPressed: () {},
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.viewHired_en
                     : AppStrings.viewHired_vn,
               ),
@@ -78,7 +78,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
             TextButton(
               onPressed: () {},
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.viewJobPosting_en
                     : AppStrings.viewJobPosting_vn,
               ),
@@ -94,7 +94,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                 );
               },
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.editPost_en
                     : AppStrings.editPost_vn,
               ),
@@ -112,7 +112,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                 );
               },
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.removePost_en
                     : AppStrings.removePost_vn,
               ),
@@ -131,7 +131,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                 );
               },
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.closeProject_en
                     : AppStrings.closeProject_vn,
               ),
@@ -149,7 +149,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                 );
               },
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.closeProjectFail_en
                     : AppStrings.closeProjectFail_vn,
               ),
@@ -173,7 +173,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                         );
                       },
                       child: Text(
-                        Provider.of<LanguageProvider>(context).isEnglish
+                        _miscStore.isEnglish
                             ? AppStrings.startWorking_en
                             : AppStrings.startWorking_vn,
                       ),

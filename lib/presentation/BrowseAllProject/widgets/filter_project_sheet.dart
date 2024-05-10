@@ -1,3 +1,5 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
@@ -29,6 +31,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
   int? _filterProjectScope;
   final _titleController = TextEditingController();
   final _numberOfStudentController = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleFilterScopeSelect(int? value) {
     setState(() {
@@ -50,7 +53,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.filterProjects_en
                 : AppStrings.filterProjects_vn,
           ),
@@ -58,7 +61,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           TextFormField(
             controller: _titleController,
             decoration: InputDecoration(
-              labelText: Provider.of<LanguageProvider>(context).isEnglish
+              labelText: _miscStore.isEnglish
                   ? AppStrings.projectTitle_en
                   : AppStrings.projectTitle_vn,
               suffixIcon: IconButton(
@@ -78,7 +81,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             controller: _numberOfStudentController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: Provider.of<LanguageProvider>(context).isEnglish
+              labelText: _miscStore.isEnglish
                   ? AppStrings.numberOfStudent_en
                   : AppStrings.numberOfStudent_vn,
               focusedBorder: OutlineInputBorder(
@@ -95,16 +98,14 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           Divider(color: Colors.black),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.projectDuration_en
                 : AppStrings.projectDuration_vn,
           ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(null),
             title: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
-                  ? AppStrings.none_en
-                  : AppStrings.none_vn,
+              _miscStore.isEnglish ? AppStrings.none_en : AppStrings.none_vn,
             ),
             leading: Radio<int?>(
               value: null,
@@ -115,7 +116,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ListTile(
             onTap: () => _handleFilterScopeSelect(0),
             title: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.oneToThreeMonth_en
                   : AppStrings.oneToThreeMonth_vn,
             ),
@@ -128,7 +129,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ListTile(
             onTap: () => _handleFilterScopeSelect(1),
             title: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.threeToSixMonth_en
                   : AppStrings.threeToSixMonth_vn,
             ),
@@ -153,7 +154,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
               );
             },
             child: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.submit_en
                   : AppStrings.submit_vn,
             ),
@@ -164,7 +165,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
               widget.onSubmit(null);
             },
             child: Text(
-              Provider.of<LanguageProvider>(context).isEnglish
+              _miscStore.isEnglish
                   ? AppStrings.disableFilter_en
                   : AppStrings.disableFilter_vn,
               style: TextStyle(color: Colors.red),

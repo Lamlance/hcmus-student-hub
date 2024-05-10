@@ -1,11 +1,10 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class InterviewListScreen extends StatefulWidget {
   @override
@@ -16,6 +15,7 @@ class InterviewListScreen extends StatefulWidget {
 
 class _InterviewListScreenState extends State<InterviewListScreen> {
   static final DateFormat _interviewDateFormat = DateFormat("dd/MM/yyyy HH:mm");
+  final _miscStore = getIt<MiscStore>();
 
   final _interviewService = getIt<InterviewService>();
   final List<InterviewData> _interviews = [];
@@ -61,10 +61,10 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
             },
             child: Text(
               data.disableFlag
-                  ? (Provider.of<LanguageProvider>(context).isEnglish
+                  ? (_miscStore.isEnglish
                       ? AppStrings.canceled_en
                       : AppStrings.canceled_vn)
-                  : (Provider.of<LanguageProvider>(context).isEnglish
+                  : (_miscStore.isEnglish
                       ? AppStrings.join_en
                       : AppStrings.join_vn),
               style: TextStyle(color: Colors.black),

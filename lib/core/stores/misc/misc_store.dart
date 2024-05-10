@@ -1,4 +1,3 @@
-import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:mobx/mobx.dart';
 part 'misc_store.g.dart';
 
@@ -8,8 +7,16 @@ abstract class _MiscStore with Store {
   @observable
   bool isDarkTheme = true;
 
+  @observable
+  bool isEnglish = true;
+
   @action
   changeTheme(bool isDark) {
     isDarkTheme = isDark;
+  }
+
+  @action
+  changeLanguage(bool isEng) {
+    isEnglish = isEng;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
@@ -8,11 +9,8 @@ import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/message/widgets/create_meeting.dart';
 import 'package:boilerplate/presentation/message/widgets/message_item.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/data/models/message_models.dart';
 import 'package:intl/intl.dart';
-import 'package:boilerplate/main.dart';
 import 'package:boilerplate/constants/text.dart';
-import 'package:provider/provider.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final MessageHistory history;
@@ -35,6 +33,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<MessageData> messages = [];
   final UserStore _userStore = getIt<UserStore>();
+  final _miscStore = getIt<MiscStore>();
+
   late int targetId;
   late String targetName = "";
 
@@ -162,7 +162,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         ),
                       ),
                   child: Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.scheduleInterview_en
                         : AppStrings.scheduleInterview_vn,
                   ))

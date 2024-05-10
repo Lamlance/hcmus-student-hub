@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/main.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
@@ -24,6 +25,7 @@ class _SignupPageState extends State<SignupPage> {
   final _emailTxt = TextEditingController();
   final _passTxt = TextEditingController();
   final _rePassTxt = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleFromSubmit() {
     Navigator.of(context).pushReplacementNamed(Routes.login);
@@ -105,7 +107,7 @@ class _SignupPageState extends State<SignupPage> {
               Column(
                 children: <Widget>[
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.signup_en
                         : AppStrings.signup_vn,
                     style: TextStyle(
@@ -117,7 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                     height: 20,
                   ),
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.signupTitle_en
                         : AppStrings.signupTitle_vn,
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
@@ -132,28 +134,25 @@ class _SignupPageState extends State<SignupPage> {
                       children: <Widget>[
                         //Name input
                         _createInputField(
-                            label:
-                                Provider.of<LanguageProvider>(context).isEnglish
-                                    ? AppStrings.name_en
-                                    : AppStrings.name_vn,
+                            label: _miscStore.isEnglish
+                                ? AppStrings.name_en
+                                : AppStrings.name_vn,
                             validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _fullNameTxt),
                         SizedBox(height: 16),
                         //Email input
                         _createInputField(
-                            label:
-                                Provider.of<LanguageProvider>(context).isEnglish
-                                    ? AppStrings.email_en
-                                    : AppStrings.email_vn,
+                            label: _miscStore.isEnglish
+                                ? AppStrings.email_en
+                                : AppStrings.email_vn,
                             validator: TextValidator.txtIsNotEmptyValidator,
                             controller: _emailTxt),
                         SizedBox(height: 16),
                         //Password input
                         _createInputField(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.password_en
-                                  : AppStrings.password_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.password_en
+                              : AppStrings.password_vn,
                           obscureText: true,
                           controller: _passTxt,
                           validator: TextValidator.strongPasswordValidator,
@@ -161,32 +160,28 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(height: 16),
                         //Password re-input
                         _createInputField(
-                          label:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.rePassword_en
-                                  : AppStrings.rePassword_vn,
+                          label: _miscStore.isEnglish
+                              ? AppStrings.rePassword_en
+                              : AppStrings.rePassword_vn,
                           obscureText: true,
                           controller: _rePassTxt,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return Provider.of<LanguageProvider>(context)
-                                      .isEnglish
+                              return _miscStore.isEnglish
                                   ? AppStrings.emptyField_en
                                   : AppStrings.emptyField_vn;
                             }
                             return _passTxt.text == _rePassTxt.text
                                 ? null
-                                : Provider.of<LanguageProvider>(context)
-                                        .isEnglish
+                                : _miscStore.isEnglish
                                     ? AppStrings.passwordNotMatch_en
                                     : AppStrings.passwordNotMatch_vn;
                           },
                         ),
                         checkboxInput(
-                          title:
-                              Provider.of<LanguageProvider>(context).isEnglish
-                                  ? AppStrings.checkbox_en
-                                  : AppStrings.checkbox_vn,
+                          title: _miscStore.isEnglish
+                              ? AppStrings.checkbox_en
+                              : AppStrings.checkbox_vn,
                           isChecked: _isChecked,
                           onChanged: (bool? value) {
                             if (value != null) {
@@ -234,7 +229,7 @@ class _SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    Provider.of<LanguageProvider>(context).isEnglish
+                    _miscStore.isEnglish
                         ? AppStrings.alreadyAccount_en
                         : AppStrings.alreadyAccount_vn,
                   ),
@@ -246,7 +241,7 @@ class _SignupPageState extends State<SignupPage> {
                       );
                     },
                     child: Text(
-                      Provider.of<LanguageProvider>(context).isEnglish
+                      _miscStore.isEnglish
                           ? AppStrings.login_en
                           : AppStrings.login_vn,
                       style: TextStyle(

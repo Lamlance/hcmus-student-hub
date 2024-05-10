@@ -1,3 +1,5 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'bullet_widget.dart';
 import 'styles.dart';
@@ -27,6 +29,7 @@ class S3PostAProjectPage extends StatefulWidget {
 class _S3PostAProjectState extends State<S3PostAProjectPage> {
   final _projectDescController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleNextPageClick() {
     if (_formKey.currentState!.validate() == false) return;
@@ -51,14 +54,14 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.step3Title_en
                 : AppStrings.step3Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.step3Desc_en
                 : AppStrings.step3Desc_vn,
             style: AppStyles.normalTextStyle,
@@ -70,20 +73,20 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
                 borderRadius: BorderRadius.circular(14)),
             child: SingleChildScrollView(
               child: BulletList([
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.clearExpectation_en
                     : AppStrings.clearExpectation_vn,
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.skillRequired_en
                     : AppStrings.skillRequired_vn,
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.detailProject_en
                     : AppStrings.detailProject_vn,
               ]),
             ),
           ),
           Text(
-            Provider.of<LanguageProvider>(context).isEnglish
+            _miscStore.isEnglish
                 ? AppStrings.describeProject_en
                 : AppStrings.describeProject_vn,
             style: AppStyles.titleStyle,
@@ -93,7 +96,7 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
             key: _formKey,
             child: TextFormField(
               validator: (v) => v == null || v.isEmpty
-                  ? Provider.of<LanguageProvider>(context).isEnglish
+                  ? _miscStore.isEnglish
                       ? AppStrings.giveDescription_en
                       : AppStrings.giveDescription_vn
                   : null,
@@ -107,7 +110,7 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
               child: Text(
-                Provider.of<LanguageProvider>(context).isEnglish
+                _miscStore.isEnglish
                     ? AppStrings.review_en
                     : AppStrings.review_vn,
               ),

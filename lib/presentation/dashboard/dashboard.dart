@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:boilerplate/core/domain/model/user_data.dart';
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
@@ -29,6 +30,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   final UserStore _userStore = getIt<UserStore>();
   ProjectStatus seletedStatus = ProjectStatus.none;
   final List<ProjectData> projects = [];
+  final _miscStore = getIt<MiscStore>();
 
   void handleTabTap(int index) {
     ProjectStatus? newStatus = ProjectStatus.values.asMap()[index];
@@ -62,17 +64,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           ],
           bottom: TabBar(onTap: (i) => handleTabTap(i), tabs: [
             Tab(
-              text: Provider.of<LanguageProvider>(context).isEnglish
+              text: _miscStore.isEnglish
                   ? AppStrings.allProjects_en
                   : AppStrings.allProjects_vn,
             ),
             Tab(
-              text: Provider.of<LanguageProvider>(context).isEnglish
+              text: _miscStore.isEnglish
                   ? AppStrings.working_en
                   : AppStrings.working_vn,
             ),
             Tab(
-              text: Provider.of<LanguageProvider>(context).isEnglish
+              text: _miscStore.isEnglish
                   ? AppStrings.archived_en
                   : AppStrings.archived_vn,
             ),
