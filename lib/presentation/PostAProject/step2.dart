@@ -1,4 +1,9 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 import 'styles.dart';
 
@@ -9,9 +14,13 @@ ProjectDuration _projectDuration = ProjectDuration.shortTerm;
 String projectDurationToString(ProjectDuration duration) {
   switch (duration) {
     case ProjectDuration.shortTerm:
-      return '1 to 3 months';
+      return Provider.of<LanguageProvider>(context as BuildContext).isEnglish
+          ? AppStrings.oneToThreeMonth_en
+          : AppStrings.oneToThreeMonth_vn;
     case ProjectDuration.longTerm:
-      return '3 to 6 months';
+      return Provider.of<LanguageProvider>(context as BuildContext).isEnglish
+          ? AppStrings.threeToSixMonth_en
+          : AppStrings.threeToSixMonth_vn;
     default:
       return '';
   }
@@ -80,16 +89,24 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "2/4    Next, estimate the scope of your job",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step2Title_en
+                : AppStrings.step2Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 30),
-          Text("Consider the size of your project and the timeline",
-              style: AppStyles.normalTextStyle),
+          Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step2Desc_en
+                : AppStrings.step2Desc_vn,
+            style: AppStyles.normalTextStyle,
+          ),
           SizedBox(height: 30),
           Text(
-            'How long will your project take?',
-            style: AppStyles.titleStyle, // Use the title style
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.projDuration_en
+                : AppStrings.projDuration_vn,
+            style: AppStyles.titleStyle,
           ),
           Column(
             children: ProjectDuration.values.map((ProjectDuration duration) {
@@ -103,8 +120,10 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
           ),
           SizedBox(height: 20),
           Text(
-            'How many students do you want for this project?',
-            style: AppStyles.titleStyle, // Use the title style
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.studentNum_en
+                : AppStrings.studentNum_vn,
+            style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
           Form(
@@ -112,14 +131,22 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
             child: TextFormField(
               validator: (value) {
                 if (value == null || int.tryParse(value) == null) {
-                  return "Please insert valid number";
+                  return Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.validNumber_en
+                      : AppStrings.validNumber_vn;
                 }
-                return value.isEmpty ? "Please insert a number" : null;
+                return value.isEmpty
+                    ? Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.insertNumber_en
+                        : AppStrings.insertNumber_vn
+                    : null;
               },
               controller: _numberOfStudentController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: "Number of student",
+                labelText: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.numberOfStudent_en
+                    : AppStrings.numberOfStudent_vn,
                 border: OutlineInputBorder(),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -132,7 +159,12 @@ class _S2PostAProjectState extends State<S2PostAProjectPage> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
-              child: Text('Next: Description'),
+              child: Text(
+                Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.nextEstimate_en
+                    : AppStrings.nextEstimate_vn,
+                style: AppStyles.titleStyle,
+              ),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),
