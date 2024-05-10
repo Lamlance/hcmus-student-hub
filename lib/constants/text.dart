@@ -88,4 +88,22 @@ class AppStrings {
   static const String missingStudent_en = "Missing student data";
   static const String apply_vn = "Nộp đơn!";
   static const String apply_en = "Apply!";
+
+  /* Filter Project Sheet */
+  static const String filterProjects_vn = "Lọc dự án";
+  static const String filterProjects_en = "Filter projects";
+  static const String projectTitle_vn = "Tiêu đề dự án";
+  static const String projectTitle_en = "Project title";
+  static const String numberOfStudent_vn = "Số lượng sinh viên";
+  static const String numberOfStudent_en = "Number of students";
+  static const String projectDuration_vn = "Thời gian dự án";
+  static const String projectDuration_en = "Project duration";
+  static const String none_vn = "Không";
+  static const String none_en = "None";
+  static const String oneToThreeMonth_vn = "1 đến 3 tháng";
+  static const String oneToThreeMonth_en = "1 to 3 month";
+  static const String threeToSixMonth_vn = "3 đến 6 tháng";
+  static const String threeToSixMonth_en = "3 to 6 month";
+  static const String submit_vn = "Xác nhận";
+  static const String submit_en = "Submit";
 }

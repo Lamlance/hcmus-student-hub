@@ -69,7 +69,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             controller: _numberOfStudentController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Number of student",
+              labelText: "Number of students",
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
