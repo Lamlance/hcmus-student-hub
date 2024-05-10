@@ -2,6 +2,9 @@ import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class AlertScreen extends StatefulWidget {
   @override
@@ -35,7 +38,10 @@ class _AlertScreenState extends State<AlertScreen> {
                         height: 43.0,
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: "Search",
+                            labelText:
+                                Provider.of<LanguageProvider>(context).isEnglish
+                                    ? AppStrings.search_en
+                                    : AppStrings.search_vn,
                             border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.circular(30), // rounded corners
@@ -87,7 +93,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     SizedBox(width: 10),
                     Flexible(
                       child: Text(
-                          'You have submitted to join project "Javis-AI copilot"'),
+                        Provider.of<LanguageProvider>(context).isEnglish
+                            ? AppStrings.alert1_en
+                            : AppStrings.alert1_vn,
+                      ),
                     ),
                   ],
                 ),
@@ -121,10 +130,16 @@ class _AlertScreenState extends State<AlertScreen> {
                 ),
                 SizedBox(width: 10),
                 Flexible(
-                    child: Text(
-                  'You have submitted to join project "Javis-AI copilot" at ' +
-                      DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()),
-                )),
+                  child: Text(
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.alert2_en +
+                            DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(DateTime.now())
+                        : AppStrings.alert2_vn +
+                            DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(DateTime.now()),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 15),
