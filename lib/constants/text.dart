@@ -220,4 +220,26 @@ class AppStrings {
       "• Facebook ad specialist need for product launch";
   static const String nextScope_vn = "Tiếp theo: Phạm vi";
   static const String nextScope_en = "Next: Scope";
+
+  /* Step 2 */
+  static const String step2Title_vn =
+      "Bước 2/4    Tiếp theo, ước lượng phạm vi công việc của bạn";
+  static const String step2Title_en =
+      "Step 2/4    Next, estimate the scope of your job";
+  static const String step2Desc_vn =
+      "Xem xét kích thước của dự án của bạn và thời gian biểu";
+  static const String step2Desc_en =
+      "Consider the size of your project and the timeline";
+  static const String projDuration_vn = "Dự án sẽ mất bao lâu?";
+  static const String projDuration_en = "How long will your project take?";
+  static const String studentNum_vn =
+      "Bạn muốn bao nhiêu sinh viên cho dự án này?";
+  static const String studentNum_en =
+      "How many students do you want for this project?";
+  static const String validNumber_vn = "Vui lòng nhập số hợp lệ";
+  static const String validNumber_en = "Please insert valid number";
+  static const String insertNumber_vn = "Vui lòng nhập số";
+  static const String insertNumber_en = "Please insert number";
+  static const String nextEstimate_vn = "Tiếp theo: Mô tả";
+  static const String nextEstimate_en = "Next: Descripption";
 }
