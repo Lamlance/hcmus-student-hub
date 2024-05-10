@@ -154,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
                             }
                             return _passTxt.text == _rePassTxt.text
                                 ? null
-                                : "Password not match";
+                                : "Password does not match";
                           },
                         ),
                         checkboxInput(
