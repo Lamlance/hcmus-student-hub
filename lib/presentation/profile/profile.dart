@@ -201,6 +201,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               InkWell(
+                onTap: () {
+                  _miscStore.changeTheme(!_miscStore.isDarkTheme);
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: _miscStore.isDarkTheme
+                          ? Icon(Icons.nightlight_round)
+                          : Icon(Icons.sunny),
+                    ),
+                    Text("Change language")
+                  ],
+                ),
+              ),
+              InkWell(
                 onTap: () =>
                     Navigator.pushReplacementNamed(context, Routes.login),
                 child: Row(

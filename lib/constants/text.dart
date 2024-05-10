@@ -45,4 +45,22 @@ class AppStrings {
   static const String newPwd_en = "New password";
   static const String confirmNewPwd_vn = "Xác nhận mật khẩu mới";
   static const String confirmNewPwd_en = "Confirm new password";
+
+  /* Profile */
+  static const String business_vn = "Tài khoản doanh nghiệp";
+  static const String business_en = "Business account";
+  static const String student_vn = "Tài khoản sinh viên";
+  static const String student_en = "Student account";
+  static const String unknow_vn = "Loại tài khoản không xác định";
+  static const String unknow_en = "Unknow account type";
+  static const String noUser_vn = "Không tìm thấy người dùng";
+  static const String noUser_en = "No user found";
+  static const String noSavedUser_vn = "Không có người dùng nào được lưu trữ";
+  static const String noSavedUser_en = "No saved user available";
+  static const String changeTheme_vn = "Thay đổi chủ đề";
+  static const String changeTheme_en = "Change theme";
+  static const String changeLanguage_vn = "Thay đổi ngôn ngữ";
+  static const String changeLanguage_en = "Change language";
+  static const String logout_vn = "Đăng xuất";
+  static const String logout_en = "Logout";
 }
