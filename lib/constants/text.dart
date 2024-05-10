@@ -299,4 +299,10 @@ class AppStrings {
   static const String studentRequired_en = "Students required:";
   static const String postJob_vn = "Đăng việc";
   static const String postJob_en = "Post job";
+
+  /* Bottom navigation bar */
+  static const String dashboard_vn = "Bảng điều khiển";
+  static const String dashboard_en = "Dashboard";
+  static const String alert_vn = "Thông báo";
+  static const String alert_en = "Alert";
 }
