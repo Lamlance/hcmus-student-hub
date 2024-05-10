@@ -199,6 +199,8 @@ class AppStrings {
   static const String interview_en = "Interviews";
 
   /* Create meeting */
+  static const String title_vn = "Tiêu đề";
+  static const String title_en = "Title";
   static const String selectStartTime_vn = "Chọn thời gian bắt đầu";
   static const String selectStartTime_en = "Select start time";
   static const String selectEndTime_vn = "Chọn thời gian kết thúc";
