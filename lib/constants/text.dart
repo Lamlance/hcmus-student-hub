@@ -198,4 +198,26 @@ class AppStrings {
   static const String cancelMeeting_en = "Cancel meeting";
   static const String reschedule_vn = "Đặt lại";
   static const String reschedule_en = "Reschedule";
+
+  /* Post a project */
+  /* Step 1 */
+  static const String step1Title_vn =
+      "Bước 1/4    Bắt đầu với một tiêu đề mạnh mẽ";
+  static const String step1Title_en = "Step 1/4    Start with a strong title";
+  static const String step1Desc_vn =
+      "Điều này giúp bài đăng của bạn nổi bật với sinh viên phù hợp. Đây là điều đầu tiên họ sẽ thấy, vì vậy hãy làm cho nó ấn tượng!";
+  static const String step1Desc_en =
+      "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!";
+  static const String step1Hint_vn = "Vui lòng nhập tên dự án";
+  static const String step1Hint_en = "Please insert project name";
+  static const String buildProject_vn =
+      "• Xây dựng trang web WordPress đáp ứng với chức năng đặt chỗ/thanh toán";
+  static const String buildProject_en =
+      "• Build responsive WordPress site with booking/payment functionality";
+  static const String facebookAd_vn =
+      "• Chuyên viên quảng cáo Facebook cần cho sự ra mắt sản phẩm";
+  static const String facebookAd_en =
+      "• Facebook ad specialist need for product launch";
+  static const String nextScope_vn = "Tiếp theo: Phạm vi";
+  static const String nextScope_en = "Next: Scope";
 }
