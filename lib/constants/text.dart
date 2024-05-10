@@ -31,4 +31,18 @@ class AppStrings {
   static const String checkbox_en = "Yes, I understand and agree to StudentHub";
   static const String alreadyAccount_vn = "Đã có tài khoản?";
   static const String alreadyAccount_en = "Already have an account?";
+
+  /* Change password */
+  static const String updateSuccess_vn = "Cập nhật thành công";
+  static const String updateSuccess_en = "Update completed";
+  static const String updateFail_vn = "Cập nhật thất bại mã lỗi";
+  static const String updateFail_en = "Update fail code";
+  static const String changePwd_vn = "Đổi mật khẩu";
+  static const String changePwd_en = "Change password";
+  static const String oldPwd_vn = "Mật khẩu cũ";
+  static const String oldPwd_en = "Old password";
+  static const String newPwd_vn = "Mật khẩu mới";
+  static const String newPwd_en = "New password";
+  static const String confirmNewPwd_vn = "Xác nhận mật khẩu mới";
+  static const String confirmNewPwd_en = "Confirm new password";
 }
