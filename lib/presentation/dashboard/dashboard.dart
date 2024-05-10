@@ -14,6 +14,9 @@ import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class DashBoardScreen extends StatefulWidget {
   @override
@@ -58,9 +61,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ProfileIconButton()
           ],
           bottom: TabBar(onTap: (i) => handleTabTap(i), tabs: [
-            Tab(text: "All projects"),
-            Tab(text: "Working"),
-            Tab(text: "Archived")
+            Tab(
+              text: Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.allProjects_en
+                  : AppStrings.allProjects_vn,
+            ),
+            Tab(
+              text: Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.working_en
+                  : AppStrings.working_vn,
+            ),
+            Tab(
+              text: Provider.of<LanguageProvider>(context).isEnglish
+                  ? AppStrings.archived_en
+                  : AppStrings.archived_vn,
+            ),
           ]),
         ),
         bottomNavigationBar: MainBottomNavBar(),
