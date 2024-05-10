@@ -57,4 +57,6 @@ class Endpoints {
       '$baseUrl/interview/$interviewId/disable';
   static String editInterview(int interviewId) =>
       '$baseUrl/interview/$interviewId';
+  static String getDetailInterview(int interviewId) =>
+      '$baseUrl/interview/$interviewId';
 }

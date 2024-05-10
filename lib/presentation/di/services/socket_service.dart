@@ -15,6 +15,7 @@ typedef ReceiveMsgCallback = Function(SocketReceiveMessageEvent? data);
 class SocketChatService {
   static const _receiveMsgEventName = "RECEIVE_MESSAGE";
   static const _sendInterviewEmitName = "SCHEDULE_INTERVIEW";
+  static const _receiveInterviewEventName = "RECEIIVE_INTERVIEW";
 
   final UserStore _userStore;
   final DioClient _dioClient;
@@ -40,6 +41,7 @@ class SocketChatService {
     socket.onConnect((data) => log("On socket connect"));
     socket.onError((data) => log("On socket error"));
     socket.on(_receiveMsgEventName, _receiveMsgCallback);
+    socket.on(_receiveInterviewEventName, _receiveMsgCallback);
   }
 
   void _receiveMsgCallback(dynamic data) {

@@ -17,6 +17,21 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
   final _interviewService = getIt<InterviewService>();
   final List<InterviewData> _interviews = [];
 
+  void _handleInterviewClick(InterviewData data) {
+    _interviewService.getDetailInterview(
+        interviewId: data.id,
+        listener: (res, interview) {
+          if (interview == null) return;
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => InterviewCallScreen(
+                interviewData: interview,
+              ),
+            ),
+          );
+        });
+  }
+
   void _getAllInterview() {
     _interviewService.getAllInterviews(listener: (res, data) {
       if (data == null) return;
@@ -36,32 +51,38 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
   }
 
   Widget _buildInterviewItem(InterviewData data) {
-    return Wrap(children: [
-      Text(data.title),
-      Text('Start time: ${_interviewDateFormat.format(data.startTime)}'),
-      Text('End time: ${_interviewDateFormat.format(data.endTime)}'),
-      Row(
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(
+            data.title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Start time: ${_interviewDateFormat.format(data.startTime)}',
+            style: TextStyle(fontSize: 18),
+          ),
+          Text(
+            'End time: ${_interviewDateFormat.format(data.endTime)}',
+            style: TextStyle(fontSize: 18),
+          ),
           TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: data.disableFlag ? Colors.red : Colors.white,
+              backgroundColor: data.disableFlag ? Colors.red : null,
               padding: EdgeInsets.symmetric(horizontal: 16 * 2),
             ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => InterviewCallScreen(
-                    interviewData: data,
-                  ),
-                ),
-              );
-            },
+            onPressed:
+                data.disableFlag ? null : () => _handleInterviewClick(data),
             child: Text(data.disableFlag ? "Canceled" : "Join",
                 style: TextStyle(color: Colors.black)),
           ),
+          Divider(color: Colors.black)
         ],
       ),
-    ]);
+    );
   }
 
   @override
