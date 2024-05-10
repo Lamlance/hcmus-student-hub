@@ -3,6 +3,9 @@ import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class InterviewListScreen extends StatefulWidget {
   @override
@@ -56,8 +59,16 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
                 ),
               );
             },
-            child: Text(data.disableFlag ? "Canceled" : "Join",
-                style: TextStyle(color: Colors.black)),
+            child: Text(
+              data.disableFlag
+                  ? (Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.canceled_en
+                      : AppStrings.canceled_vn)
+                  : (Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.join_en
+                      : AppStrings.join_vn),
+              style: TextStyle(color: Colors.black),
+            ),
           ),
         ],
       ),
