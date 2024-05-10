@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'bullet_widget.dart';
 import 'styles.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class S3PostAProjectPage extends StatefulWidget {
   final String projectName;
@@ -48,11 +51,18 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "3/4    Next, provide project description",
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step3Title_en
+                : AppStrings.step3Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
-          Text("Students are looking for:", style: AppStyles.normalTextStyle),
+          Text(
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.step3Desc_en
+                : AppStrings.step3Desc_vn,
+            style: AppStyles.normalTextStyle,
+          ),
           Container(
             height: 150,
             decoration: BoxDecoration(
@@ -60,22 +70,32 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
                 borderRadius: BorderRadius.circular(14)),
             child: SingleChildScrollView(
               child: BulletList([
-                'Clear expectation about your project or deliverables',
-                'The skills required for your project',
-                'Detail about your project',
+                Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.clearExpectation_en
+                    : AppStrings.clearExpectation_vn,
+                Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.skillRequired_en
+                    : AppStrings.skillRequired_vn,
+                Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.detailProject_en
+                    : AppStrings.detailProject_vn,
               ]),
             ),
           ),
           Text(
-            'Describe your project',
-            style: AppStyles.titleStyle, // Use the title style
+            Provider.of<LanguageProvider>(context).isEnglish
+                ? AppStrings.describeProject_en
+                : AppStrings.describeProject_vn,
+            style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
           Form(
             key: _formKey,
             child: TextFormField(
               validator: (v) => v == null || v.isEmpty
-                  ? "Please give some description"
+                  ? Provider.of<LanguageProvider>(context).isEnglish
+                      ? AppStrings.giveDescription_en
+                      : AppStrings.giveDescription_vn
                   : null,
               controller: _projectDescController,
               decoration: AppStyles.inputDecorationHeight,
@@ -86,7 +106,11 @@ class _S3PostAProjectState extends State<S3PostAProjectPage> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
-              child: Text('Review'),
+              child: Text(
+                Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.review_en
+                    : AppStrings.review_vn,
+              ),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),
