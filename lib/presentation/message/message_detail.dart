@@ -10,6 +10,9 @@ import 'package:boilerplate/presentation/message/widgets/message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/data/models/message_models.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final MessageHistory history;
@@ -152,14 +155,17 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton(
-                onPressed: () => _showModalBottomSheet(
-                  ctx,
-                  (ctx) => CreateMeetingModal(
-                    onSubmit: _handleMeetingModalSubmit,
-                  ),
-                ),
-                child: Text("Schedule an interview"),
-              )
+                  onPressed: () => _showModalBottomSheet(
+                        ctx,
+                        (ctx) => CreateMeetingModal(
+                          onSubmit: _handleMeetingModalSubmit,
+                        ),
+                      ),
+                  child: Text(
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.scheduleInterview_en
+                        : AppStrings.scheduleInterview_vn,
+                  ))
             ],
           ),
         )

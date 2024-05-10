@@ -7,6 +7,9 @@ import 'package:boilerplate/presentation/message/interview_list.dart';
 import 'package:boilerplate/presentation/message/widgets/history_item.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/data/models/message_models.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -91,8 +94,16 @@ class _MessageScreenState extends State<MessageScreen> {
             title: const Text("Student hub - message"),
             actions: [ProfileIconButton()],
             bottom: TabBar(tabs: [
-              Tab(text: "Messages"),
-              Tab(text: "Interviews"),
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.messages_en
+                    : AppStrings.messages_vn,
+              ),
+              Tab(
+                text: Provider.of<LanguageProvider>(context).isEnglish
+                    ? AppStrings.interview_en
+                    : AppStrings.interview_vn,
+              ),
             ]),
           ),
           bottomNavigationBar: MainBottomNavBar(),
