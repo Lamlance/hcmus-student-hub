@@ -5,6 +5,7 @@ class CreateInterviewRequest {
   final String title;
   final DateTime startTime;
   final DateTime endTime;
+  final DateTime expired_at;
   final int projectId;
   final int senderId;
   final int receiverId;
@@ -20,18 +21,21 @@ class CreateInterviewRequest {
     required this.receiverId,
   })  : meetRoomId = DateTime.now().microsecondsSinceEpoch.toString(),
         meetingRoomCode = _stringToBase64.encode(
-            '$title:$projectId:$senderId:$receiverId:$startTime:$endTime');
+            '$title:$projectId:$senderId:$receiverId:$startTime:$endTime'),
+        expired_at = endTime;
 
   Map<String, dynamic> toJson() {
     return {
       "title": title,
       "startTime": startTime.toIso8601String(),
       "endTime": endTime.toIso8601String(),
+      "expired_at": expired_at.toIso8601String(),
       "projectId": projectId,
       "senderId": senderId,
       "receiverId": receiverId,
       "meeting_room_code": meetingRoomCode,
-      "meeting_room_id": meetRoomId
+      "meeting_room_id": meetRoomId,
+      "content": title
     };
   }
 }

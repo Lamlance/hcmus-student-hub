@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/data/models/interview_api_models.dart';
@@ -84,5 +86,44 @@ class InterviewService {
         );
       },
     );
+  }
+
+  void createInterview(CreateInterviewRequest data) {
+    _dioClient.dio
+        .post(
+      Endpoints.createInterview,
+      data: data,
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (res) => true,
+      ),
+    )
+        .then((value) {
+      log("Create interview: ${value.statusCode},${value.data}");
+    });
+  }
+
+  void getDetailInterview({
+    required int interviewId,
+    void Function(Response res, InterviewData? data)? listener,
+  }) {
+    _dioClient.dio
+        .get(
+      Endpoints.getDetailInterview(interviewId),
+      options: Options(
+        headers: {"authorization": 'Bearer ${_userStore.token}'},
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+        validateStatus: (res) => true,
+      ),
+    )
+        .then((v) {
+      if (listener == null) return;
+      if (v.statusCode != 200) return listener(v, null);
+
+      return listener(v, InterviewData.fromJson(v.data["result"]));
+    });
   }
 }

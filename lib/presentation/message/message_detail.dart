@@ -45,7 +45,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     InterviewData? prevData,
   }) {
     if (prevData == null) {
-      _socketChatService.sendInterview(CreateInterviewRequest(
+      _interviewService.createInterview(CreateInterviewRequest(
         title: title,
         startTime: startTime,
         endTime: endTime,
