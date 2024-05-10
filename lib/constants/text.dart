@@ -106,4 +106,24 @@ class AppStrings {
   static const String threeToSixMonth_en = "3 to 6 month";
   static const String submit_vn = "Xác nhận";
   static const String submit_en = "Submit";
+
+  /* Dashboard Company */
+  static const String viewProposal_vn = "Xem đề xuất";
+  static const String viewProposal_en = "View proposals";
+  static const String viewMessage_vn = "Xem tin nhắn";
+  static const String viewMessage_en = "View messages";
+  static const String viewHired_vn = "Xem đã thuê";
+  static const String viewHired_en = "View hired";
+  static const String viewJobPosting_vn = "Xem bài đăng việc";
+  static const String viewJobPosting_en = "View job posting";
+  static const String editPost_vn = "Chỉnh sửa bài đăng";
+  static const String editPost_en = "Edit posting";
+  static const String removePost_vn = "Xóa bài đăng";
+  static const String removePost_en = "Remove posting";
+  static const String closeProject_vn = "Đóng dự án thành công";
+  static const String closeProject_en = "Close as succeed";
+  static const String closeProjectFail_vn = "Đóng dự án thất bại";
+  static const String closeProjectFail_en = "Close as failed";
+  static const String startWorking_vn = "Bắt đầu làm việc";
+  static const String startWorking_en = "Start working";
 }
