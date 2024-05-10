@@ -138,4 +138,24 @@ class AppStrings {
   static const String proposal_en = "Proposal";
   static const String empty_vn = "Trống";
   static const String empty_en = "Empty";
+
+  /* Detail */
+  static const String projectDescription_vn = "Mô tả dự án";
+  static const String projectDescription_en = "Project description";
+
+  /* Dashboard */
+  static const String allProjects_vn = "Tất cả dự án";
+  static const String allProjects_en = "All projects";
+  static const String working_vn = "Đang làm việc";
+  static const String working_en = "Working";
+  static const String archived_vn = "Đã lưu trữ";
+  static const String archived_en = "Archived";
+
+  /* Project detail */
+  static const String detail_vn = "Chi tiết";
+  static const String detail_en = "Detail";
+  static const String message_vn = "Tin nhắn";
+  static const String message_en = "Message";
+  static const String hired_vn = "Đã thuê";
+  static const String hired_en = "Hired";
 }
