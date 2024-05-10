@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/login/login.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -55,13 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   Text(
-                    "BackSlash Flutter provides extraordinary flutter tutorials. Do Subscribe! ",
+                    Provider.of<LanguageProvider>(context).isEnglish
+                        ? AppStrings.homeTitle_en
+                        : AppStrings.homeTitle_vn,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: 15,
                     ),
-                  )
+                  ),
                 ],
               ),
               Container(
