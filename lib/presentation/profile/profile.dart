@@ -11,6 +11,19 @@ import 'package:boilerplate/presentation/profile/company/company_profile_input.d
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+
+class LanguageProvider with ChangeNotifier {
+  bool _isEnglish = true;
+
+  bool get isEnglish => _isEnglish;
+
+  void switchLanguage() {
+    _isEnglish = !_isEnglish;
+    notifyListeners();
+  }
+}
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -202,16 +215,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               InkWell(
                 onTap: () {
-                  _miscStore.changeTheme(!_miscStore.isDarkTheme);
+                  Provider.of<LanguageProvider>(context, listen: false)
+                      .switchLanguage();
                 },
                 child: Row(
                   children: [
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: _miscStore.isDarkTheme
-                          ? Icon(Icons.nightlight_round)
-                          : Icon(Icons.sunny),
+                      child: Icon(Icons.language),
                     ),
                     Text("Change language")
                   ],
