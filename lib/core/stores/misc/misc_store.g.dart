@@ -25,6 +25,22 @@ mixin _$MiscStore on _MiscStore, Store {
     });
   }
 
+  late final _$isEnglishAtom =
+      Atom(name: '_MiscStore.isEnglish', context: context);
+
+  @override
+  bool get isEnglish {
+    _$isEnglishAtom.reportRead();
+    return super.isEnglish;
+  }
+
+  @override
+  set isEnglish(bool value) {
+    _$isEnglishAtom.reportWrite(value, super.isEnglish, () {
+      super.isEnglish = value;
+    });
+  }
+
   late final _$_MiscStoreActionController =
       ActionController(name: '_MiscStore', context: context);
 
@@ -40,9 +56,21 @@ mixin _$MiscStore on _MiscStore, Store {
   }
 
   @override
+  dynamic changeLanguage(bool isEng) {
+    final _$actionInfo = _$_MiscStoreActionController.startAction(
+        name: '_MiscStore.changeLanguage');
+    try {
+      return super.changeLanguage(isEng);
+    } finally {
+      _$_MiscStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-isDarkTheme: ${isDarkTheme}
+isDarkTheme: ${isDarkTheme},
+isEnglish: ${isEnglish}
     ''';
   }
 }

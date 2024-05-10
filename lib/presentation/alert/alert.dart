@@ -1,7 +1,10 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class AlertScreen extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class AlertScreen extends StatefulWidget {
 
 class _AlertScreenState extends State<AlertScreen> {
   static final DateFormat _dateFormat = DateFormat("dd-MM-yyyy");
+  final _miscStore = getIt<MiscStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,9 @@ class _AlertScreenState extends State<AlertScreen> {
                         height: 43.0,
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: "Search",
+                            labelText: _miscStore.isEnglish
+                                ? AppStrings.search_en
+                                : AppStrings.search_vn,
                             border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.circular(30), // rounded corners
@@ -87,7 +93,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     SizedBox(width: 10),
                     Flexible(
                       child: Text(
-                          'You have submitted to join project "Javis-AI copilot"'),
+                        _miscStore.isEnglish
+                            ? AppStrings.alert1_en
+                            : AppStrings.alert1_vn,
+                      ),
                     ),
                   ],
                 ),
@@ -121,10 +130,16 @@ class _AlertScreenState extends State<AlertScreen> {
                 ),
                 SizedBox(width: 10),
                 Flexible(
-                    child: Text(
-                  'You have submitted to join project "Javis-AI copilot" at ' +
-                      DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()),
-                )),
+                  child: Text(
+                    _miscStore.isEnglish
+                        ? AppStrings.alert2_en +
+                            DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(DateTime.now())
+                        : AppStrings.alert2_vn +
+                            DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(DateTime.now()),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 15),

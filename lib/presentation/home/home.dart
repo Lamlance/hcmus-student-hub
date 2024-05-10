@@ -1,7 +1,8 @@
-import 'dart:ui';
-
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/presentation/login/login.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _miscStore = getIt<MiscStore>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,13 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   Text(
-                    "BackSlash Flutter provides extraordinary flutter tutorials. Do Subscribe! ",
+                    _miscStore.isEnglish
+                        ? AppStrings.homeTitle_en
+                        : AppStrings.homeTitle_vn,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: 15,
                     ),
-                  )
+                  ),
                 ],
               ),
               Container(

@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/PostAProject/step1.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class DashBoardCompanyScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
@@ -22,6 +24,7 @@ class DashBoardCompanyScreen extends StatefulWidget {
 class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
   final List<ProjectData> _projects = [];
   final ProjectService _projectService = getIt<ProjectService>();
+  final _miscStore = getIt<MiscStore>();
 
   _getAllProjects() {
     _projectService.getProjectsByCompanyId(listener: (response, data) {
@@ -47,11 +50,39 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 16),
-            TextButton(onPressed: () {}, child: const Text("View proposals")),
-            TextButton(onPressed: () {}, child: const Text("View messages")),
-            TextButton(onPressed: () {}, child: const Text("View hired")),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.viewProposal_en
+                    : AppStrings.viewProposal_vn,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.viewMessage_en
+                    : AppStrings.viewMessage_vn,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.viewHired_en
+                    : AppStrings.viewHired_vn,
+              ),
+            ),
             Divider(color: Colors.black),
-            TextButton(onPressed: () {}, child: const Text("View job posting")),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.viewJobPosting_en
+                    : AppStrings.viewJobPosting_vn,
+              ),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.of(buildContext).push(
@@ -62,7 +93,11 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                   ),
                 );
               },
-              child: const Text("Edit posting"),
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.editPost_en
+                    : AppStrings.editPost_vn,
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -76,7 +111,11 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                   },
                 );
               },
-              child: const Text("Remove posting"),
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.removePost_en
+                    : AppStrings.removePost_vn,
+              ),
             ),
             Divider(color: Colors.black),
             TextButton(
@@ -91,7 +130,11 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                   },
                 );
               },
-              child: const Text("Close as succeed"),
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.closeProject_en
+                    : AppStrings.closeProject_vn,
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -105,7 +148,11 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                   },
                 );
               },
-              child: const Text("Close as failed"),
+              child: Text(
+                _miscStore.isEnglish
+                    ? AppStrings.closeProjectFail_en
+                    : AppStrings.closeProjectFail_vn,
+              ),
             ),
             Divider(color: Colors.black),
             ...(data.status != ProjectStatus.working &&
@@ -115,17 +162,22 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
                         padding: EdgeInsets.symmetric(vertical: 8),
                         child: Container(height: 2, color: Colors.grey)),
                     TextButton(
-                        onPressed: () {
-                          _projectService.startWorkingOnProject(
-                            data: data,
-                            listener: (res) {
-                              log("Start working: ${res.statusCode}");
-                              _getAllProjects();
-                              Navigator.pop(buildContext);
-                            },
-                          );
-                        },
-                        child: const Text("Start working"))
+                      onPressed: () {
+                        _projectService.startWorkingOnProject(
+                          data: data,
+                          listener: (res) {
+                            log("Start working: ${res.statusCode}");
+                            _getAllProjects();
+                            Navigator.pop(buildContext);
+                          },
+                        );
+                      },
+                      child: Text(
+                        _miscStore.isEnglish
+                            ? AppStrings.startWorking_en
+                            : AppStrings.startWorking_vn,
+                      ),
+                    )
                   ]
                 : [])
           ],

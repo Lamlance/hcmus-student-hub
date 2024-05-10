@@ -3,6 +3,7 @@ import 'package:boilerplate/core/stores/routes/routes_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class MainBottomNavBar extends StatefulWidget {
   const MainBottomNavBar({super.key});
@@ -56,12 +57,28 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
       showUnselectedLabels: true,
       items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined), label: 'Projects'),
+          icon: Icon(Icons.list_alt_outlined),
+          label: _miscStore.isEnglish
+              ? AppStrings.project_en
+              : AppStrings.project_vn,
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard), label: 'Dashboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
+          icon: Icon(Icons.dashboard),
+          label: _miscStore.isEnglish
+              ? AppStrings.dashboard_en
+              : AppStrings.dashboard_vn,
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.notifications), label: 'Alert'),
+          icon: Icon(Icons.message),
+          label: _miscStore.isEnglish
+              ? AppStrings.message_en
+              : AppStrings.message_vn,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          label:
+              _miscStore.isEnglish ? AppStrings.alert_en : AppStrings.alert_vn,
+        ),
       ],
     );
   }

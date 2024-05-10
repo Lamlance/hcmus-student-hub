@@ -1,8 +1,10 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/interview_service.dart';
 import 'package:boilerplate/presentation/message/interview/interview_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class InterviewListScreen extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class InterviewListScreen extends StatefulWidget {
 
 class _InterviewListScreenState extends State<InterviewListScreen> {
   static final DateFormat _interviewDateFormat = DateFormat("dd/MM/yyyy HH:mm");
+  final _miscStore = getIt<MiscStore>();
 
   final _interviewService = getIt<InterviewService>();
   final List<InterviewData> _interviews = [];
@@ -74,10 +77,25 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
               backgroundColor: data.disableFlag ? Colors.red : null,
               padding: EdgeInsets.symmetric(horizontal: 16 * 2),
             ),
-            onPressed:
-                data.disableFlag ? null : () => _handleInterviewClick(data),
-            child: Text(data.disableFlag ? "Canceled" : "Join",
-                style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => InterviewCallScreen(
+                    interviewData: data,
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              data.disableFlag
+                  ? (_miscStore.isEnglish
+                      ? AppStrings.canceled_en
+                      : AppStrings.canceled_vn)
+                  : (_miscStore.isEnglish
+                      ? AppStrings.join_en
+                      : AppStrings.join_vn),
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           Divider(color: Colors.black)
         ],

@@ -1,11 +1,13 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/widgets/profile_icon_btn.dart';
 import 'package:boilerplate/data/models/project_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/PostAProject/step3.dart';
 import 'package:boilerplate/presentation/PostAProject/step4.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/utils/routes/routes.dart';
 import 'step2.dart';
 import 'styles.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class S1PostAProjectPage extends StatefulWidget {
   final ProjectData? projectData;
@@ -19,6 +21,7 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
   final _txtNameController = TextEditingController();
   late TabController _tabController;
   final _formKey = GlobalKey<FormState>();
+  final _miscStore = getIt<MiscStore>();
 
   int _numberOfStudent = 0;
   int _projectDuration = 0;
@@ -51,12 +54,16 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "1/4    Let's start with a strong title",
+            _miscStore.isEnglish
+                ? AppStrings.step1Title_en
+                : AppStrings.step1Title_vn,
             style: AppStyles.titleStyle,
           ),
           SizedBox(height: 30),
           Text(
-            "This helps your post stand out to the right students. It's the first thing they'll see, so make it impressive!",
+            _miscStore.isEnglish
+                ? AppStrings.step1Desc_en
+                : AppStrings.step1Desc_vn,
             style: AppStyles.normalTextStyle,
           ),
           SizedBox(height: 30),
@@ -64,7 +71,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             key: _formKey,
             child: TextFormField(
               validator: (value) => value == null || value.isEmpty
-                  ? "Please insert project name"
+                  ? _miscStore.isEnglish
+                      ? AppStrings.step1Hint_en
+                      : AppStrings.step1Hint_vn
                   : null,
               controller: _txtNameController,
               decoration: InputDecoration(
@@ -78,15 +87,19 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
           ),
           SizedBox(height: 30),
           Text(
-            'Example titles',
-            style: AppStyles.titleStyle, // Use the title style
+            _miscStore.isEnglish
+                ? AppStrings.exampleTitle_en
+                : AppStrings.exampleTitle_vn,
+            style: AppStyles.titleStyle,
           ),
           SizedBox(height: 20),
           Container(
             width: double.infinity, // Take up all available horizontal space
             child: RichText(
               text: AppStyles.bulletListStyle(
-                  '• Build responsive WordPress site with booking/payment functionality',
+                  _miscStore.isEnglish
+                      ? AppStrings.buildProject_en
+                      : AppStrings.buildProject_vn,
                   AppStyles.normalTextStyle),
             ),
           ),
@@ -95,7 +108,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             width: double.infinity, // Take up all available horizontal space
             child: RichText(
               text: AppStyles.bulletListStyle(
-                  'Facebook ad specialist need for product launch',
+                  _miscStore.isEnglish
+                      ? AppStrings.facebookAd_en
+                      : AppStrings.facebookAd_vn,
                   AppStyles.normalTextStyle),
             ),
           ),
@@ -104,7 +119,9 @@ class _S1PostAProjectState extends State<S1PostAProjectPage>
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: _handleNextPageClick,
-              child: Text('Next: Scope'),
+              child: Text(_miscStore.isEnglish
+                  ? AppStrings.nextScope_en
+                  : AppStrings.nextScope_vn),
               style: AppStyles.elevatedButtonStyle,
             ),
           ),

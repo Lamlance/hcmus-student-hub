@@ -1,10 +1,11 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/login/forgot_pwd.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/utils/validator/txt_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/presentation/signup/signupType.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailTxt = TextEditingController();
   final _passTxt = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleLogin() {
     if (_formKey.currentState!.validate() == false) {
@@ -42,7 +44,11 @@ class _LoginPageState extends State<LoginPage> {
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login success'),
+            content: Text(
+              _miscStore.isEnglish
+                  ? AppStrings.loginSuccess_en
+                  : AppStrings.loginSuccess_vn,
+            ),
             duration: Duration(seconds: 1),
           ),
         );
@@ -74,7 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "Login",
+                      _miscStore.isEnglish
+                          ? AppStrings.login_en
+                          : AppStrings.login_vn,
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
@@ -82,9 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     Text(
-                      "Login to your account",
+                      _miscStore.isEnglish
+                          ? AppStrings.loginTitle_vn
+                          : AppStrings.loginTitle_en,
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )
+                    ),
                   ],
                 ),
                 Padding(
@@ -93,10 +103,16 @@ class _LoginPageState extends State<LoginPage> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        inputFile(label: "Email", controller: _emailTxt),
+                        inputFile(
+                            label: _miscStore.isEnglish
+                                ? AppStrings.email_en
+                                : AppStrings.email_vn,
+                            controller: _emailTxt),
                         SizedBox(height: 16),
                         inputFile(
-                          label: "Password",
+                          label: _miscStore.isEnglish
+                              ? AppStrings.password_en
+                              : AppStrings.password_vn,
                           obscureText: true,
                           controller: _passTxt,
                         )
@@ -128,7 +144,11 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Don't have an account?"),
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.haveAccount_en
+                          : AppStrings.haveAccount_vn,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
@@ -137,7 +157,9 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        " Sign up",
+                        _miscStore.isEnglish
+                            ? AppStrings.signup_en
+                            : AppStrings.signup_vn,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -159,7 +181,9 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        " Forgot your password ?",
+                        _miscStore.isEnglish
+                            ? AppStrings.forgotPassword_en
+                            : AppStrings.forgotPassword_vn,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,

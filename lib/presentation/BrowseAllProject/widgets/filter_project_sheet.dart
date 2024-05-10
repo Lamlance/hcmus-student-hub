@@ -1,4 +1,9 @@
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class FilterData {
   final String? title;
@@ -26,6 +31,7 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
   int? _filterProjectScope;
   final _titleController = TextEditingController();
   final _numberOfStudentController = TextEditingController();
+  final _miscStore = getIt<MiscStore>();
 
   void _handleFilterScopeSelect(int? value) {
     setState(() {
@@ -46,12 +52,18 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("Filter projects"),
+          Text(
+            _miscStore.isEnglish
+                ? AppStrings.filterProjects_en
+                : AppStrings.filterProjects_vn,
+          ),
           Divider(color: Colors.black),
           TextFormField(
             controller: _titleController,
             decoration: InputDecoration(
-              labelText: "Project title",
+              labelText: _miscStore.isEnglish
+                  ? AppStrings.projectTitle_en
+                  : AppStrings.projectTitle_vn,
               suffixIcon: IconButton(
                 onPressed: () => _titleController.clear(),
                 icon: Icon(Icons.clear),
@@ -69,7 +81,9 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             controller: _numberOfStudentController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Number of student",
+              labelText: _miscStore.isEnglish
+                  ? AppStrings.numberOfStudent_en
+                  : AppStrings.numberOfStudent_vn,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
@@ -83,10 +97,16 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
             ),
           ),
           Divider(color: Colors.black),
-          Text("Project duration"),
+          Text(
+            _miscStore.isEnglish
+                ? AppStrings.projectDuration_en
+                : AppStrings.projectDuration_vn,
+          ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(null),
-            title: const Text('None'),
+            title: Text(
+              _miscStore.isEnglish ? AppStrings.none_en : AppStrings.none_vn,
+            ),
             leading: Radio<int?>(
               value: null,
               groupValue: _filterProjectScope,
@@ -95,7 +115,11 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(0),
-            title: const Text('1 to 3 month'),
+            title: Text(
+              _miscStore.isEnglish
+                  ? AppStrings.oneToThreeMonth_en
+                  : AppStrings.oneToThreeMonth_vn,
+            ),
             leading: Radio<int?>(
               value: 0,
               groupValue: _filterProjectScope,
@@ -104,7 +128,11 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           ListTile(
             onTap: () => _handleFilterScopeSelect(1),
-            title: const Text('3 to 6 month'),
+            title: Text(
+              _miscStore.isEnglish
+                  ? AppStrings.threeToSixMonth_en
+                  : AppStrings.threeToSixMonth_vn,
+            ),
             leading: Radio<int?>(
               value: 1,
               groupValue: _filterProjectScope,
@@ -113,26 +141,33 @@ class _FilterProjectSheetState extends State<FilterProjectSheet> {
           ),
           Divider(color: Colors.black),
           TextButton(
-              onPressed: () {
-                widget.onSubmit(
-                  FilterData(
-                    duration: _filterProjectScope,
-                    title: _titleController.text.isEmpty
-                        ? null
-                        : _titleController.text,
-                    numberOfStudent:
-                        int.tryParse(_numberOfStudentController.text),
-                  ),
-                );
-              },
-              child: Text("Submit")),
+            onPressed: () {
+              widget.onSubmit(
+                FilterData(
+                  duration: _filterProjectScope,
+                  title: _titleController.text.isEmpty
+                      ? null
+                      : _titleController.text,
+                  numberOfStudent:
+                      int.tryParse(_numberOfStudentController.text),
+                ),
+              );
+            },
+            child: Text(
+              _miscStore.isEnglish
+                  ? AppStrings.submit_en
+                  : AppStrings.submit_vn,
+            ),
+          ),
           Divider(color: Colors.black),
           TextButton(
             onPressed: () {
               widget.onSubmit(null);
             },
             child: Text(
-              "Disable filter",
+              _miscStore.isEnglish
+                  ? AppStrings.disableFilter_en
+                  : AppStrings.disableFilter_vn,
               style: TextStyle(color: Colors.red),
             ),
           ),

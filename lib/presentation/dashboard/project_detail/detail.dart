@@ -1,11 +1,14 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/di/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class ProjectDetailInfoScreen extends StatelessWidget {
   final ProjectData projectData;
+  final _miscStore = getIt<MiscStore>();
 
-  const ProjectDetailInfoScreen({super.key, required this.projectData});
+  ProjectDetailInfoScreen({super.key, required this.projectData});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,9 @@ class ProjectDetailInfoScreen extends StatelessWidget {
         children: [
           SizedBox(height: 8),
           Text(
-            "Project title",
+            _miscStore.isEnglish
+                ? AppStrings.projectDetail_en
+                : AppStrings.projectDetail_vn,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           Text(projectData.title),
@@ -25,7 +30,9 @@ class ProjectDetailInfoScreen extends StatelessWidget {
             child: Container(height: 2, color: Colors.grey),
           ),
           Text(
-            "Project description",
+            _miscStore.isEnglish
+                ? AppStrings.projectDescription_en
+                : AppStrings.projectDescription_vn,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           SizedBox(height: 8),

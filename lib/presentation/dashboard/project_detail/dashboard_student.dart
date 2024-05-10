@@ -1,10 +1,10 @@
-import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
-import 'package:boilerplate/data/models/proposal_api_models.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
 
 class DashBoardStudentScreen extends StatefulWidget {
   final ProjectStatus seletedStatus;
@@ -21,6 +21,7 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
   // final DashBoardStore _dashBoardStore = getIt<DashBoardStore>();
   final List<GetProposalByStudentIdResponse> _proposals = [];
   final _proposalService = getIt<ProposalService>();
+  final _miscStore = getIt<MiscStore>();
 
   void _getPorposalByStudent() {
     _proposalService.getProposalByStudentId(listener: (res, data) {
@@ -62,7 +63,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Active proposal"),
+                Text(
+                  _miscStore.isEnglish
+                      ? AppStrings.activeProposal_en
+                      : AppStrings.activeProposal_vn,
+                ),
                 SizedBox(height: 16),
                 ..._proposals
                     .where((e) =>
@@ -79,7 +84,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                             ),
                             TextButton(
                               onPressed: () => _toDetailScreen(e.projectData),
-                              child: Text("View detail"),
+                              child: Text(
+                                _miscStore.isEnglish
+                                    ? AppStrings.viewDetail_en
+                                    : AppStrings.viewDetail_vn,
+                              ),
                             ),
                             ...(e.statusFlag == ProposalStatus.hiredOfferSent
                                 ? [
@@ -93,7 +102,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                                           ),
                                         );
                                       },
-                                      child: Text("Accept offer"),
+                                      child: Text(
+                                        _miscStore.isEnglish
+                                            ? AppStrings.acceptOffer_en
+                                            : AppStrings.acceptOffer_vn,
+                                      ),
                                     ),
                                     Padding(
                                       padding:
@@ -118,7 +131,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Proposal"),
+                Text(
+                  _miscStore.isEnglish
+                      ? AppStrings.proposal_en
+                      : AppStrings.proposal_vn,
+                ),
                 SizedBox(height: 16),
                 ..._proposals
                     .where((e) => e.statusFlag != ProposalStatus.hiredOfferSent)
@@ -132,7 +149,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
                           ),
                           TextButton(
                             onPressed: () => _toDetailScreen(e.projectData),
-                            child: Text("View detail"),
+                            child: Text(
+                              _miscStore.isEnglish
+                                  ? AppStrings.viewDetail_en
+                                  : AppStrings.viewDetail_vn,
+                            ),
                           ),
                           Divider(color: Colors.black)
                         ],
@@ -142,7 +163,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
             ),
           )
         ],
-      _ => [Text("Empty")]
+      _ => [
+          Text(
+            _miscStore.isEnglish ? AppStrings.empty_en : AppStrings.empty_vn,
+          )
+        ]
     };
   }
 

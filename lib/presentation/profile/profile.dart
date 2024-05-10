@@ -3,6 +3,7 @@ import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/core/widgets/main_bottom_navbar.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/main.dart';
 import 'package:boilerplate/presentation/di/services/auth_service.dart';
 import 'package:boilerplate/presentation/di/services/socket_service.dart';
 import 'package:boilerplate/presentation/profile/change_pwd.dart';
@@ -11,6 +12,8 @@ import 'package:boilerplate/presentation/profile/company/company_profile_input.d
 import 'package:boilerplate/presentation/profile/student/student_input.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -30,11 +33,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _getAccountSubtitle(AccountType type) {
     switch (type) {
       case AccountType.business:
-        return "Business account";
+        return _miscStore.isEnglish
+            ? AppStrings.business_en
+            : AppStrings.business_vn;
       case AccountType.student:
-        return "Student account";
+        return _miscStore.isEnglish
+            ? AppStrings.student_en
+            : AppStrings.student_vn;
       case AccountType.none:
-        return "Unknow account type";
+        return _miscStore.isEnglish
+            ? AppStrings.unknow_en
+            : AppStrings.unknow_vn;
     }
   }
 
@@ -92,7 +101,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = _userStore.selectedUser;
     if (user == null) {
-      return Text("No user found");
+      return Text(
+        _miscStore.isEnglish ? AppStrings.noUser_en : AppStrings.noUser_vn,
+      );
     }
     final profilesData = user.getProfiles();
     profilesData.sort((a, b) {
@@ -103,7 +114,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     Widget profiles = profilesData.isEmpty
-        ? Text("No saved user available")
+        ? Text(
+            _miscStore.isEnglish
+                ? AppStrings.noSavedUser_en
+                : AppStrings.noSavedUser_vn,
+          )
         : ExpansionTile(
             title: Text(user.fullName),
             subtitle: Text(_getAccountSubtitle(profilesData.first.type)),
@@ -162,7 +177,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Icons.person,
                       ),
                     ),
-                    Text("Profile")
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.profile_en
+                          : AppStrings.profile_vn,
+                    ),
                   ],
                 ),
               ),
@@ -179,7 +198,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Icon(Icons.lock_outlined),
                     ),
-                    Text("Change password")
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.changePwd_en
+                          : AppStrings.changePwd_vn,
+                    ),
                   ],
                 ),
               ),
@@ -196,7 +219,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? Icon(Icons.nightlight_round)
                           : Icon(Icons.sunny),
                     ),
-                    Text("Change theme")
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.changeTheme_en
+                          : AppStrings.changeTheme_vn,
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _miscStore.changeLanguage(!_miscStore.isEnglish);
+                  });
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Icon(Icons.language),
+                    ),
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.changeLanguage_en
+                          : AppStrings.changeLanguage_vn,
+                    ),
                   ],
                 ),
               ),
@@ -210,7 +258,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Icon(Icons.person_off_rounded),
                     ),
-                    Text("Logout")
+                    Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.logout_en
+                          : AppStrings.logout_vn,
+                    ),
                   ],
                 ),
               )

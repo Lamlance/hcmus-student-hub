@@ -1,12 +1,16 @@
 import 'dart:developer';
 
 import 'package:boilerplate/core/stores/dashboard/dashboard_store.dart';
+import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/core/stores/user/user_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:boilerplate/main.dart';
+import 'package:boilerplate/constants/text.dart';
+import 'package:provider/provider.dart';
 
 class ApplyProjectScreen extends StatefulWidget {
   final ProjectData data;
@@ -24,6 +28,7 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
   final TextEditingController _coverLetterController = TextEditingController();
   final ProposalService _proposalService = getIt<ProposalService>();
   final UserStore _userStore = getIt<UserStore>();
+  final _miscStore = getIt<MiscStore>();
   @override
   void initState() {
     super.initState();
@@ -58,7 +63,11 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                     Expanded(
                       child: TextButton(
                         onPressed: () => _tabController.animateTo(1),
-                        child: Text("Apply now"),
+                        child: Text(
+                          _miscStore.isEnglish
+                              ? AppStrings.applyNow_en
+                              : AppStrings.applyNow_vn,
+                        ),
                       ),
                       flex: 1,
                     )
@@ -76,9 +85,17 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
               child: Column(
                 children: [
                   SizedBox(height: 16),
-                  Text("Cover letter"),
+                  Text(
+                    _miscStore.isEnglish
+                        ? AppStrings.coverLetter_en
+                        : AppStrings.coverLetter_vn,
+                  ),
                   SizedBox(height: 16),
-                  Text("Describe why you fit this project"),
+                  Text(
+                    _miscStore.isEnglish
+                        ? AppStrings.titleDescribe_en
+                        : AppStrings.titleDescribe_vn,
+                  ),
                   SizedBox(height: 16),
                   Expanded(
                     child: Form(
@@ -90,7 +107,9 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "Cover letter",
+                          labelText: _miscStore.isEnglish
+                              ? AppStrings.coverLetter_en
+                              : AppStrings.coverLetter_vn,
                         ),
                       ),
                     ),
@@ -112,7 +131,11 @@ class _ApplyProjectScreenState extends State<ApplyProjectScreen>
                                 .pushReplacementNamed(Routes.BrowseAllProject);
                           });
                     },
-                    child: Text("Apply !"),
+                    child: Text(
+                      _miscStore.isEnglish
+                          ? AppStrings.apply_en
+                          : AppStrings.apply_vn,
+                    ),
                   ),
                 ],
               ),
