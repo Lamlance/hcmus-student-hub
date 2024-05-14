@@ -18,6 +18,7 @@ class MessageService {
     _dioClient.dio
         .get(Endpoints.getMyMessage,
             options: Options(
+              validateStatus: (s) => true,
               headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
             ))
         .then((res) {
@@ -27,6 +28,30 @@ class MessageService {
       }
       if (listener != null) {
         listener(res, GetMyMessageRespond.fromJson(res.data));
+      }
+    });
+  }
+
+  void getMessageOfProject({
+    required int projectId,
+    void Function(Response<dynamic> res, GetProjectMessageRespond? msgs)?
+        listener,
+  }) {
+    _dioClient.dio
+        .get(
+      Endpoints.getProjectMessage(projectId),
+      options: Options(
+        validateStatus: (s) => true,
+        headers: {"authorization": 'Bearer ${_userStore.token ?? ""}'},
+      ),
+    )
+        .then((res) {
+      if (res.statusCode != 200) {
+        if (listener != null) listener(res, null);
+        return;
+      }
+      if (listener != null) {
+        listener(res, GetProjectMessageRespond.fromJson(res.data));
       }
     });
   }

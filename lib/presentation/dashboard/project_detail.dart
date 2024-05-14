@@ -1,6 +1,7 @@
 import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/detail.dart';
+import 'package:boilerplate/presentation/dashboard/project_detail/message.dart';
 import 'package:boilerplate/presentation/dashboard/project_detail/proposals.dart';
 import 'package:boilerplate/presentation/di/services/proposal_service.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +73,11 @@ class ProjectDetailScreenState extends State<ProjectDetailScreen> {
               data: proposals?.proposals,
             ),
             ProjectDetailInfoScreen(projectData: widget.projectData),
-            Text("Message"),
+            ProjectMessageScreen(projectData: widget.projectData),
             ProjectProposalScreen(
               projectData: widget.projectData,
               filterHired: [ProposalStatus.hired],
+              data: proposals?.proposals,
             ),
           ]),
         ));

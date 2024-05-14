@@ -8,38 +8,6 @@ class GetMyMessageItem {
   final MessageHistory messageHistory;
   GetMyMessageItem({required this.projectData, required this.messageHistory});
 
-  static List<GetMyMessageItem> manyFromJson(Map<String, dynamic> json) {
-    final project = ProjectData.fromJson(json["project"]);
-    final msgs = (json["messages"] ?? []) as List<dynamic>;
-
-    final msgBySender = msgs.fold({}, (prev, e) {
-      final data = MessageData.fromJson(e);
-      final keyArr = [
-        e["sender"]["id"].toString(),
-        e["receiver"]["id"].toString()
-      ];
-      keyArr.sort();
-      final key = keyArr.join("_");
-      if (prev.containsKey(key) == false) {
-        prev[key] = [data];
-      } else {
-        prev[key]!.add(data);
-      }
-      return prev;
-    });
-    return msgBySender.entries
-        .map(
-          (e) => GetMyMessageItem(
-            projectData: project,
-            messageHistory: MessageHistory(
-              historyName: json["project"]["title"],
-              initData: e.value,
-            ),
-          ),
-        )
-        .toList();
-  }
-
   factory GetMyMessageItem.fromJson(Map<String, dynamic> json) {
     return GetMyMessageItem(
       projectData: ProjectData.fromJson(json["project"]),
@@ -61,6 +29,37 @@ class GetMyMessageRespond {
         msgs,
         (prev, e) {
           prev.add(GetMyMessageItem.fromJson(e));
+          return prev;
+        },
+      ),
+    );
+  }
+}
+
+class GetProjectMessageItem {
+  final MessageHistory messageHistory;
+
+  GetProjectMessageItem({required this.messageHistory});
+  factory GetProjectMessageItem.fromJson(Map<String, dynamic> json) {
+    return GetProjectMessageItem(
+      messageHistory: MessageHistory(
+        historyName: "",
+        initData: [MessageData.fromJson(json)],
+      ),
+    );
+  }
+}
+
+class GetProjectMessageRespond {
+  final List<GetProjectMessageItem> messages;
+  GetProjectMessageRespond({required this.messages});
+  factory GetProjectMessageRespond.fromJson(Map<String, dynamic> json) {
+    final List<GetProjectMessageItem> msgs = [];
+    return GetProjectMessageRespond(
+      messages: ((json["result"] ?? []) as List<dynamic>).fold(
+        msgs,
+        (prev, e) {
+          prev.add(GetProjectMessageItem.fromJson(e));
           return prev;
         },
       ),

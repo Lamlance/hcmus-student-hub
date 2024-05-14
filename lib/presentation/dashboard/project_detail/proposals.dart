@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boilerplate/data/models/proposal_api_models.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/hire_item.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +25,12 @@ class ProjectProposalScreen extends StatefulWidget {
 class _ProjectProposalScreenState extends State<ProjectProposalScreen> {
   @override
   Widget build(BuildContext context) {
-    var filtedData = widget.proposals.where((e) =>
-        (widget.filterHired == null ||
-            widget.filterHired!.contains(e.statusFlag)));
+    var filtedData = widget.proposals.where(
+      (e) {
+        return widget.filterHired == null ||
+            widget.filterHired!.contains(e.statusFlag);
+      },
+    );
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16),

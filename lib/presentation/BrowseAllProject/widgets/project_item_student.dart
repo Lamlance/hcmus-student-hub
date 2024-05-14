@@ -24,6 +24,8 @@ class ProjectItemTab extends StatefulWidget {
 class _ProjectItemTabState extends State<ProjectItemTab> {
   static final DateFormat _dateFormat = DateFormat("dd-MM-yyyy");
   final _projectService = getIt<ProjectService>();
+  final _dashboardStore = getIt<DashBoardStore>();
+  ProjectData? projectData;
 
   void _onIemClick(BuildContext context) {
     Navigator.push(
@@ -36,15 +38,20 @@ class _ProjectItemTabState extends State<ProjectItemTab> {
     );
   }
 
-  void _onOptionsClick() {
-    if (widget.onOptionClick != null) {
-      widget.onOptionClick!(widget.projectData);
-    }
-    // _dashBoardStore.setSelectProject(projectData);
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      projectData = widget.projectData;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (projectData == null) {
+      return Text("Loading");
+    }
+
     return InkWell(
         onTap: () => _onIemClick(context),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -52,16 +59,20 @@ class _ProjectItemTabState extends State<ProjectItemTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.projectData.title,
+                projectData!.title,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 onPressed: () {
                   _projectService.makeProjectFav(
-                      projectId: widget.projectData.id,
-                      isFavorite: !widget.projectData.isFav,
+                      projectId: projectData!.id,
+                      isFavorite: !projectData!.isFav,
                       listener: (res) {
                         log("Fav status: ${res?.statusCode ?? "null"}");
+                        setState(() {
+                          projectData!.isFav = !projectData!.isFav;
+                          _dashboardStore.updateProject(projectData!);
+                        });
                       });
                 },
                 icon: !widget.projectData.isFav
@@ -73,9 +84,9 @@ class _ProjectItemTabState extends State<ProjectItemTab> {
               )
             ],
           ),
-          Text("Created ${_dateFormat.format(widget.projectData.createdDate)}"),
+          Text("Created ${_dateFormat.format(projectData!.createdDate)}"),
           SizedBox(height: 8),
-          Text(widget.projectData.description, maxLines: 4),
+          Text(projectData!.description, maxLines: 4),
           SizedBox(height: 16),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8),

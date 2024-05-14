@@ -81,7 +81,7 @@ class ProjectData {
   int proposalCount = 0;
   int messageCount = 0;
   int hiredCount = 0;
-  final bool isFav;
+  bool isFav;
 
   ProjectData(
       {required this.id,

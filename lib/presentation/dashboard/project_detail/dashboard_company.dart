@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:boilerplate/core/stores/misc/misc_store.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/PostAProject/step1.dart';
+import 'package:boilerplate/presentation/dashboard/project_detail.dart';
 import 'package:boilerplate/presentation/dashboard/widgets/project_item.dart';
 import 'package:boilerplate/presentation/di/services/project_service.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
   final List<ProjectData> _projects = [];
   final ProjectService _projectService = getIt<ProjectService>();
   final _miscStore = getIt<MiscStore>();
+  final _dashBoardStore = getIt<DashBoardStore>();
 
   _getAllProjects() {
     _projectService.getProjectsByCompanyId(listener: (response, data) {
@@ -51,7 +53,17 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
           children: [
             SizedBox(height: 16),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _dashBoardStore.setSelectProject(data);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => SafeArea(
+                      child: ProjectDetailScreen(projectData: data),
+                    ),
+                  ),
+                );
+              },
               child: Text(
                 _miscStore.isEnglish
                     ? AppStrings.viewProposal_en
@@ -59,7 +71,17 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _dashBoardStore.setSelectProject(data);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => SafeArea(
+                      child: ProjectDetailScreen(projectData: data),
+                    ),
+                  ),
+                );
+              },
               child: Text(
                 _miscStore.isEnglish
                     ? AppStrings.viewMessage_en
@@ -67,7 +89,17 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _dashBoardStore.setSelectProject(data);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => SafeArea(
+                      child: ProjectDetailScreen(projectData: data),
+                    ),
+                  ),
+                );
+              },
               child: Text(
                 _miscStore.isEnglish
                     ? AppStrings.viewHired_en
@@ -190,6 +222,8 @@ class _DashBoardCompanyScreenState extends State<DashBoardCompanyScreen> {
       BuildContext buildContext, ProjectData projectData) {
     showModalBottomSheet(
         context: buildContext,
+        enableDrag: true,
+        isDismissible: true,
         builder: (ctx) => _buildBottomSheet(ctx, projectData));
   }
 
