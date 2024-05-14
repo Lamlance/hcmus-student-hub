@@ -74,10 +74,14 @@ class _InterviewListScreenState extends State<InterviewListScreen> {
           ),
           TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: data.disableFlag ? Colors.red : null,
+              backgroundColor: data.disableFlag ? Colors.red : Colors.blue,
               padding: EdgeInsets.symmetric(horizontal: 16 * 2),
             ),
             onPressed: () {
+              if (data.disableFlag) {
+                return;
+              }
+
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => InterviewCallScreen(
