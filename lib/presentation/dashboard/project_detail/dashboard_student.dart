@@ -59,7 +59,6 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
       (ProjectStatus.none) => [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -124,10 +123,11 @@ class _DashBoardStudentScreenState extends State<DashBoardStudentScreen> {
               ],
             ),
           ),
+          Divider(color: Colors.black),
+          Divider(color: Colors.black),
           SizedBox(height: 24),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

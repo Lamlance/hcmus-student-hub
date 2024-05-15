@@ -28,8 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _authService = getIt<AuthService>();
   final _miscStore = getIt<MiscStore>();
 
-  AccountType _selectType = AccountType.none;
-
   String _getAccountSubtitle(AccountType type) {
     switch (type) {
       case AccountType.business:
@@ -49,13 +47,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void onProfileClick(AccountType type) {
     setState(() {
-      _selectType = type;
+      _userStore.setSelectedType(type);
     });
-    _userStore.setSelectedType(type);
   }
 
   Widget _profileScreen(UserData userData) {
-    switch (_selectType) {
+    switch (_userStore.selectedType) {
       case AccountType.business:
         return SafeArea(child: CompanyProfileInputScreen());
       case AccountType.student:
@@ -86,14 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final firstProfile = _userStore.selectedUser
-        ?.getProfiles()
-        .where((e) => e.id != -1)
-        .firstOrNull;
-    _userStore.setSelectedType(firstProfile?.type ?? AccountType.student);
-    setState(() {
-      _selectType = firstProfile?.type ?? AccountType.student;
-    });
     _socketService.connectToNotification(_userStore.selectedUser!.userId);
   }
 
@@ -107,10 +96,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     final profilesData = user.getProfiles();
     profilesData.sort((a, b) {
-      if (_selectType == AccountType.none) {
+      if (_userStore.selectedType == AccountType.none) {
         return 0;
       }
-      return _selectType == a.type ? -1 : 1;
+      return _userStore.selectedType == a.type ? -1 : 1;
     });
 
     Widget profiles = profilesData.isEmpty
@@ -144,7 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Student Hub"),
       ),
-      bottomNavigationBar: switch (_selectType) {
+      bottomNavigationBar: switch (
+          _userStore.selectedType ?? AccountType.none) {
         AccountType.none => null,
         AccountType.business =>
           _userStore.selectedUser?.company == null ? null : MainBottomNavBar(),
